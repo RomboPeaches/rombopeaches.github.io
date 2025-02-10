@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="styles.css" />
+    <title>taletunes</title>
+</head>
+
+<body>
+    <div id="iframe-container"></div>
+
+    <!--div cla
+    s="fixed-element">
+        <div class="marquee">
+            <div class="marquee-content">Hier ist dein sehr langer Text, der von rechts nach links scrollt...</div>
+        </div>
+    </div-->
+
+    <!--button onclick="toggleFullscreen()">Toggle Fullscreen</button-->
+    <!-- by default hidden popup to -enter a group name -->
+
+    <div id="pop-up-bg"></div>
+
+    <div class="pop-up-outer">
+        <div class="pop-up-inner">
+
+            <div id="pop-up-label">ENTER GROUP NAME:</div>
+            <input id="pop-up-input" type="text" placeholder="enter a group name">
+            <div id="pop-up-btn-row">
+                <div onclick="addGroup()" class="pop-up-btn">ADD GROUP</div>
+                <div onclick="hidePopUp()" class="pop-up-btn">CANCEL</div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="pop-up-outer-video">
+        <div class="pop-up-inner">
+
+            <div id="pop-up-label">ENTER VIDEO URL:</div>
+            <input id="pop-up-input-video" type="text" placeholder="enter a video url">
+            <div id="pop-up-btn-row">
+                <div id="pop-up-btn-video">ADD VIDEO URL</div>
+                <div onclick="hidePopUp()" class="pop-up-btn">CANCEL</div>
+            </div>
+
+        </div>
+    </div>
+
+    <div id="vetical-align-container-outer">
+        <div id="vetical-align-container-inner">
+
+            <div id="left">
+                <div id="group-toggle-container">
+                    <div id="group-menu-btn-row">
+                        <div id="showPlayerIframes" class="group-menu-btn" onclick="showPlayerIframes()">P</div>
+                        <div id="mode-toggle" class="group-menu-btn" onclick="toggleEditMode(event)">&#9998;</div>
+                        <div id="resize" class="group-menu-btn" onclick="toggleTrackControllerSize()">&#9633;</div>
+                        <div id="toggle-titles" class="group-menu-btn" onclick="toggleTitles()">&#932;</div>
+                        <!--div id="test" class="group-menu-btn" onclick="copyToClipboard('Nani?!');">c2cb</div-->
+                        <div id="new-group" class="group-menu-btn" onclick="showAddGroupPopUp()">[ new group ]
+                        </div>
+                        <!--div id="cancel-video" class="group-menu-btn" onclick="deleteEachGroup()">[ delete all tune
+                            groups ]</div-->
+                        <!--div class="group-menu-btn" onclick="logExpandedObject();">&#120165;</div-->
+                        <!--div class="group-menu-btn" onclick="">&#8943;</div-->
+                    </div>
+                    <div id="group-toggle-btn-row">
+                    </div>
+                    <!--div id="groups-header">ambient groups</div-->
+                </div>
+            </div>
+
+
+            <div id="right">
+                <div id="if-empty"> taletunes
+                    <div style="margin: 20px 0;">Support us:</div>
+                    <img style="border-radius: 0px; margin: 8px 0px 20px 0px; display: flex;" src="qr_green.png" alt="a qr code to my paypal">
+                    <div id="empty-msg">
+                        Elevate your game's atmosphere with taletunes, a tool for seamlessly blending ambient
+                        soundscapes and music to match every moment. Set the perfect tone for every scene. Dynamic,
+                        immersive sound-design at your fingertips.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    </div>
+
+    <script src="main.js"></script>
+
+
+</body>
+
+</html>
