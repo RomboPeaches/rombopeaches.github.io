@@ -23,7 +23,7 @@
 
 /*----------------------------------------------------------------*/
 
-const data = {
+let data = {
   groups: [],
   settings: [],
   mode: "play",
@@ -1045,10 +1045,9 @@ function logTabActivity() {
 }
 
 function initPlayer(groupName, url) {
-  //             this kept players to load after removing the iframe once (by cnt down timer)
-  //              |
-  //              v
-  //if (!getPlayerByGroupNameAndUrl(groupName, url) && url !== "" && getVideoIDByUrl(url)) { 
+
+  console.log(data.players);
+
   if (url !== "" && getVideoIDByUrl(url)) {
 
     console.log(getPlayerByGroupNameAndUrl(groupName, url), "----------------- debug 1");
@@ -1086,6 +1085,7 @@ function initPlayer(groupName, url) {
 
     console.log(getPlayerByGroupNameAndUrl(groupName, url), "----------------- debug 2");
   }
+
 }
 
 function onPlayerReady(event) {
@@ -1119,7 +1119,7 @@ function onPlayerPlaybackQualityChange(event) {
 function onPlayerError(event) {
   console.log("--- player error ---");
 }
-
+/*
 function getPlayerByGroupNameAndUrl(groupName, url) {
   let player = data.players.find(
     (p) => p.g.id === groupName + "_" + getVideoIDByUrl(url)
@@ -1128,11 +1128,25 @@ function getPlayerByGroupNameAndUrl(groupName, url) {
     return player;
   }
 }
+*/
+
+function getPlayerByGroupNameAndUrl(groupName, url) {
+  let videoID = getVideoIDByUrl(url);
+
+  for (let i = data.players.length - 1; i >= 0; i--) {
+    if (data.players[i].g.id === groupName + "_" + videoID) {
+      return data.players[i]; // Return the first match found from the end
+    }
+  }
+
+  return null; // Return null if no match is found
+}
+
 
 function mapSpeed(value) {
   if (value <= 20) return "very fast";
-  if (value <= 40) return "fast"; 
-  if (value <= 60) return "normal"; 
+  if (value <= 40) return "fast";
+  if (value <= 60) return "normal";
   if (value <= 80) return "moderate";
   return "slow";
 }
@@ -1199,7 +1213,6 @@ function showGroupElement(groupName) {
 
   for (let i = 0; i < groupObject.tunes.length; i++) {
     // only add tune if not deleted
-
     if (groupObject.tunes[i].deleted == false) {
       let trackController = document.createElement("div");
 
@@ -1270,6 +1283,8 @@ function showGroupElement(groupName) {
 
         trackController.addEventListener("click", function (event) {
 
+          console.log("DEBUG --- here!");
+
           curser_coords = getRelativeCurserPosition(event);
 
           let stepSize = (115 - curser_coords[0]) / 50.0;
@@ -1281,13 +1296,11 @@ function showGroupElement(groupName) {
           groupObject.tunes[i].stepSize = stepSize;
           groupObject.tunes[i].fadeTargetVolume = curser_coords[1];
 
-          let player = getPlayerByGroupNameAndUrl(
-            groupName,
-            groupObject.tunes[index].url,
-            groupObject.tunes[index]
-          );
+          let player = getPlayerByGroupNameAndUrl(groupName, groupObject.tunes[index].url);
           if (player) {
             player.playVideo();
+          } else {
+            console.log("DEBUG --- " + player);
           }
         });
 
@@ -1301,13 +1314,10 @@ function showGroupElement(groupName) {
           trackController.remove();
 
           // remove player
-          let player = getPlayerByGroupNameAndUrl(
-            groupName,
-            groupObject.tunes[index].url,
-            groupObject.tunes[index]
-          );
-          data.players.indexOf(player);
-          data.players.splice(player, 1);
+          let player = getPlayerByGroupNameAndUrl(groupName, groupObject.tunes[index].url);
+
+          let p_index = data.players.indexOf(player);
+          data.players.splice(p_index, 1);
 
           let iframeID =
             groupName + "_" + getVideoIDByUrl(groupObject.tunes[index].url);
@@ -1406,20 +1416,25 @@ function update() {
     group.tunes.forEach((tune) => {
       let player = getPlayerByGroupNameAndUrl(group.name, tune.url);
 
+      // Is it because marked a deleted?! maybe
+      if (player !== undefined) {
+        //console.log(player);
+      }
+
       try {
         if (player && player.getPlayerState() == 1 && tune.stepSize !== "set") {
 
-          console.log("tune.stepSize:", tune.stepSize, "title:", player.title);
+          //console.log("tune.stepSize:", tune.stepSize, "title:", player.title);
 
           if (tune.stepSize >= Math.abs(tune.fadeTargetVolume - tune.isVolume)) {
             tune.isVolume = tune.fadeTargetVolume;
           }
           if (tune.isVolume > tune.fadeTargetVolume) {
-            console.log("isVolume--");
+            //console.log("isVolume--");
             tune.isVolume -= tune.stepSize;
           }
           if (tune.isVolume < tune.fadeTargetVolume) {
-            console.log("isVolume++");
+            //console.log("isVolume++");
             tune.isVolume += tune.stepSize;
           }
           if (tune.fadeTargetVolume > 90) {
@@ -1565,8 +1580,8 @@ function addTuneToGroup(groupName, url) {
 
             // remove player
             let player = getPlayerByGroupNameAndUrl(groupName, url);
-            data.players.indexOf(player);
-            data.players.splice(player, 1);
+            let p_index = data.players.indexOf(player);
+            data.players.splice(p_index, 1);
             console.log(data.players.length, "<-- players.length");
 
             // remove player iframe
@@ -1832,8 +1847,15 @@ function killPlayerIfGroupNotActive() {
             if (t.killCounter > 260) {
               iframe.remove();
 
-              // We the player object, prevent indexing issues of the dynamically generated onclick event, also
+              // Splicing the player object, causes indexing issues of the dynamically generated onclick events
               //data.players.splice(data.players.indexOf(t.player), 1);
+
+
+              // using data.players array without being able to reference or remvoe players is causing problems when deleting player iframes ???
+              // look at the the dynamic function definition. can we make it use tune.player instead of getPlayerByGroupAndUrl ... ? 
+
+              console.log(data.players[0].id, "----------------------------------- DEBUG");
+
               t.player = null;
               t.killCounter = 0;
             }
