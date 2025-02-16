@@ -1,25 +1,31 @@
+
+
 // https://getcssscan.com/css-box-shadow-examples
 // https://cable.ayra.ch/ytdl/playlist.php?url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3Dkgq21eM26nY%26list%3DPLniTzKxa2c_cIgV0Kxf7irM5o2enyZ63W
 // https://developers.google.com/youtube/iframe_api_reference?hl=de
 // https://symbl.cc/de/
 
-/*----------------------------------------------------------------*/
+/* 
 
-// Ein YouTube Audio Ambient Organizer und Mixer Tool
+Elevate your game's atmosphere with taletunes, a tool for seamlessly blending ambient
+soundscapes and music to match every moment. Set the perfect tone for every scene. Dynamic,
+immersive sound-design at your fingertips.
+
+*/
 
 // todos:
 
-// loading saved- or default-data console-msg broken? yes fix it
+// make testfile url a file, maybe json or CSV
+
+// loading saved- or default-data console-msg broken? it is!
 
 // remove console-log debugging mess
 
-// re-adding url after deleting it, does not work. (maybe tune.deleted)
-
 // prevent special characters for groupnames ...
 
-// clone group
+// (clone group)
 
-// enable setting start position [12:37] for tunes
+// enable setting-start-position feature (Sascha) i.e: [12:37] for tunes
 
 /*----------------------------------------------------------------*/
 
@@ -68,11 +74,9 @@ function tempDebugFunction() {
   //console.log(data); // Outputs: flamingo
 }
 
+// build and return test data object
 function testData() {
   console.log("testData() - called");
-  // build and return test data object
-  // test urls
-
   const test_urls = [
     "https://www.youtube.com/watch?v=kgq21eM26nY",
     "https://www.youtube.com/watch?v=4KGBB32EPLw",
