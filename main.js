@@ -1,33 +1,48 @@
+/*
+--------------------------------------------------------------------------------------------------------------------------------------------------
 
-
-// https://getcssscan.com/css-box-shadow-examples
-// https://cable.ayra.ch/ytdl/playlist.php?url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3Dkgq21eM26nY%26list%3DPLniTzKxa2c_cIgV0Kxf7irM5o2enyZ63W
-// https://developers.google.com/youtube/iframe_api_reference?hl=de
-// https://symbl.cc/de/
-
-/* 
+TALETUNES
 
 Elevate your game's atmosphere with taletunes, a tool for seamlessly blending ambient
 soundscapes and music to match every moment. Set the perfect tone for every scene. Dynamic,
 immersive sound-design at your fingertips.
 
+--------------------------------------------------------------------------------------------------------------------------------------------------
+
+drenched strong stylized thicc thighs wide hips female girl battle wizard toned fantasy bikini armor cloak Christina Hendricks Timothee Chalamet gorgeous cute huge heavy Tits overbust Cleavage sheen hot by Greg Rutkowski WLOP Krenz Cushart  demon cathedral shadow light contrast dramatic evocative
+
+TODO's:
+
+  reopening a group not fully faded-out and fully removed creates an unlinked group
+  and also interfiered with fading-continuation 
+
+  make ko-fi profile and update qr to ko-fi? 
+
+  function to backup localstorage json or CSV file
+
+  make testfile url a file, maybe json or CSV
+
+  fix/add loading default data if no saved data in local storage 
+
+  loading saved- or default-data console-msg broken? it is!
+
+  remove console-log debugging mess
+
+  prevent special characters for groupnames ...
+
+  (clone group)
+
+  enable setting-start-position feature (Sascha) i.e: [12:37] for tunes
+
+--------------------------------------------------------------------------------------------------------------------------------------------------
+
+https://getcssscan.com/css-box-shadow-examples
+https://cable.ayra.ch/ytdl/playlist.php?url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3Dkgq21eM26nY%26list%3DPLniTzKxa2c_cIgV0Kxf7irM5o2enyZ63W
+https://developers.google.com/youtube/iframe_api_reference?hl=de
+https://symbl.cc/de/
+
+--------------------------------------------------------------------------------------------------------------------------------------------------
 */
-
-// todos:
-
-// make testfile url a file, maybe json or CSV
-
-// loading saved- or default-data console-msg broken? it is!
-
-// remove console-log debugging mess
-
-// prevent special characters for groupnames ...
-
-// (clone group)
-
-// enable setting-start-position feature (Sascha) i.e: [12:37] for tunes
-
-/*----------------------------------------------------------------*/
 
 let data = {
   groups: [],
@@ -64,19 +79,12 @@ class Tune {
   }
 }
 
-/*----------------------------------------------------------------*/
-
-function tempDebugFunction() {
-  //for g in data.groups
-  //saveData();
-  //localStorage.setItem('key', 'flamingo');
-  //const value = localStorage.getItem('data');
-  //console.log(data); // Outputs: flamingo
-}
+/*
+--------------------------------------------------------------------------------------------------------------------------------------------------
+*/
 
 // build and return test data object
 function testData() {
-  console.log("testData() - called");
   const test_urls = [
     "https://www.youtube.com/watch?v=kgq21eM26nY",
     "https://www.youtube.com/watch?v=4KGBB32EPLw",
@@ -618,7 +626,6 @@ function testData() {
   };
 
   const savedData = localStorage.getItem('taletunes_data');
-  console.log(savedData);
 
   if (saveData) {
     let parsedData = JSON.parse(savedData);
@@ -629,13 +636,10 @@ function testData() {
 
         let sorted = parsedData.groups.sort((a, b) => a.name.localeCompare(b.name));
 
-        console.log(sorted);
-
         // splice tunes marked deleted
         sorted.forEach((g, groupIndex) => {
           for (let i = g.tunes.length - 1; i >= 0; i--) {
             if (g.tunes[i].deleted) {
-              console.log("------------" + g.tunes[i].title + " deleted");
               g.tunes.splice(i, 1);
               saveData();
             }
@@ -696,15 +700,9 @@ function checkForSavedData() {
   console.log("--- checking for saved data ---");
   let savedData = localStorage.getItem("data");
 
-  console.log(savedData);
-
-  console.log("sdfghjkhgfd: ", savedData);
-
   let useDefault = true;
 
   if (savedData) {
-    console.log("3456");
-    console.log("oink!");
     let parsedData = JSON.parse(savedData);
     if (parsedData.groups) {
       if (parsedData.groups.length !== 0) {
@@ -712,8 +710,6 @@ function checkForSavedData() {
         // sort parsedData for alphabetic order
 
         let sorted = parsedData.groups.sort((a, b) => a.name.localeCompare(b.name));
-
-        console.log(sorted);
 
         // splice tunes marked deleted
         sorted.forEach((g, groupIndex) => {
@@ -733,7 +729,6 @@ function checkForSavedData() {
   }
 
   if (useDefault != false) {
-    console.log("using default data!!!3456");
     useDefaultData();
   }
 }
@@ -1050,12 +1045,7 @@ function logTabActivity() {
 
 function initPlayer(groupName, url) {
 
-  console.log(data.players);
-
   if (url !== "" && getVideoIDByUrl(url)) {
-
-    console.log(getPlayerByGroupNameAndUrl(groupName, url), "----------------- debug 1");
-
     let newIframe = document.createElement("div");
     let iframeContainer = document.getElementById("iframe-container");
 
@@ -1086,8 +1076,6 @@ function initPlayer(groupName, url) {
     let tune = getTuneByPlayer(player);
     tune.player = player;
     //tune.trackControllerInfoBar.innerHTML = player.videoTitle;
-
-    console.log(getPlayerByGroupNameAndUrl(groupName, url), "----------------- debug 2");
   }
 
 }
@@ -1186,7 +1174,6 @@ function showGroupElement(groupName) {
   groupButtonAddURL.innerHTML = "[ add tune ]";
 
   groupButtonAddURL.addEventListener("click", function () {
-
     showAddVideoURLPopUp(groupName);
   });
 
@@ -1245,16 +1232,10 @@ function showGroupElement(groupName) {
       trackControllerGroups[0].appendChild(trackController);
 
       // init the YT iframe player and set corresponding tune.player key
-
-      console.log(groupName);
-      console.log(groupObject.tunes[i].url);
-
       groupObject.tunes[i].player = initPlayer(
         groupName,
         groupObject.tunes[i].url
       );
-      console.log(groupObject.tunes[i], "tune?!");
-      console.log(groupObject.tunes[i].player, "player?!");
 
       // set thumbnail
       //setBackgroundToThumbnail(trackController, groupObject.tunes[i].url);
@@ -1287,8 +1268,6 @@ function showGroupElement(groupName) {
 
         trackController.addEventListener("click", function (event) {
 
-          console.log("DEBUG --- here!");
-
           curser_coords = getRelativeCurserPosition(event);
 
           let stepSize = (115 - curser_coords[0]) / 50.0;
@@ -1303,8 +1282,6 @@ function showGroupElement(groupName) {
           let player = getPlayerByGroupNameAndUrl(groupName, groupObject.tunes[index].url);
           if (player) {
             player.playVideo();
-          } else {
-            console.log("DEBUG --- " + player);
           }
         });
 
@@ -1375,7 +1352,6 @@ function assignPastelColors() {
 
     el.style.backgroundColor = color; // Always set background color
     if (el.classList.contains("active")) {
-      //console.log(el.innerHTML);
       el.style.color = 'var(--titles)';
     } else {
       el.style.color = hashToPastelColorLight(hash);
@@ -1404,7 +1380,7 @@ function hashToPastelColor(hash) {
 // Convert hash to a pastel HSL color
 function hashToPastelColorLight(hash) {
   const hue = Math.abs(hash) % 360;  // Ensure hue is within 0-360
-  const saturation = 50;  // Keep colors vibrant
+  const saturation = 40;  // Keep colors vibrant
   const lightness = 80;   // Pastel effect
 
   return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
@@ -1420,15 +1396,8 @@ function update() {
     group.tunes.forEach((tune) => {
       let player = getPlayerByGroupNameAndUrl(group.name, tune.url);
 
-      // Is it because marked a deleted?! maybe
-      if (player !== undefined) {
-        //console.log(player);
-      }
-
       try {
         if (player && player.getPlayerState() == 1 && tune.stepSize !== "set") {
-
-          //console.log("tune.stepSize:", tune.stepSize, "title:", player.title);
 
           if (tune.stepSize >= Math.abs(tune.fadeTargetVolume - tune.isVolume)) {
             tune.isVolume = tune.fadeTargetVolume;
@@ -1562,7 +1531,6 @@ function addTuneToGroup(groupName, url) {
         if (groupElement) {
           let trackController = document.createElement("div");
           let tune = new Tune(url);
-          console.log(groupName, "<-- groupName");
           getGroupObjectByName(groupName).tunes.push(tune);
           tune.url = url;
           tune.deleted = false;
@@ -1586,8 +1554,6 @@ function addTuneToGroup(groupName, url) {
             let player = getPlayerByGroupNameAndUrl(groupName, url);
             let p_index = data.players.indexOf(player);
             data.players.splice(p_index, 1);
-            console.log(data.players.length, "<-- players.length");
-
             // remove player iframe
             Array.from(
               document.getElementsByClassName("player-iframe")
@@ -1688,36 +1654,10 @@ function addTuneToGroup(groupName, url) {
               player.playVideo();
             }
           });
-          // - new
-
-          /*/ old -
-          trackController.addEventListener("click", function (event) {
-            curser_coords = getRelativeCurserPosition(event);
-
-            tune.fadeDelay = curser_coords[0];
-            tune.fadeTargetVolume = curser_coords[1];
-
-            console.log("BRRRRRRRRRRRRRRRRRRRRRRRRR:", curser_coords[0], curser_coords[1]);
-
-            getPlayerByGroupNameAndUrl(groupName, tune.url, tune).playVideo();
-          });
-          /*/
-
         }
-      } else {
-        console.assert.log("getVideoIDByUrl(url):", getVideoIDByUrl(url));
       }
-    } else {
-      console.log("url:", url);
     }
-  } else {
-    console.log(
-      "getPlayerByGroupNameAndUrl(groupName, url):",
-      getPlayerByGroupNameAndUrl(groupName, url)
-    );
   }
-
-  console.log("data after addTune() call:", data);
   saveData();
 }
 
@@ -1817,10 +1757,10 @@ function copyToClipboard(text) {
     navigator.clipboard
       .writeText(text)
       .then(function () {
-        console.log("Text copied to clipboard");
+        console.log("--- text copied to clipboard ---");
       })
       .catch(function (error) {
-        console.error("Failed to copy text: ", error);
+        console.error("--- failed to copy text: ", error, " ---");
       });
   } else {
     // Fallback for older browsers
@@ -1830,9 +1770,9 @@ function copyToClipboard(text) {
     textArea.select();
     try {
       document.execCommand("copy");
-      console.log("Text copied to clipboard");
+      console.log("--- text copied to clipboard ---");
     } catch (error) {
-      console.error("Failed to copy text: ", error);
+      console.error("--- failed to copy text: ", error, " ---");
     }
     document.body.removeChild(textArea);
   }
@@ -1850,15 +1790,6 @@ function killPlayerIfGroupNotActive() {
 
             if (t.killCounter > 260) {
               iframe.remove();
-
-              // Splicing the player object, causes indexing issues of the dynamically generated onclick events
-              //data.players.splice(data.players.indexOf(t.player), 1);
-
-
-              // using data.players array without being able to reference or remvoe players is causing problems when deleting player iframes ???
-              // look at the the dynamic function definition. can we make it use tune.player instead of getPlayerByGroupAndUrl ... ? 
-
-              console.log(data.players[0].id, "----------------------------------- DEBUG");
 
               t.player = null;
               t.killCounter = 0;
@@ -1878,13 +1809,14 @@ function showPlayerIframes() {
   document.getElementById("iframe-container").classList.toggle("visible");
 }
 
-/*----------------------------------------------------------------*/
+/*
+--------------------------------------------------------------------------------------------------------------------------------------------------
+*/
 
 function loadYouTubeIframeAPI() {
   if (typeof YT == "undefined" || typeof YT.Player == "undefined") {
     var tag = document.createElement("script");
     tag.src = "https://www.youtube.com/iframe_api";
-    console.log(tag.src);
     var firstScriptTag = document.getElementsByTagName("script")[0];
     firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
   }
@@ -1925,3 +1857,7 @@ window.onload = function () {
     .scrollIntoView({ behavior: "smooth", block: "center" });
   checkForSavedData();
 };
+
+/*
+--------------------------------------------------------------------------------------------------------------------------------------------------
+*/
