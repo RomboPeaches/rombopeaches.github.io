@@ -1,3 +1,32 @@
+function toggleFullscreen() {
+    let elem = document.documentElement; // The whole document
+
+    if (!document.fullscreenElement && !document.webkitFullscreenElement && !document.mozFullScreenElement && !document.msFullscreenElement) {
+        // Enter fullscreen mode
+        if (elem.requestFullscreen) {
+            elem.requestFullscreen();
+        } else if (elem.webkitRequestFullscreen) { // Safari
+            elem.webkitRequestFullscreen();
+        } else if (elem.mozRequestFullScreen) { // Firefox
+            elem.mozRequestFullScreen();
+        } else if (elem.msRequestFullscreen) { // Internet Explorer
+            elem.msRequestFullscreen();
+        }
+    } else {
+        // Exit fullscreen mode
+        if (document.exitFullscreen) {
+            document.exitFullscreen();
+        } else if (document.webkitExitFullscreen) { // Safari
+            document.webkitExitFullscreen();
+        } else if (document.mozCancelFullScreen) { // Firefox
+            document.mozCancelFullScreen();
+        } else if (document.msExitFullscreen) { // Internet Explorer
+            document.msExitFullscreen();
+        }
+    }
+    document.getElementById("fullscreen-btn").style.display = "none";
+}
+let fullscreenButton = document.getElementById("fullscreen-btn").addEventListener("click", toggleFullscreen);
 
 let bgColorsLight = [
     "rgb(255, 118, 186)",
