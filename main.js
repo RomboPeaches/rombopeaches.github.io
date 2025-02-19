@@ -9,8 +9,6 @@ immersive sound-design at your fingertips.
 
 --------------------------------------------------------------------------------------------------------------------------------------------------
 
-drenched strong stylized thicc thighs wide hips female girl battle wizard toned fantasy bikini armor cloak Christina Hendricks Timothee Chalamet gorgeous cute huge heavy Tits overbust Cleavage sheen hot by Greg Rutkowski WLOP Krenz Cushart  demon cathedral shadow light contrast dramatic evocative
-
 TODO's:
 
   reopening a group not fully faded-out and fully removed creates an unlinked group
