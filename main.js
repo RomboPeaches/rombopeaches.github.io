@@ -14,6 +14,8 @@ TODO's:
   reopening a group not fully faded-out and fully removed creates an unlinked group
   and also interfiered with fading-continuation 
 
+  impuls wobble on click outline for toggle buttons
+
   make ko-fi profile and update qr to ko-fi? 
 
   function to backup localstorage json or CSV file
@@ -696,7 +698,7 @@ function checkForSavedData() {
 
   // load saved data
   console.log("--- checking for saved data ---");
-  let savedData = localStorage.getItem("data");
+  let savedData = localStorage.getItem("taletunes_data");
 
   let useDefault = true;
 
@@ -738,6 +740,7 @@ function onYouTubeIframeAPIReady(event) {
 
 function saveData() {
   localStorage.setItem("taletunes_data", JSON.stringify(data));
+  console.log("--- saved data ---");
 }
 
 function getGroupObjectByName(groupName) {
