@@ -1,3 +1,5 @@
+
+
 /*
 --------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -11,6 +13,8 @@ immersive sound-design at your fingertips.
 
 TODO's:
 
+  btn to download savefile and import option
+  
   reopening a group not fully faded-out and fully removed creates an unlinked group
   and also interfiered with fading-continuation 
 
@@ -1009,6 +1013,11 @@ function getVideoIDByUrl(url) {
 }
 
 function setBackgroundToThumbnail(elem, url) {
+
+  console.log(" ---");
+  console.log(" setBackgroundToThumbnail CALLED");
+  console.log(" ---");
+
   let videoId = getVideoIDByUrl(url);
   if (videoId && elem) {
     elem.style.backgroundImage =
@@ -1018,8 +1027,29 @@ function setBackgroundToThumbnail(elem, url) {
       console.error("Ungültige YouTube-URL:", url);
       elem.classList.add("defective");
       elem.innerHTML = url + " is no valid url";
+    } else {
+      console.log(" setBackgroundToThumbnail CALLED but FAILED!=!§$(%&");
     }
   }
+}
+
+function showYouTubeThumbnail(videoId) { // DEBUG TO CHECK IF APP IS THUMBNAILS LOCKED BY YT?!
+
+  console.log("SHOW TM FUNCTION CALL");
+
+  // Create an img element
+  const img = document.createElement("img");
+  
+  // Set the image source to the YouTube thumbnail URL
+  img.src = `https://img.youtube.com/vi/${videoId}/0.jpg`;
+  
+  // Set optional styles for better display
+  img.style.maxWidth = "100%";
+  img.style.border = "2px solid #000";
+  img.style.borderRadius = "8px";
+  
+  // Append the image to the body or a specific container
+  document.body.appendChild(img);
 }
 
 function toggleFullscreen() {
@@ -1047,36 +1077,50 @@ function logTabActivity() {
 function initPlayer(groupName, url) {
 
   if (url !== "" && getVideoIDByUrl(url)) {
-    let newIframe = document.createElement("div");
-    let iframeContainer = document.getElementById("iframe-container");
 
-    let gName = groupName.replace(/\s+/g, "_");
+    let iframes = Array.from(document.getElementsByClassName("player-iframe"));
 
-    newIframe.id = encodeURIComponent(
-      String(gName) + "_" + getVideoIDByUrl(url)
-    );
-    newIframe.classList.add("player-iframe");
-    iframeContainer.appendChild(newIframe);
+    console.log(iframes);
 
-    // this should be a separate function
-    let player = new YT.Player(newIframe.id, {
-      startSeconds: "0",
-      width: "500px",
-      height: "500px",
-      videoId: getVideoIDByUrl(url),
-      allow: "autoplay",
-      events: {
-        onReady: onPlayerReady,
-        onStateChange: onPlayerStateChange,
-        onPlaybackQualityChange: onPlayerPlaybackQualityChange,
-        onError: onPlayerError,
-      },
-    });
-    //player.setVolume(0);
-    data.players.push(player);
-    let tune = getTuneByPlayer(player);
-    tune.player = player;
-    //tune.trackControllerInfoBar.innerHTML = player.videoTitle;
+    if (!getPlayerByGroupNameAndUrl(groupName, url)) { // DEBUG debug 
+
+      //alert("in if block dshfadsöhgdjksgehjk");
+
+      let newIframe = document.createElement("div");
+      let iframeContainer = document.getElementById("iframe-container");
+  
+      let gName = groupName.replace(/\s+/g, "_");
+  
+      newIframe.id = encodeURIComponent(
+        String(gName) + "_" + getVideoIDByUrl(url)
+      );
+      newIframe.classList.add("player-iframe");
+      iframeContainer.appendChild(newIframe);
+  
+      // this should be a separate function
+      let player = new YT.Player(newIframe.id, {
+        startSeconds: "0",
+        width: "500px",
+        height: "500px",
+        videoId: getVideoIDByUrl(url),
+        allow: "autoplay",
+        events: {
+          onReady: onPlayerReady,
+          onStateChange: onPlayerStateChange,
+          onPlaybackQualityChange: onPlayerPlaybackQualityChange,
+          onError: onPlayerError,
+        },
+      });
+      data.players.push(player);
+      let tune = getTuneByPlayer(player);
+      tune.player = player;
+      try {
+        tune.trackControllerInfoBar.innerHTML = player.videoTitle;
+      } catch {
+        console.log("--- tune.trackControllerInfoBar.innerHTML = player.videoTitle --- FAILEd ");
+      }
+    }
+
   }
 
 }
@@ -1134,7 +1178,6 @@ function getPlayerByGroupNameAndUrl(groupName, url) {
 
   return null; // Return null if no match is found
 }
-
 
 function mapSpeed(value) {
   if (value <= 20) return "very fast";
@@ -1210,7 +1253,6 @@ function showGroupElement(groupName) {
 
       // set trackController HTML element of this tune
       groupObject.tunes[i].trackController = trackController;
-
       trackController.classList.add("track-controller");
 
       setBackgroundToThumbnail(trackController, groupObject.tunes[i].url);
@@ -1282,6 +1324,7 @@ function showGroupElement(groupName) {
 
           let player = getPlayerByGroupNameAndUrl(groupName, groupObject.tunes[index].url);
           if (player) {
+            //alert(player, "<---")
             player.playVideo();
           }
         });
@@ -1792,7 +1835,9 @@ function killPlayerIfGroupNotActive() {
             if (t.killCounter > 260) {
               iframe.remove();
 
-              t.player = null;
+              console.log("--- iframe removed ---", t.url);
+
+              //t.player = null;
               t.killCounter = 0;
             }
           }
@@ -1857,6 +1902,11 @@ window.onload = function () {
     .getElementById("group-toggle-container")
     .scrollIntoView({ behavior: "smooth", block: "center" });
   checkForSavedData();
+
+  // debug - are the trackcontroller not loading the thumbnails now?
+  //console.log("ON LOAD");
+  //showYouTubeThumbnail("dQw4w9WgXcQ");
+
 };
 
 /*

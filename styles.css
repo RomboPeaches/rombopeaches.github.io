@@ -326,6 +326,7 @@ body {
     background-position: center;
     background-repeat: no-repeat;
     background-size: calc(var(--controller_width)*1.8);
+    /*background-color: rgba(0, 54, 14, 1.0);*/
     word-break: break-all;
     overflow: hidden;
     border: solid 1px var(--very-dark);
