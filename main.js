@@ -651,6 +651,7 @@ function testData() {
         data.groups = sorted;
         data.settings = sorted.settings;
         data.groups.forEach((g) => addGroup(g.name));
+        data.groups.forEach((g) => (g.active = false));
         useDefault = false;
       }
     }
