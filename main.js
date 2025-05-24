@@ -1,5 +1,3 @@
-
-
 /*
 --------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -629,16 +627,17 @@ function testData() {
     settings: [],
   };
 
-  const savedData = localStorage.getItem('taletunes_data');
+  const savedData = localStorage.getItem("taletunes_data");
 
   if (saveData) {
     let parsedData = JSON.parse(savedData);
     if (parsedData.groups) {
       if (parsedData.groups.length !== 0) {
-
         // sort parsedData for alphabetic order
 
-        let sorted = parsedData.groups.sort((a, b) => a.name.localeCompare(b.name));
+        let sorted = parsedData.groups.sort((a, b) =>
+          a.name.localeCompare(b.name)
+        );
 
         // splice tunes marked deleted
         sorted.forEach((g, groupIndex) => {
@@ -699,7 +698,6 @@ function buildTestGroup(array, n, name) {
 */
 
 function checkForSavedData() {
-
   // load saved data
   console.log("--- checking for saved data ---");
   let savedData = localStorage.getItem("taletunes_data");
@@ -710,10 +708,11 @@ function checkForSavedData() {
     let parsedData = JSON.parse(savedData);
     if (parsedData.groups) {
       if (parsedData.groups.length !== 0) {
-
         // sort parsedData for alphabetic order
 
-        let sorted = parsedData.groups.sort((a, b) => a.name.localeCompare(b.name));
+        let sorted = parsedData.groups.sort((a, b) =>
+          a.name.localeCompare(b.name)
+        );
 
         // splice tunes marked deleted
         sorted.forEach((g, groupIndex) => {
@@ -770,7 +769,6 @@ function hideGroupElement(groupName) {
 
   let groupObject = getGroupObjectByName(groupName);
   groupObject.active = false;
-
   if (groupElement) {
     hiddenGroupObject = getGroupObjectByName(groupName);
 
@@ -973,7 +971,6 @@ function addGroup(groupName = document.getElementById("pop-up-input").value) {
     newGroupToggleBtn.innerHTML = groupName;
     newGroupToggleBtn.classList.add("group-toggle-btn");
     newGroupToggleBtn.addEventListener("click", function () {
-
       toggleGroupActive(this);
     });
     document
@@ -1013,7 +1010,6 @@ function getVideoIDByUrl(url) {
 }
 
 function setBackgroundToThumbnail(elem, url) {
-
   console.log(" ---");
   console.log(" setBackgroundToThumbnail CALLED");
   console.log(" ---");
@@ -1033,21 +1029,22 @@ function setBackgroundToThumbnail(elem, url) {
   }
 }
 
-function showYouTubeThumbnail(videoId) { // DEBUG TO CHECK IF APP IS THUMBNAILS LOCKED BY YT?!
+function showYouTubeThumbnail(videoId) {
+  // DEBUG TO CHECK IF APP IS THUMBNAILS LOCKED BY YT?!
 
   console.log("SHOW TM FUNCTION CALL");
 
   // Create an img element
   const img = document.createElement("img");
-  
+
   // Set the image source to the YouTube thumbnail URL
   img.src = `https://img.youtube.com/vi/${videoId}/0.jpg`;
-  
+
   // Set optional styles for better display
   img.style.maxWidth = "100%";
   img.style.border = "2px solid #000";
   img.style.borderRadius = "8px";
-  
+
   // Append the image to the body or a specific container
   document.body.appendChild(img);
 }
@@ -1075,28 +1072,28 @@ function logTabActivity() {
 }
 
 function initPlayer(groupName, url) {
-
+  console.log("--- initPlayer called ---");
   if (url !== "" && getVideoIDByUrl(url)) {
-
     let iframes = Array.from(document.getElementsByClassName("player-iframe"));
 
     console.log(iframes);
 
-    if (!getPlayerByGroupNameAndUrl(groupName, url)) { // DEBUG debug 
+    if (!getPlayerByGroupNameAndUrl(groupName, url)) {
+      // DEBUG debug
 
       //alert("in if block dshfadsöhgdjksgehjk");
 
       let newIframe = document.createElement("div");
       let iframeContainer = document.getElementById("iframe-container");
-  
+
       let gName = groupName.replace(/\s+/g, "_");
-  
+
       newIframe.id = encodeURIComponent(
         String(gName) + "_" + getVideoIDByUrl(url)
       );
       newIframe.classList.add("player-iframe");
       iframeContainer.appendChild(newIframe);
-  
+
       // this should be a separate function
       let player = new YT.Player(newIframe.id, {
         startSeconds: "0",
@@ -1117,12 +1114,12 @@ function initPlayer(groupName, url) {
       try {
         tune.trackControllerInfoBar.innerHTML = player.videoTitle;
       } catch {
-        console.log("--- tune.trackControllerInfoBar.innerHTML = player.videoTitle --- FAILEd ");
+        console.log(
+          "--- tune.trackControllerInfoBar.innerHTML = player.videoTitle --- FAILEd "
+        );
       }
     }
-
   }
-
 }
 
 function onPlayerReady(event) {
@@ -1142,10 +1139,10 @@ function onPlayerStateChange(event) {
   ];
   console.log(
     "--- player state changed --- [ " +
-    event.data +
-    " : " +
-    states[event.data + 1] +
-    " ] "
+      event.data +
+      " : " +
+      states[event.data + 1] +
+      " ] "
   );
 }
 
@@ -1201,7 +1198,6 @@ function showGroupElement(groupName) {
   groupHeader.appendChild(groupNameElement);
   groupNameElement.innerHTML = groupName;
   groupNameElement.addEventListener("click", function () {
-
     hideGroupElement(groupName);
     Array.from(document.getElementsByClassName("group-toggle-btn")).forEach(
       (toggleBtn) => {
@@ -1226,7 +1222,6 @@ function showGroupElement(groupName) {
   groupHeader.appendChild(groupButtonDeleteGroup);
   groupButtonDeleteGroup.innerHTML = "[ delete group ]";
   groupButtonDeleteGroup.addEventListener("click", function () {
-
     deleteGroup(groupName);
   });
 
@@ -1297,11 +1292,7 @@ function showGroupElement(groupName) {
             trackControllerInfoBar.innerHTML = "[" + curser_coords[1] + "%]";
           } else {
             trackControllerInfoBar.innerHTML =
-              "[" +
-              curser_coords[1] +
-              "% " +
-              mapSpeed(curser_coords[0]) +
-              "]";
+              "[" + curser_coords[1] + "% " + mapSpeed(curser_coords[0]) + "]";
           }
         });
 
@@ -1310,7 +1301,6 @@ function showGroupElement(groupName) {
         });
 
         trackController.addEventListener("click", function (event) {
-
           curser_coords = getRelativeCurserPosition(event);
 
           let stepSize = (115 - curser_coords[0]) / 50.0;
@@ -1322,7 +1312,10 @@ function showGroupElement(groupName) {
           groupObject.tunes[i].stepSize = stepSize;
           groupObject.tunes[i].fadeTargetVolume = curser_coords[1];
 
-          let player = getPlayerByGroupNameAndUrl(groupName, groupObject.tunes[index].url);
+          let player = getPlayerByGroupNameAndUrl(
+            groupName,
+            groupObject.tunes[index].url
+          );
           if (player) {
             //alert(player, "<---")
             player.playVideo();
@@ -1334,12 +1327,14 @@ function showGroupElement(groupName) {
         deleteIcon.innerHTML = "x";
         trackController.appendChild(deleteIcon);
         deleteIcon.addEventListener("click", function (event) {
-
           event.stopPropagation(); // Verhindert das "Event-Bubbling"
           trackController.remove();
 
           // remove player
-          let player = getPlayerByGroupNameAndUrl(groupName, groupObject.tunes[index].url);
+          let player = getPlayerByGroupNameAndUrl(
+            groupName,
+            groupObject.tunes[index].url
+          );
 
           let p_index = data.players.indexOf(player);
           data.players.splice(p_index, 1);
@@ -1369,7 +1364,6 @@ function showGroupElement(groupName) {
         copyUrlIconToClipBoard.innerHTML = "copy url";
         trackController.appendChild(copyUrlIconToClipBoard);
         copyUrlIconToClipBoard.addEventListener("click", function (event) {
-
           event.stopPropagation(); // Verhindert das Event-Bubbling
           copyToClipboard(groupObject.tunes[i].url);
           console.log("--- tune url copied to clipboard ---");
@@ -1387,16 +1381,16 @@ function showGroupElement(groupName) {
 }
 
 function assignPastelColors() {
-  const elements = document.querySelectorAll('.group-toggle-btn');
+  const elements = document.querySelectorAll(".group-toggle-btn");
 
-  elements.forEach(el => {
+  elements.forEach((el) => {
     const text = el.innerHTML;
     const hash = stringToHash(text);
     const color = hashToPastelColor(hash);
 
     el.style.backgroundColor = color; // Always set background color
     if (el.classList.contains("active")) {
-      el.style.color = 'var(--titles)';
+      el.style.color = "var(--titles)";
     } else {
       el.style.color = hashToPastelColorLight(hash);
     }
@@ -1414,18 +1408,18 @@ function stringToHash(str) {
 
 // Convert hash to a pastel HSL color
 function hashToPastelColor(hash) {
-  const hue = Math.abs(hash) % 360;  // Ensure hue is within 0-360
-  const saturation = 40;  // Keep colors vibrant
-  const lightness = 50;   // Pastel effect
+  const hue = Math.abs(hash) % 360; // Ensure hue is within 0-360
+  const saturation = 40; // Keep colors vibrant
+  const lightness = 50; // Pastel effect
 
   return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
 }
 
 // Convert hash to a pastel HSL color
 function hashToPastelColorLight(hash) {
-  const hue = Math.abs(hash) % 360;  // Ensure hue is within 0-360
-  const saturation = 40;  // Keep colors vibrant
-  const lightness = 80;   // Pastel effect
+  const hue = Math.abs(hash) % 360; // Ensure hue is within 0-360
+  const saturation = 40; // Keep colors vibrant
+  const lightness = 80; // Pastel effect
 
   return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
 }
@@ -1442,8 +1436,9 @@ function update() {
 
       try {
         if (player && player.getPlayerState() == 1 && tune.stepSize !== "set") {
-
-          if (tune.stepSize >= Math.abs(tune.fadeTargetVolume - tune.isVolume)) {
+          if (
+            tune.stepSize >= Math.abs(tune.fadeTargetVolume - tune.isVolume)
+          ) {
             tune.isVolume = tune.fadeTargetVolume;
           }
           if (tune.isVolume > tune.fadeTargetVolume) {
@@ -1590,7 +1585,6 @@ function addTuneToGroup(groupName, url) {
           deleteIcon.innerHTML = "x";
           trackController.appendChild(deleteIcon);
           deleteIcon.addEventListener("click", function (event) {
-
             event.stopPropagation(); // Verhindert das Event-Bubbling
             trackController.remove();
 
@@ -1618,7 +1612,6 @@ function addTuneToGroup(groupName, url) {
           copyUrlIconToClipBoard.innerHTML = "copy url";
           trackController.appendChild(copyUrlIconToClipBoard);
           copyUrlIconToClipBoard.addEventListener("click", function (event) {
-
             event.stopPropagation(); // Verhindert das Event-Bubbling
             copyToClipboard(url);
           });
@@ -1674,7 +1667,6 @@ function addTuneToGroup(groupName, url) {
 
           // new -
           trackController.addEventListener("click", function (event) {
-
             curser_coords = getRelativeCurserPosition(event);
 
             let stepSize = (115 - curser_coords[0]) / 50.0;
@@ -1689,11 +1681,7 @@ function addTuneToGroup(groupName, url) {
             tune.stepSize = stepSize;
             tune.fadeTargetVolume = curser_coords[1];
 
-            let player = getPlayerByGroupNameAndUrl(
-              groupName,
-              tune.url,
-              tune
-            );
+            let player = getPlayerByGroupNameAndUrl(groupName, tune.url, tune);
             if (player) {
               player.playVideo();
             }
@@ -1832,12 +1820,10 @@ function killPlayerIfGroupNotActive() {
           if (iframe.id === g.name + "_" + getVideoIDByUrl(t.url)) {
             t.killCounter++;
 
-            if (t.killCounter > 260) {
+            //if (t.killCounter > 260) {
+            if (true) {
               iframe.remove();
-
               console.log("--- iframe removed ---", t.url);
-
-              //t.player = null;
               t.killCounter = 0;
             }
           }
@@ -1906,7 +1892,6 @@ window.onload = function () {
   // debug - are the trackcontroller not loading the thumbnails now?
   //console.log("ON LOAD");
   //showYouTubeThumbnail("dQw4w9WgXcQ");
-
 };
 
 /*
