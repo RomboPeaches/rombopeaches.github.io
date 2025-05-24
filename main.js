@@ -780,6 +780,17 @@ function hideGroupElement(groupName) {
   }
 }
 
+function removeGroupsIframes(groupname) {
+  // kill all iframes of this group
+  let iframes = Array.from(document.getElementsByClassName("iframe"));
+  iframes.forEach((iframe) => {
+    if (iframe.id.includes(groupName)) {
+      iframe.remove();
+    }
+  });
+  console.log(`--- group ${groupName} iframes deleted!? ---`);
+}
+
 function deleteGroup(groupName) {
   // deletes displayed group element, toggle button, iframe
   hideGroupElement(groupName);
@@ -1072,7 +1083,6 @@ function logTabActivity() {
 }
 
 function initPlayer(groupName, url) {
-  console.log("--- initPlayer called ---");
   if (url !== "" && getVideoIDByUrl(url)) {
     let iframes = Array.from(document.getElementsByClassName("player-iframe"));
 
@@ -1489,6 +1499,14 @@ function update() {
             tune.url
           ).videoTitle;
         }
+
+        if (player && tune.trackControllerInfoBar.innerHTML == undefined) {
+          tune.trackControllerInfoBar.innerHTML = getPlayerByGroupNameAndUrl(
+            group.name,
+            tune.url
+          ).videoTitle;
+        }
+
         //console.log("UPDATE - OK!");
       } catch (error) {
         //console.log("UPDATE - FAILED!");
@@ -1820,10 +1838,10 @@ function killPlayerIfGroupNotActive() {
           if (iframe.id === g.name + "_" + getVideoIDByUrl(t.url)) {
             t.killCounter++;
 
-            //if (t.killCounter > 260) {
-            if (true) {
-              iframe.remove();
-              console.log("--- iframe removed ---", t.url);
+            if (t.killCounter > 260) {
+              //iframe.remove();
+              //console.log("--- iframe removed ---", t.url);
+              //t.player = null;
               t.killCounter = 0;
             }
           }
