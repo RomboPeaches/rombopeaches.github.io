@@ -744,11 +744,23 @@ function downloadBackup() {
     return;
   }
 
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, "0");
+  const day = String(now.getDate()).padStart(2, "0");
+  const hours = String(now.getHours()).padStart(2, "0");
+  const minutes = String(now.getMinutes()).padStart(2, "0");
+  const seconds = String(now.getSeconds()).padStart(2, "0");
+
+  const timestamp = `${year}-${month}-${day}_${hours}-${minutes}-${seconds}`;
+
+  const filename = `taletunes_backup_${timestamp}.json`;
+
   const blob = new Blob([savedData], { type: "application/json" });
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
   a.href = url;
-  a.download = "taletunes_backup.json";
+  a.download = filename;
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
