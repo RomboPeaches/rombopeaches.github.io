@@ -1124,6 +1124,7 @@ function initPlayer(groupName, url) {
       tune.player = player;
       try {
         tune.trackControllerInfoBar.innerHTML = player.videoTitle;
+        tune.title = player.videoTitle;
       } catch {
         console.log(
           "--- tune.trackControllerInfoBar.innerHTML = player.videoTitle --- FAILEd "
@@ -1308,7 +1309,8 @@ function showGroupElement(groupName) {
         });
 
         trackController.addEventListener("mouseleave", function (event) {
-          trackControllerInfoBar.innerHTML = "";
+          //trackControllerInfoBar.innerHTML = "";
+          trackControllerInfoBar.innerHTML = groupObject.tunes[i].title;
         });
 
         trackController.addEventListener("click", function (event) {
@@ -1501,13 +1503,6 @@ function update() {
           ).videoTitle;
         }
 
-        if (player && tune.trackControllerInfoBar.innerHTML == undefined) {
-          tune.trackControllerInfoBar.innerHTML = getPlayerByGroupNameAndUrl(
-            group.name,
-            tune.url
-          ).videoTitle;
-        }
-
         //console.log("UPDATE - OK!");
       } catch (error) {
         //console.log("UPDATE - FAILED!");
@@ -1681,7 +1676,7 @@ function addTuneToGroup(groupName, url) {
           });
 
           trackController.addEventListener("mouseleave", function () {
-            trackControllerInfoBar.innerHTML = "";
+            trackControllerInfoBar.innerHTML = tune.player.videoTitle;
           });
 
           // new -
@@ -1893,7 +1888,7 @@ if (window.Worker) {
 // set tune volume to 0 beofre unload/refresh
 window.onbeforeunload = function (event) {
   data.groups.forEach((g) => {
-    g.active = false; // let active prevents laoding titles, prolly caused by not linking player and tune
+    g.active = false;
     g.tunes.forEach((t) => {
       t.isVolume = 0;
     });
