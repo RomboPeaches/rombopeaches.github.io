@@ -737,6 +737,47 @@ function checkForSavedData() {
   }
 }
 
+function downloadBackup() {
+  const savedData = localStorage.getItem("taletunes_data");
+  if (!savedData) {
+    alert("No data to back up!");
+    return;
+  }
+
+  const blob = new Blob([savedData], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "taletunes_backup.json";
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+function importBackup(event) {
+  const file = event.target.files[0];
+  if (!file) {
+    alert("No file selected!");
+    return;
+  }
+
+  const reader = new FileReader();
+  reader.onload = function (e) {
+    try {
+      const json = JSON.parse(e.target.result);
+      // Optional: validate json structure here
+      localStorage.setItem("taletunes_data", JSON.stringify(json));
+      alert("Backup imported successfully! Please reload the page.");
+      checkForSavedData();
+    } catch (err) {
+      alert("Invalid backup file!");
+      console.error(err);
+    }
+  };
+  reader.readAsText(file);
+}
+
 function onYouTubeIframeAPIReady(event) {
   console.log("--- iframe api ready ---");
   checkForSavedData();

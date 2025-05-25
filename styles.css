@@ -34,8 +34,11 @@
     --dark-btn-border: rgb(0, 0, 0);
 
     /*------------*/
+}
 
-
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
 /*electron scrollbar styling*/
@@ -205,7 +208,7 @@ body {
     display: flex;
     flex-wrap: wrap;
     justify-content: end;
-    gap: 20px;
+    gap: 16px;
     margin: 20px 0;
 }
 
@@ -248,6 +251,19 @@ body {
 #mode-toggle {
     padding-bottom: 3px;
 }
+
+#download-json {
+    padding-bottom: 3px;
+}
+
+#import-json-input {
+    display: none;
+}
+
+#download-json-label{
+    padding-bottom: 3px;
+}
+
 
 #cancel-video,
 #new-group {
