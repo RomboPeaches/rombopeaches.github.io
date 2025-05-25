@@ -175,11 +175,11 @@ body {
     position: relative;
     align-items: center;
     color: var(--taletunes);
-    border-radius: 0;
+    border-radius: 0px;
     padding: 0 0 23px 20px;
     font-size: 86px;
     border-left: solid 8px var(--taletunes);
-}
+ }
 
 #empty-msg {
     color: var(--titles);
