@@ -245,18 +245,20 @@ body {
 }
 
 #resize {
-    padding-bottom: 8px;
+    padding-bottom: 7px;
     font-size: 40px;
 }
 
 #mode-toggle {
     padding-bottom: 3px;
+    padding-right: 1px;
     font-size: 40px;
 }
 
 #download-json {
     padding-bottom: 8px;
     font-size: 40px;
+    padding-right: 1px;
 }
 
 #import-json-input {
@@ -266,6 +268,7 @@ body {
 #download-json-label{
     padding-bottom: 8px;
     font-size: 40px;
+    padding-right: 1px;
 }
 
 
