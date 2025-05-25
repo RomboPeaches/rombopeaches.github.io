@@ -240,20 +240,23 @@ body {
 }
 
 #toggle-titles {
-    padding: 2px 2px 0px 0px;
-    font-size: 39px;
+    padding: 0px 2px 8px 0px;
+    font-size: 40px;
 }
 
 #resize {
     padding-bottom: 8px;
+    font-size: 40px;
 }
 
 #mode-toggle {
     padding-bottom: 3px;
+    font-size: 40px;
 }
 
 #download-json {
-    padding-bottom: 3px;
+    padding-bottom: 8px;
+    font-size: 40px;
 }
 
 #import-json-input {
@@ -261,7 +264,8 @@ body {
 }
 
 #download-json-label{
-    padding-bottom: 3px;
+    padding-bottom: 8px;
+    font-size: 40px;
 }
 
 
