@@ -1364,6 +1364,10 @@ function showGroupElement(groupName) {
         trackController.addEventListener("mouseleave", function (event) {
           //trackControllerInfoBar.innerHTML = "";
           trackControllerInfoBar.innerHTML = groupObject.tunes[i].title;
+          console.log(
+            groupObject.tunes[i].title,
+            "----------------------------- debug"
+          );
         });
 
         trackController.addEventListener("click", function (event) {
