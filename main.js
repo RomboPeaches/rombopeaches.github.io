@@ -10,31 +10,18 @@ immersive sound-design at your fingertips.
 --------------------------------------------------------------------------------------------------------------------------------------------------
 
 TODO's:
-
-  btn to download savefile and import option
   
-  reopening a group not fully faded-out and fully removed creates an unlinked group
-  and also interfiered with fading-continuation 
+enable setting-start-position feature (Sascha) i.e: [12:37] for tunes^
 
-  impuls wobble on click outline for toggle buttons
+fix/add loading default data if no saved data in local storage 
 
-  make ko-fi profile and update qr to ko-fi? 
+impuls wobble on click outline for toggle buttons 
 
-  function to backup localstorage json or CSV file
+(clone group)
 
-  make testfile url a file, maybe json or CSV
+remove console-log debugging mess
 
-  fix/add loading default data if no saved data in local storage 
-
-  loading saved- or default-data console-msg broken? it is!
-
-  remove console-log debugging mess
-
-  prevent special characters for groupnames ...
-
-  (clone group)
-
-  enable setting-start-position feature (Sascha) i.e: [12:37] for tunes
+make ko-fi profile and update qr to ko-fi? 
 
 --------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -816,6 +803,7 @@ function toggleGroupActive(btn) {
   } else {
     hideGroupElement(group.name);
   }
+  saveData();
 }
 
 function hideGroupElement(groupName) {
