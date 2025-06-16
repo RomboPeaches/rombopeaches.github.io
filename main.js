@@ -11,6 +11,8 @@ immersive sound-design at your fingertips.
 
 TODO's:
   
+random html downloads when refreshing during youtube api calls or service worker (liveserver or github pages)  
+
 enable setting-start-position feature (Sascha) i.e: [12:37] for tunes^
 
 fix/add loading default data if no saved data in local storage 
