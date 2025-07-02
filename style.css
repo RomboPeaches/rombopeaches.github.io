@@ -1,4 +1,18 @@
 body {
-    background-color: rgb(56, 15, 109);
+    background-color: rgba(20, 7, 39, 1.0);
     font-family: monospace;
 }
+
+.select-app {
+    width: 160px;
+    height: 90px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgb(146, 214, 114);
+    font-size: 1.2rem;
+    font-weight: bold;
+    box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.7);
+    border: 2px rgb(146, 214, 114) solid;
+}       
