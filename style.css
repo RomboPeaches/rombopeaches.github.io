@@ -15,4 +15,11 @@ body {
     font-weight: bold;
     box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.7);
     border: 2px rgb(146, 214, 114) solid;
-}       
+
+}
+
+.select-app:hover {
+    box-shadow: 2px 2px 15px rgba(0, 0, 0, 0.9);
+    background-color: rgb(146, 214, 114);
+    color: rgb(20, 7, 39);
+}

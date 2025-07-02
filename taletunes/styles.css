@@ -233,6 +233,10 @@ body {
     font-size: 50px;
     /*box-shadow: var(--box-shadow) 0px 19px 38px, 0px 15px 12px;*/
 }
+.group-menu-btn:hover {
+    background-color: var(--light-opaque);
+    color: var(--very-dark);
+}
 
 #showPlayerIframes {
     padding-top: 2px;
