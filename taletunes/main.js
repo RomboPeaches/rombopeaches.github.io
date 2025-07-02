@@ -656,6 +656,8 @@ function buildGroup(name, urls = []) {
   urls_unique.forEach((url) => {
     group.tunes.push(new Tune(url));
   });
+  // force inactive on initial load
+  group.active = false;
   return group;
 }
 
