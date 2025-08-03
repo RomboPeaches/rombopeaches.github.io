@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Details Demo</title>
+    <style>
+      details {
+        background: white;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        padding: 1rem;
+        margin: 1rem 0;
+        max-width: 600px;
+        font-family: sans-serif;
+      }
+
+      summary {
+        font-weight: bold;
+        cursor: pointer;
+        outline: none;
+      }
+
+      details[open] {
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+    </style>
+  </head>
+  <body>
+    <details>
+      <summary>Was ist HTML?</summary>
+      <p>
+        HTML steht für "HyperText Markup Language" und ist die Sprache, mit der
+        Webseiten strukturiert werden.
+      </p>
+    </details>
+
+    <details>
+      <summary>Was macht das &lt;details&gt;-Tag?</summary>
+      <p>
+        Es ermöglicht ein- und ausklappbare Bereiche in HTML – ganz ohne
+        JavaScript.
+      </p>
+    </details>
+  </body>
+</html>
