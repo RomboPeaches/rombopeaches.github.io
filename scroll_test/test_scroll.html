@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vertical Mini-Websites Scroll</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        scroll-snap-type: y mandatory;
+        overflow-y: scroll;
+      }
+
+      section {
+        scroll-snap-align: start;
+      }
+    </style>
+  </head>
+  <body class="bg-black text-white">
+    <!-- Mini-Site 1 -->
+    <section
+      class="h-screen flex items-center justify-center bg-gradient-to-b from-blue-700 to-blue-900"
+    >
+      <div class="text-center">
+        <h1 class="text-4xl font-bold mb-4">Mini-Website 1</h1>
+        <p class="text-lg">Dies ist die erste Mini-Website.</p>
+      </div>
+    </section>
+
+    <!-- Mini-Site 2 -->
+    <section
+      class="h-screen flex items-center justify-center bg-gradient-to-b from-green-700 to-green-900"
+    >
+      <div class="text-center">
+        <h1 class="text-4xl font-bold mb-4">Mini-Website 2</h1>
+        <p class="text-lg">Zweite Sektion mit eigenen Inhalten.</p>
+      </div>
+    </section>
+
+    <!-- Mini-Site 3 -->
+    <section
+      class="h-screen flex items-center justify-center bg-gradient-to-b from-pink-700 to-pink-900"
+    >
+      <div class="text-center">
+        <h1 class="text-4xl font-bold mb-4">Mini-Website 3</h1>
+        <p class="text-lg">Auch Videos, iFrames oder Interaktionen möglich.</p>
+      </div>
+    </section>
+
+    <!-- Footer oder CTA -->
+    <section class="h-screen flex items-center justify-center bg-gray-900">
+      <div class="text-center">
+        <h1 class="text-3xl font-semibold mb-2">Du willst mehr?</h1>
+        <button
+          class="bg-white text-black px-6 py-2 rounded-full mt-4 hover:bg-gray-200"
+        >
+          Mehr anzeigen
+        </button>
+      </div>
+    </section>
+  </body>
+</html>
