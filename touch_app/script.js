@@ -53,7 +53,7 @@ console.log(box_elems.length, audio_elems.length);
 
 for (let i = 0; i < box_elems.length; i++) {
 
-    box_elems[i].addEventListener("click", () => {
+    box_elems[i].addEventListener("touchstart", () => {
         if (!audio_elems[i].paused) return; // Prevent multiple clicks
 
         box_elems[i].style.backgroundColor = bgColorsDark[i]; // Change color while playing

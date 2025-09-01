@@ -1,111 +1,121 @@
 <!DOCTYPE html>
 <html lang="de">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>GPS Standortanzeige</title>
-  <style>
-    body {
-      font-family: sans-serif;
-      background: #f8f9fa;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      margin: 0;
-    }
-    .container {
-      background: white;
-      padding: 2rem;
-      border-radius: 1rem;
-      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-      text-align: center;
-      max-width: 400px;
-    }
-    h1 {
-      font-size: 1.4rem;
-      margin-bottom: 1rem;
-    }
-    .info {
-      margin: 0.5rem 0;
-      font-size: 1rem;
-    }
-    .error {
-      color: red;
-      font-weight: bold;
-    }
-    .hint {
-      color: #555;
-      margin-top: 1rem;
-      font-size: 0.9rem;
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <h1>GPS-Standort</h1>
-    <div class="info" id="status">Erwarte Standortdaten...</div>
-    <div class="info" id="latitude">Breitengrad: –</div>
-    <div class="info" id="longitude">Längengrad: –</div>
-    <div class="info" id="accuracy">Genauigkeit: –</div>
-    <div class="info error" id="error"></div>
-    <div class="hint" id="hint">Bitte erlaube den Standortzugriff in deinem Browser.</div>
-  </div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GPS Standortanzeige</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        background: #f8f9fa;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        margin: 0;
+      }
+      .container {
+        background: white;
+        padding: 2rem;
+        border-radius: 1rem;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        max-width: 400px;
+      }
+      h1 {
+        font-size: 1.4rem;
+        margin-bottom: 1rem;
+      }
+      .info {
+        margin: 0.5rem 0;
+        font-size: 1rem;
+      }
+      .error {
+        color: red;
+        font-weight: bold;
+      }
+      .hint {
+        color: #555;
+        margin-top: 1rem;
+        font-size: 0.9rem;
+      }
+    </style>
+  </head>
+  <body>
+    <a href="javascript:(function(){alert('Hallo vom Bookmarklet!');})();">
+      Dieses Bookmarklet in die Lesezeichenleiste ziehen
+    </a>
+    <div class="container">
+      <h1>GPS-Standort</h1>
+      <div class="info" id="status">Erwarte Standortdaten...</div>
+      <div class="info" id="latitude">Breitengrad: –</div>
+      <div class="info" id="longitude">Längengrad: –</div>
+      <div class="info" id="accuracy">Genauigkeit: –</div>
+      <div class="info error" id="error"></div>
+      <div class="hint" id="hint">
+        Bitte erlaube den Standortzugriff in deinem Browser.
+      </div>
+    </div>
 
-  <script>
-    const statusEl = document.getElementById("status");
-    const latEl = document.getElementById("latitude");
-    const lonEl = document.getElementById("longitude");
-    const accEl = document.getElementById("accuracy");
-    const errorEl = document.getElementById("error");
-    const hintEl = document.getElementById("hint");
+    <script>
+      const statusEl = document.getElementById("status");
+      const latEl = document.getElementById("latitude");
+      const lonEl = document.getElementById("longitude");
+      const accEl = document.getElementById("accuracy");
+      const errorEl = document.getElementById("error");
+      const hintEl = document.getElementById("hint");
 
-    function showError(message) {
-      errorEl.textContent = "Fehler: " + message;
-      statusEl.textContent = "Kein Standort verfügbar.";
-    }
+      function showError(message) {
+        errorEl.textContent = "Fehler: " + message;
+        statusEl.textContent = "Kein Standort verfügbar.";
+      }
 
-    function updateUI(pos) {
-      const coords = pos.coords;
-      latEl.textContent = "Breitengrad: " + coords.latitude.toFixed(6);
-      lonEl.textContent = "Längengrad: " + coords.longitude.toFixed(6);
-      accEl.textContent = "Genauigkeit: ±" + coords.accuracy.toFixed(1) + " m";
-      statusEl.textContent = "Standort erfolgreich erfasst.";
-      errorEl.textContent = "";
-      hintEl.style.display = "none";
-    }
+      function updateUI(pos) {
+        const coords = pos.coords;
+        latEl.textContent = "Breitengrad: " + coords.latitude.toFixed(6);
+        lonEl.textContent = "Längengrad: " + coords.longitude.toFixed(6);
+        accEl.textContent =
+          "Genauigkeit: ±" + coords.accuracy.toFixed(1) + " m";
+        statusEl.textContent = "Standort erfolgreich erfasst.";
+        errorEl.textContent = "";
+        hintEl.style.display = "none";
+      }
 
-    if ("geolocation" in navigator) {
-      // Zeige Hinweis, bevor Anfrage kommt
-      statusEl.textContent = "Standortanfrage wird gesendet...";
-      hintEl.textContent = "Bitte erlaube den Zugriff, wenn dein Browser fragt.";
+      if ("geolocation" in navigator) {
+        // Zeige Hinweis, bevor Anfrage kommt
+        statusEl.textContent = "Standortanfrage wird gesendet...";
+        hintEl.textContent =
+          "Bitte erlaube den Zugriff, wenn dein Browser fragt.";
 
-      navigator.geolocation.getCurrentPosition(
-        updateUI,
-        (error) => {
-          switch (error.code) {
-            case error.PERMISSION_DENIED:
-              showError("Zugriff verweigert. Bitte Standortberechtigung aktivieren.");
-              hintEl.textContent = "Prüfe deine Geräteeinstellungen oder Browserberechtigungen.";
-              break;
-            case error.POSITION_UNAVAILABLE:
-              showError("Standortinformationen nicht verfügbar.");
-              break;
-            case error.TIMEOUT:
-              showError("Standortabfrage hat zu lange gedauert.");
-              break;
-            default:
-              showError("Unbekannter Fehler.");
-              break;
-          }
-        },
-        { enableHighAccuracy: true, timeout: 10000 }
-      );
-    } else {
-      showError("Geolocation wird von diesem Gerät nicht unterstützt.");
-      hintEl.textContent = "Bitte ein Gerät mit GPS und HTTPS-Verbindung verwenden.";
-    }
-  </script>
-</body>
+        navigator.geolocation.getCurrentPosition(
+          updateUI,
+          (error) => {
+            switch (error.code) {
+              case error.PERMISSION_DENIED:
+                showError(
+                  "Zugriff verweigert. Bitte Standortberechtigung aktivieren."
+                );
+                hintEl.textContent =
+                  "Prüfe deine Geräteeinstellungen oder Browserberechtigungen.";
+                break;
+              case error.POSITION_UNAVAILABLE:
+                showError("Standortinformationen nicht verfügbar.");
+                break;
+              case error.TIMEOUT:
+                showError("Standortabfrage hat zu lange gedauert.");
+                break;
+              default:
+                showError("Unbekannter Fehler.");
+                break;
+            }
+          },
+          { enableHighAccuracy: true, timeout: 10000 }
+        );
+      } else {
+        showError("Geolocation wird von diesem Gerät nicht unterstützt.");
+        hintEl.textContent =
+          "Bitte ein Gerät mit GPS und HTTPS-Verbindung verwenden.";
+      }
+    </script>
+  </body>
 </html>
-
