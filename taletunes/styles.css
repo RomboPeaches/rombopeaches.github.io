@@ -12,7 +12,7 @@
 
     --box-shadow: var(--clear);
 
-    --titles: rgb(146, 214, 114);
+    --titles: #92d672;
     --semi-clear: rgb(74, 129, 62);
     --very-dark: rgba(20, 7, 39, 1.0);
     --taletunes: var(--titles);

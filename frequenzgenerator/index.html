@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Tone Player — HTML + CSS + JS</title>
+  <style>
+    :root{--bg:#0f1724;--card:#0b1220;--accent:#7c3aed;--muted:#98a0b3;--glass:rgba(255,255,255,0.03)}
+    html,body{height:100%;margin:0;font-family:Inter,ui-sans-serif,system-ui,Segoe UI,Roboto,'Helvetica Neue',Arial}
+    body{background:linear-gradient(180deg,#071026 0%,#07182a 100%);display:flex;align-items:center;justify-content:center;color:#e6eef8}
+    .card{width:95%;max-width:1200px;background:var(--card);border-radius:14px;padding:22px;box-shadow:0 8px 30px rgba(2,6,23,.6);backdrop-filter:blur(6px);overflow:auto;max-height:95vh}
+    h1{margin:0 0 6px;font-size:20px}
+    p.lead{margin:0 0 18px;color:var(--muted);font-size:13px}
+    .controls{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    label{display:block;font-size:13px;color:var(--muted);margin-bottom:6px}
+    input[type=range], input[type=number]{width:100%}
+    .row{display:flex;gap:12px;flex-wrap:wrap}
+    button{background:linear-gradient(90deg,var(--accent),#5b21b6);border:none;color:white;padding:6px 10px;border-radius:10px;font-weight:600;cursor:pointer;transition:transform .1s;font-size:12px;white-space:pre-line}
+    button:hover{transform:scale(1.05)}
+    button.ghost{background:transparent;border:1px solid rgba(255,255,255,0.06);font-weight:600}
+    .footer{margin-top:14px;color:var(--muted);font-size:13px}
+    .big{font-size:18px;font-weight:600}
+    select{width:100%;padding:8px;border-radius:8px;background:var(--glass);border:1px solid rgba(255,255,255,0.03);color:inherit}
+    .visual{height:70px;background:linear-gradient(90deg,rgba(255,255,255,0.02),transparent);border-radius:8px;margin-top:12px;display:flex;align-items:center;justify-content:center;color:var(--muted)}
+    .note-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(80px,1fr));gap:6px;margin-top:16px}
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Tone Player</h1>
+    <p class="lead">Spielt einen reinen Ton über die Web Audio API. Einstellbar: Frequenz, Lautstärke, Wellenform und Dauer. Darunter befindet sich ein komplettes Noten-Grid (A0–C8) mit Frequenzen.</p>
+
+    <div class="controls">
+      <div>
+        <label>Frequenz (Hz) <span id="freqVal" class="big">440.00</span></label>
+        <input id="freq" type="range" min="20" max="5000" step="0.01" value="440">
+        <input id="freqText" type="number" min="20" max="5000" step="0.01" value="440">
+      </div>
+      <div>
+        <label>Volumen <span id="volVal">0.5</span></label>
+        <input id="vol" type="range" min="0" max="1" step="0.01" value="0.5">
+      </div>
+      <div>
+        <label>Wellenform</label>
+        <select id="wave">
+          <option value="sine">Sine</option>
+          <option value="square">Square</option>
+          <option value="sawtooth">Sawtooth</option>
+          <option value="triangle">Triangle</option>
+        </select>
+      </div>
+      <div>
+        <label>Dauer (Sekunden)</label>
+        <input id="dur" type="number" min="0.05" step="0.05" value="1">
+      </div>
+    </div>
+
+    <div style="margin-top:14px" class="row">
+      <button id="play">Play</button>
+      <button id="stop" class="ghost">Stop</button>
+    </div>
+
+    <div id="noteDisplay" style="margin-top:10px;font-size:15px;font-weight:600;color:#e6eef8">Note: A4 (440.00 Hz)</div>
+
+    <div class="visual" id="visual">— Visualizer —</div>
+
+    <div class="note-grid" id="noteGrid"></div>
+
+    <div class="footer">Tipp: Du kannst auch die Leertaste drücken, um den Ton zu starten/stoppen. Wenn dein Browser Autoplay blockiert, klicke einmal auf die Seite, um Interaktion zu erlauben.</div>
+  </div>
+
+  <script>
+    let ctx = null;
+    let osc = null;
+    let gain = null;
+    let analyser = null;
+    let analyserData = null;
+    const playBtn = document.getElementById('play');
+    const stopBtn = document.getElementById('stop');
+    const freq = document.getElementById('freq');
+    const freqText = document.getElementById('freqText');
+    const vol = document.getElementById('vol');
+    const wave = document.getElementById('wave');
+    const dur = document.getElementById('dur');
+    const freqVal = document.getElementById('freqVal');
+    const volVal = document.getElementById('volVal');
+    const visual = document.getElementById('visual');
+    const noteDisplay = document.getElementById('noteDisplay');
+    const noteGrid = document.getElementById('noteGrid');
+
+    function ensureAudio() {
+      if (!ctx) {
+        ctx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+    }
+
+    function createNodes() {
+      ensureAudio();
+      osc = ctx.createOscillator();
+      gain = ctx.createGain();
+      analyser = ctx.createAnalyser();
+      analyser.fftSize = 256;
+      analyserData = new Uint8Array(analyser.frequencyBinCount);
+      osc.type = wave.value;
+      osc.frequency.value = freq.value;
+      gain.gain.value = vol.value;
+      osc.connect(gain);
+      gain.connect(analyser);
+      analyser.connect(ctx.destination);
+    }
+
+    function startTone(durationSeconds = null) {
+      if (osc) stopTone();
+      createNodes();
+      osc.start();
+      if (durationSeconds && durationSeconds > 0) {
+        setTimeout(() => stopTone(), durationSeconds * 1000);
+      }
+      updateNoteDisplay(parseFloat(freq.value));
+      drawVisualizer();
+    }
+
+    function stopTone() {
+      if (!osc) return;
+      try { osc.stop(); } catch(e) {}
+      osc.disconnect(); gain.disconnect(); analyser.disconnect();
+      osc = null; gain = null; analyser = null; analyserData = null;
+      visual.textContent = '— Visualizer —';
+    }
+
+    playBtn.addEventListener('click', () => {
+      const d = parseFloat(dur.value) || 1;
+      startTone(d);
+    });
+    stopBtn.addEventListener('click', () => stopTone());
+
+    function setFrequency(val){
+      freq.value = val;
+      freqText.value = val;
+      freqVal.textContent = parseFloat(val).toFixed(2);
+      if (osc) osc.frequency.setValueAtTime(val, ctx.currentTime);
+      updateNoteDisplay(val);
+    }
+
+    freq.addEventListener('input', ()=> setFrequency(freq.value));
+    freqText.addEventListener('input', ()=> setFrequency(freqText.value));
+
+    vol.addEventListener('input', ()=>{ volVal.textContent = vol.value; if (gain) gain.gain.setValueAtTime(vol.value, ctx.currentTime); });
+    wave.addEventListener('change', ()=>{ if (osc) osc.type = wave.value; });
+
+    window.addEventListener('keydown', (e)=>{
+      if (e.code === 'Space'){
+        e.preventDefault();
+        if (osc) stopTone(); else startTone(parseFloat(dur.value)||1);
+      }
+    });
+
+    function drawVisualizer(){
+      if (!analyser) return;
+      analyser.getByteFrequencyData(analyserData);
+      let max = 0;
+      for (let i=0;i<analyserData.length;i++){ if (analyserData[i]>max) max = analyserData[i]; }
+      const level = Math.round((max / 255) * 30);
+      visual.textContent = '▉'.repeat(level) + (level?(' '+Math.round((max/255)*100)+'%'):'');
+      requestAnimationFrame(drawVisualizer);
+    }
+
+    function updateNoteDisplay(frequency){
+      const noteNames = ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
+      const A4 = 440;
+      const A4_index = 69;
+      let midi = Math.round(12 * Math.log2(frequency / A4) + A4_index);
+      let noteName = noteNames[(midi % 12 + 12) % 12];
+      let octave = Math.floor(midi/12) - 1;
+      noteDisplay.textContent = `Note: ${noteName}${octave} (${frequency.toFixed(2)} Hz)`;
+    }
+
+    function buildNoteGrid(){
+      const notes = [
+        {name:'A0',hz:27.50},{name:'A#0',hz:29.14},{name:'B0',hz:30.87},
+        {name:'C1',hz:32.70},{name:'C#1',hz:34.65},{name:'D1',hz:36.71},{name:'D#1',hz:38.89},{name:'E1',hz:41.20},{name:'F1',hz:43.65},{name:'F#1',hz:46.25},{name:'G1',hz:49.00},{name:'G#1',hz:51.91},
+        {name:'A1',hz:55.00},{name:'A#1',hz:58.27},{name:'B1',hz:61.74},
+        {name:'C2',hz:65.41},{name:'C#2',hz:69.30},{name:'D2',hz:73.42},{name:'D#2',hz:77.78},{name:'E2',hz:82.41},{name:'F2',hz:87.31},{name:'F#2',hz:92.50},{name:'G2',hz:98.00},{name:'G#2',hz:103.83},
+        {name:'A2',hz:110.00},{name:'A#2',hz:116.54},{name:'B2',hz:123.47},
+        {name:'C3',hz:130.81},{name:'C#3',hz:138.59},{name:'D3',hz:146.83},{name:'D#3',hz:155.56},{name:'E3',hz:164.81},{name:'F3',hz:174.61},{name:'F#3',hz:185.00},{name:'G3',hz:196.00},{name:'G#3',hz:207.65},
+        {name:'A3',hz:220.00},{name:'A#3',hz:233.08},{name:'B3',hz:246.94},
+        {name:'C4',hz:261.63},{name:'C#4',hz:277.18},{name:'D4',hz:293.66},{name:'D#4',hz:311.13},{name:'E4',hz:329.63},{name:'F4',hz:349.23},{name:'F#4',hz:369.99},{name:'G4',hz:392.00},{name:'G#4',hz:415.30},
+        {name:'A4',hz:440.00},{name:'A#4',hz:466.16},{name:'B4',hz:493.88},
+        {name:'C5',hz:523.25},{name:'C#5',hz:554.37},{name:'D5',hz:587.33},{name:'D#5',hz:622.25},{name:'E5',hz:659.26},{name:'F5',hz:698.46},{name:'F#5',hz:739.99},{name:'G5',hz:783.99},{name:'G#5',hz:830.61},
+        {name:'A5',hz:880.00},{name:'A#5',hz:932.33},{name:'B5',hz:987.77},
+        {name:'C6',hz:1046.50},{name:'C#6',hz:1108.73},{name:'D6',hz:1174.66},{name:'D#6',hz:1244.51},{name:'E6',hz:1318.51},{name:'F6',hz:1396.91},{name:'F#6',hz:1479.98},{name:'G6',hz:1567.98},{name:'G#6',hz:1661.22},
+        {name:'A6',hz:1760.00},{name:'A#6',hz:1864.66},{name:'B6',hz:1975.53},
+        {name:'C7',hz:2093.00},{name:'C#7',hz:2217.46},{name:'D7',hz:2349.32},{name:'D#7',hz:2489.02},{name:'E7',hz:2637.02},{name:'F7',hz:2793.83},{name:'F#7',hz:2959.96},{name:'G7',hz:3135.96},{name:'G#7',hz:3322.44},
+        {name:'A7',hz:3520.00},{name:'A#7',hz:3729.31},{name:'B7',hz:3951.07},
+        {name:'C8',hz:4186.01}
+      ];
+      notes.forEach(n=>{
+        const btn=document.createElement('button');
+        btn.textContent=`${n.name}\n${n.hz.toFixed(2)} Hz`;
+        btn.addEventListener('click',()=>{ setFrequency(n.hz); startTone(1); });
+        noteGrid.appendChild(btn);
+      });
+    }
+
+    buildNoteGrid();
+    updateNoteDisplay(440);
+
+  </script>
+</body>
+</html>
