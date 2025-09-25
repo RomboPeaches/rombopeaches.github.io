@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Share Button</title>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;  /* horizontal center */
+      align-items: center;      /* vertical center */
+      height: 100vh;            /* full viewport height */
+      margin: 0;
+      background: #f5f5f5;
+      font-family: sans-serif;
+    }
+
+    button {
+      padding: 1rem 2rem;       /* bigger size */
+      font-size: 1.2rem;        /* bigger text */
+      border: none;
+      border-radius: 12px;      /* rounded corners */
+      background: #007bff;
+      color: white;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <button onclick="shareContent()">📤 Share</button>
+
+  <script>
+    function shareContent() {
+      if (navigator.share) {
+        navigator.share({
+          title: "My Web App",
+          text: "Check this out!",
+          url: "https://my-webapp.com"
+        })
+        .then(() => console.log("Shared successfully"))
+        .catch(err => console.error("Error sharing:", err));
+      } else {
+        alert("Sharing not supported in this browser.");
+      }
+    }
+  </script>
+</body>
+</html>
