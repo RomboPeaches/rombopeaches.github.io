@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Name | Portfolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-color: #4f46e5;
+      --bg-color: #f9f9fb;
+      --text-color: #111827;
+      --accent-color: #6366f1;
+      --transition: 0.3s ease-in-out;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      line-height: 1.6;
+    }
+
+    header {
+      background-color: #fff;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    header h1 {
+      font-size: 1.5rem;
+      color: var(--primary-color);
+    }
+
+    nav a {
+      margin-left: 1.5rem;
+      text-decoration: none;
+      color: var(--text-color);
+      font-weight: 600;
+      transition: var(--transition);
+    }
+
+    nav a:hover {
+      color: var(--accent-color);
+    }
+
+    section {
+      padding: 5rem 2rem;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .hero {
+      text-align: center;
+    }
+
+    .hero h2 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      color: var(--primary-color);
+    }
+
+    .hero p {
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+    }
+
+    .btn {
+      background-color: var(--primary-color);
+      color: #fff;
+      padding: 0.8rem 1.5rem;
+      border-radius: 0.5rem;
+      text-decoration: none;
+      font-weight: 600;
+      transition: var(--transition);
+    }
+
+    .btn:hover {
+      background-color: var(--accent-color);
+    }
+
+    .about, .projects, .contact {
+      margin-top: 2rem;
+    }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .project-card {
+      background: #fff;
+      padding: 1rem;
+      border-radius: 1rem;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+      transition: transform 0.3s ease;
+    }
+
+    .project-card:hover {
+      transform: translateY(-5px);
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem;
+      font-size: 0.9rem;
+      color: #6b7280;
+    }
+
+    .contact a {
+      display: inline-block;
+      margin: 0.5rem;
+      text-decoration: none;
+      color: var(--primary-color);
+      font-weight: 600;
+      transition: var(--transition);
+    }
+
+    .contact a:hover {
+      color: var(--accent-color);
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Your Name</h1>
+    <nav>
+      <a href="#about">About</a>
+      <a href="#projects">Projects</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <section class="hero" id="home">
+    <h2>Hello, I'm Your Name</h2>
+    <p>A passionate developer/designer/engineer creating elegant solutions for real-world problems.</p>
+    <a href="#projects" class="btn">See My Work</a>
+  </section>
+
+  <section class="about" id="about">
+    <h2>About Me</h2>
+    <p>I am a [your profession] with experience in [skills/technologies]. I love building [type of projects] and constantly learning new tools to enhance my craft.</p>
+  </section>
+
+  <section class="projects" id="projects">
+    <h2>My Projects</h2>
+    <div class="projects-grid">
+      <div class="project-card">
+        <h3>Project One</h3>
+        <p>Short description of project one. Technologies used: HTML, CSS, JavaScript.</p>
+        <a href="#" class="btn">View Project</a>
+      </div>
+      <div class="project-card">
+        <h3>Project Two</h3>
+        <p>Short description of project two. Technologies used: React, Node.js.</p>
+        <a href="#" class="btn">View Project</a>
+      </div>
+      <div class="project-card">
+        <h3>Project Three</h3>
+        <p>Short description of project three. Technologies used: Python, Flask.</p>
+        <a href="#" class="btn">View Project</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="contact" id="contact">
+    <h2>Contact Me</h2>
+    <p>Feel free to reach out via email or connect with me on social media:</p>
+    <a href="mailto:youremail@example.com">Email</a>
+    <a href="https://linkedin.com/in/yourprofile" target="_blank">LinkedIn</a>
+    <a href="https://github.com/yourprofile" target="_blank">GitHub</a>
+  </section>
+
+  <footer>
+    &copy; 2025 Your Name. All Rights Reserved.
+  </footer>
+
+</body>
+</html>
