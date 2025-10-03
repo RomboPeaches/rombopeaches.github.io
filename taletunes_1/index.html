@@ -1,1087 +1,1027 @@
 <!DOCTYPE html>
 
 <html>
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<style>
-			:root
-			{
-			  --main-bg-color: rgb(40, 40, 40);
 
-			  --vol_bg: grey; 
-			  --vol_viz: grey;  
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<style>
+		:root {
+			--main-bg-color: rgb(40, 40, 40);
 
-			  --btn-bg: black;
-			  --btn-txt: white;
+			--vol_bg: grey;
+			--vol_viz: grey;
 
-			  --btn-bg-hover: yellowgreen;
-			  --btn-txt-hover: darkgreen;
+			--btn-bg: black;
+			--btn-txt: white;
 
-			  --browser-bg: black;
-			  --browser-bg-hover: black;
-			}
+			--btn-bg-hover: yellowgreen;
+			--btn-txt-hover: darkgreen;
 
-			body
-			{
-			  display: grid;
-			  grid-template-columns: 31.0% 31.0% 31.0%;
-			  grid-gap: 2.5%;
-			  background: var(--main-bg-color);
-			  margin: 0;
-			}
+			--browser-bg: black;
+			--browser-bg-hover: black;
+		}
 
-			.save_box
-			{
-			  position: absolute;
-			  align-self: center;
-			  right: 0%;
-			  top: 0%;
-			  text-align: center;
-			  width: 10%;
-			  height: 7%;
-			  transition: 0.5s;
-			}
+		body {
+			display: grid;
+			grid-template-columns: 31.0% 31.0% 31.0%;
+			grid-gap: 2.5%;
+			background: var(--main-bg-color);
+			margin: 0;
+		}
 
-			.save_box:hover
-			{
-			  position: absolute;
-			  right: 0%;
-			  top: 0%;
-			  width: 10%;
-			  height: 7%;
-			}
+		.save_box {
+			position: absolute;
+			align-self: center;
+			right: 0%;
+			top: 0%;
+			text-align: center;
+			width: 10%;
+			height: 7%;
+			transition: 0.5s;
+		}
 
-			.text_box
-			{
-			  position: absolute;
-			  left: 50%;
-			  top: 50%;
-			  margin: 0%;
-			  color: white;
-			  transform: translate(-50%, -50%);
-			  font-size: 220%;
-			  font-family: Helvetica, sans-serif;
-			}
-			.text_box:hover
-			{
-			  position: absolute;
-			  left: 50%;
-			  top: 50%;
-			  transform: translate(-50%, -50%);
-			  margin: 0%;
-			  cursor: pointer;
-			  font-size: 280%;
-			  font-family: Helvetica, sans-serif;
-			}
+		.save_box:hover {
+			position: absolute;
+			right: 0%;
+			top: 0%;
+			width: 10%;
+			height: 7%;
+		}
 
-			.vol_lvl
-			{
-			  position: relative;
-			  width: 100%;
-			  background: var(--vol_viz);
-			}
+		.text_box {
+			position: absolute;
+			left: 50%;
+			top: 50%;
+			margin: 0%;
+			color: white;
+			transform: translate(-50%, -50%);
+			font-size: 220%;
+			font-family: Helvetica, sans-serif;
+		}
 
-			.fade_goal_viz
-			{
-			  position: absolute;
-			  width: 100%;
-			  height: 10px;
-			  background: white;
-			}
+		.text_box:hover {
+			position: absolute;
+			left: 50%;
+			top: 50%;
+			transform: translate(-50%, -50%);
+			margin: 0%;
+			cursor: pointer;
+			font-size: 280%;
+			font-family: Helvetica, sans-serif;
+		}
 
-			.info_bar
-			{
-			  width: 100%;
-			  height:  100%;
-			  position: relative;
-			  left: 0%;
-			  top: 0%;
-			  background: var(--vol_bg);
-			}
+		.vol_lvl {
+			position: relative;
+			width: 100%;
+			background: var(--vol_viz);
+		}
 
-			.enviroment_header
-			{
-			  position: relative;
-			  display: grid;
-			  margin-top: 0%;
-			  grid-template-columns: 4% 96%;
-			  width: 100%;
-			  height: 7%;
-			}
+		.fade_goal_viz {
+			position: absolute;
+			width: 100%;
+			height: 10px;
+			background: white;
+		}
 
-			.enviroment_header:hover
-			{
-			  content: "nkrnkbnerjkbntiboetpnio";
+		.info_bar {
+			width: 100%;
+			height: 100%;
+			position: relative;
+			left: 0%;
+			top: 0%;
+			background: var(--vol_bg);
+		}
 
-			  position: relative;
-			  display: grid;
-			  grid-template-columns: 4% 96%;
-			  width: 100%;
-			  height: 7%;
-			}
+		.enviroment_header {
+			position: relative;
+			display: grid;
+			margin-top: 0%;
+			grid-template-columns: 4% 96%;
+			width: 100%;
+			height: 7%;
+		}
 
-			.enviroment_name
-			{
-			  position: relative;
-			  text-align: center;
-			  top: 50%; left: 50%;
-			  transform: translate(-50%,-50%);
-			  font-size: 30px;
-			  font-family: Helvetica, sans-serif;
-			}
+		.enviroment_header:hover {
+			content: "nkrnkbnerjkbntiboetpnio";
 
-			.proxy_browser
-			{
-			  position: relative;
-			  border: none;
-			  margin-top: 0%;
-			  left: 0%;
-			  width: 100%;
-			  height: 100%;
-			  font-size: 30px;
-			  font-family: Helvetica, sans-serif;
-			  background: var(--browser-bg); /*for now*/
-			  color: white;
-			  text-align: left;
-			  padding-left: 3%;
-			  transition: 0.5s;
-			}
+			position: relative;
+			display: grid;
+			grid-template-columns: 4% 96%;
+			width: 100%;
+			height: 7%;
+		}
 
-			.proxy_browser:hover
-			{
-			  position: relative;
-			  border: none;
-			  left: 0%;
-			  width: 100%;
-			  height: 100%;
-			  background: black;
-			  color: transparent;
-			  font-size: 30px;
-			  font-family: Helvetica, sans-serif;
-			  cursor: pointer;
-			  text-align: left;
-			  padding-left: 3%;
-			}
+		.enviroment_name {
+			position: relative;
+			text-align: center;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			font-size: 30px;
+			font-family: Helvetica, sans-serif;
+		}
 
-			.search_file
-			{
-			  display: none;
-			}
+		.proxy_browser {
+			position: relative;
+			border: none;
+			margin-top: 0%;
+			left: 0%;
+			width: 100%;
+			height: 100%;
+			font-size: 30px;
+			font-family: Helvetica, sans-serif;
+			background: var(--browser-bg);
+			/*for now*/
+			color: white;
+			text-align: left;
+			padding-left: 3%;
+			transition: 0.5s;
+		}
 
-			.player_controller_section
-			{
-			  position: relative;
-			  background: none;
-			}
+		.proxy_browser:hover {
+			position: relative;
+			border: none;
+			left: 0%;
+			width: 100%;
+			height: 100%;
+			background: black;
+			color: transparent;
+			font-size: 30px;
+			font-family: Helvetica, sans-serif;
+			cursor: pointer;
+			text-align: left;
+			padding-left: 3%;
+		}
 
-			.player_controller
-			{
-			  margin-top: 3%;
-			  position: relative;
-			  display: grid;
-			  grid-template-columns: 4.0% 52.941176471% 43.058823529%;
-			}
+		.search_file {
+			display: none;
+		}
 
-			.button_container
-			{
-			  position: relative;
-			  display: grid;
-			  grid-template-columns: 25% 25% 25% 25%;
-			  grid-template-rows: 50% 50%;
-			}
+		.player_controller_section {
+			position: relative;
+			background: none;
+		}
 
-			.player_button
-			{
-			  justify-self: stretch;
-			  background: var(--btn-bg); /*for now*/
-			  border: none;
-			  color: var(--btn-txt);
-			  font-family: Helvetica, sans-serif;
-			  transition: 0.5s;
-			}
+		.player_controller {
+			margin-top: 3%;
+			position: relative;
+			display: grid;
+			grid-template-columns: 4.0% 52.941176471% 43.058823529%;
+		}
 
-			.player_button:hover
-			{
-			  justify-self: stretch;
-			  background: var(--btn-bg-hover);
-			  color: var(--btn-txt-hover);
-			  cursor: pointer;
-			  font-family: Helvetica, sans-serif;
-			}
+		.button_container {
+			position: relative;
+			display: grid;
+			grid-template-columns: 25% 25% 25% 25%;
+			grid-template-rows: 50% 50%;
+		}
 
-			.player_container
-			{
-			  background: black; /*covers player area until yt iframe is loaded*/
-			  width: 100%;
-			  height: 100%;
-			}
+		.player_button {
+			justify-self: stretch;
+			background: var(--btn-bg);
+			/*for now*/
+			border: none;
+			color: var(--btn-txt);
+			font-family: Helvetica, sans-serif;
+			transition: 0.5s;
+		}
 
-			#flash_screen
-			{
-			  opacity: 1.0;
-			  position: absolute;
-			  width: 100%;
-			  height: 100%;
-			  z-index: 10;
-			  background-size: contain;
-			  background-repeat: no-repeat;
-			  background-position: center;
-			  /*background-image: url("https://cdnb.artstation.com/p/assets/images/images/054/091/955/large/star-cg-25.jpg?1663747000");*/
-			  background-image: url("blim_.png");
-			}
+		.player_button:hover {
+			justify-self: stretch;
+			background: var(--btn-bg-hover);
+			color: var(--btn-txt-hover);
+			cursor: pointer;
+			font-family: Helvetica, sans-serif;
+		}
 
-			#flash_screen_bg
-			{
-			  opacity: 1.0; /*temp*/
+		.player_container {
+			background: black;
+			/*covers player area until yt iframe is loaded*/
+			width: 100%;
+			height: 100%;
+		}
 
-			  position: absolute;
-			  width: 100%;
-			  height: 100%;
-			  z-index: 10;
-			  background: black; /*for now*/
-			}
-		</style>
-		<title>TALE TUNES</title>
-	</head>
+		#flash_screen {
+			opacity: 1.0;
+			position: absolute;
+			width: 100%;
+			height: 100%;
+			z-index: 10;
+			background-size: contain;
+			background-repeat: no-repeat;
+			background-position: center;
+			/*background-image: url("https://cdnb.artstation.com/p/assets/images/images/054/091/955/large/star-cg-25.jpg?1663747000");*/
+			background-image: url("blim_.png");
+		}
 
-	<body>
+		#flash_screen_bg {
+			opacity: 1.0;
+			/*temp*/
 
-		<div id="flash_screen_bg"></div>
-		<div id="flash_screen"></div>
+			position: absolute;
+			width: 100%;
+			height: 100%;
+			z-index: 10;
+			background: black;
+			/*for now*/
+		}
+	</style>
+	<title>TALE TUNES</title>
+</head>
 
-		<div class="player_controller_section">
-		
-			<div class="enviroment_header">
+<body>
 
-				<div id="env_info_bar_0" class="info_bar"></div>
+	<div id="flash_screen_bg"></div>
+	<div id="flash_screen"></div>
 
-				<input id="env_name_A" value="Was wohnt in Zimbel's Brunnen?" type="button" class="proxy_browser" onclick="document.getElementById('env_browser_A').click();"/>
-				<input id="env_browser_A" class="search_file" type="file" name="file">
+	<div class="player_controller_section">
+
+		<div class="enviroment_header">
+
+			<div id="env_info_bar_0" class="info_bar"></div>
+
+			<input id="env_name_A" value="Was wohnt in Zimbel's Brunnen?" type="button" class="proxy_browser"
+				onclick="document.getElementById('env_browser_A').click();" />
+			<input id="env_browser_A" class="search_file" type="file" name="file">
 
 
-			</div>	
-				
-			<div class="save_box">
-				<p class="text_box" onclick="save_env(0)">&#128220;</p>
-			</div>
-
-			<div class="player_controller">
-
-				<div id="info_bar_0" class="info_bar">
-					<div id="vol_lvl_0" class="vol_lvl"></div>
-					<div id="fade_goal_viz_0" class="fade_goal_viz"></div>
-				</div>	
-
-				<div class="button_container">
-					<button class="player_button" onclick="play_pause(0)">PLAY</button>
-					<button class="player_button" onclick="mute_(0)">MUTE</button>
-					<button class="player_button" onclick="fain(0)">FAIN</button>
-					<button class="player_button" onclick="fout(0)">FOUT</button>
-					<button class="player_button" onclick="increase_vol(0)">VOL+</button>
-					<button class="player_button" onclick="decrease_vol(0)">VOL-</button>
-					<button class="player_button" onclick="reset(0)">RSET</button>
-					<button class="player_button" onclick="edit_url(0)">EDIT</button>
-				</div>
-				
-				<div class="player_container">
-					<div id="player0">hjkl</div>
-				</div>
-				
-			</div>
-
-			<div class="player_controller">
-
-				<div id="info_bar_1" class="info_bar">
-					<div id="vol_lvl_1" class="vol_lvl"></div>
-					<div id="fade_goal_viz_1" class="fade_goal_viz"></div>
-				</div>
-
-				<div class="button_container">
-					<button class="player_button" onclick="play_pause(1)">PLAY</button>
-					<button class="player_button" onclick="mute_(1)">MUTE</button>
-					<button class="player_button" onclick="fain(1)">FAIN</button>
-					<button class="player_button" onclick="fout(1)">FOUT</button>
-					<button class="player_button" onclick="increase_vol(1)">VOL+</button>
-					<button class="player_button" onclick="decrease_vol(1)">VOL-</button>
-					<button class="player_button" onclick="reset(1)">RSET</button>
-					<button class="player_button" onclick="edit_url(1)">EDIT</button>
-				</div>
-				
-				<div class="player_container">
-					<div id="player1">hjkl</div>
-				</div>
-
-			</div>
-
-			<div class="player_controller">
-
-				<div id="info_bar_2" class="info_bar">
-					<div id="vol_lvl_2" class="vol_lvl"></div>
-					<div id="fade_goal_viz_2" class="fade_goal_viz"></div>
-				</div>
-
-				<div class="button_container">
-					<button class="player_button" onclick="play_pause(2)">PLAY</button>
-					<button class="player_button" onclick="mute_(2)">MUTE</button>
-					<button class="player_button" onclick="fain(2)">FAIN</button>
-					<button class="player_button" onclick="fout(2)">FOUT</button>
-					<button class="player_button" onclick="increase_vol(2)">VOL+</button>
-					<button class="player_button" onclick="decrease_vol(2)">VOL-</button>
-					<button class="player_button" onclick="reset(2)">RSET</button>
-					<button class="player_button" onclick="edit_url(2)">EDIT</button>
-				</div>
-				
-				<div class="player_container">
-					<div id="player2">hjkl</div>
-				</div>
-
-			</div>
-
-			<div class="player_controller">
-
-				<div id="info_bar_3" class="info_bar">
-					<div id="vol_lvl_3" class="vol_lvl"></div>
-					<div id="fade_goal_viz_3" class="fade_goal_viz"></div>
-				</div>
-
-				<div class="button_container">
-					<button class="player_button" onclick="play_pause(3)">PLAY</button>
-					<button class="player_button" onclick="mute_(3)">MUTE</button>
-					<button class="player_button" onclick="fain(3)">FAIN</button>
-					<button class="player_button" onclick="fout(3)">FOUT</button>
-					<button class="player_button" onclick="increase_vol(3)">VOL+</button>
-					<button class="player_button" onclick="decrease_vol(3)">VOL-</button>
-					<button class="player_button" onclick="reset(3)">RSET</button>
-					<button class="player_button" onclick="edit_url(3)">EDIT</button>
-				</div>
-				
-				<div class="player_container">
-					<div id="player3">hjkl</div>
-				</div>
-
-			</div>
-
-			<div class="player_controller">
-				
-				<div id="info_bar_4" class="info_bar">
-					<div id="vol_lvl_4" class="vol_lvl"></div>
-					<div id="fade_goal_viz_4" class="fade_goal_viz"></div>
-				</div>
-
-				<div class="button_container">
-					<button class="player_button" onclick="play_pause(4)">PLAY</button>
-					<button class="player_button" onclick="mute_(4)">MUTE</button>
-					<button class="player_button" onclick="fain(4)">FAIN</button>
-					<button class="player_button" onclick="fout(4)">FOUT</button>
-					<button class="player_button" onclick="increase_vol(4)">VOL+</button>
-					<button class="player_button" onclick="decrease_vol(4)">VOL-</button>
-					<button class="player_button" onclick="reset(4)">RSET</button>
-					<button class="player_button" onclick="edit_url(4)">EDIT</button>
-				</div>
-				
-				<div class="player_container">
-					<div id="player4">hjkl</div>
-				</div>
-
-			</div> 
 		</div>
 
-		<div class="player_controller_section">
-
-			<div class="enviroment_header">
-
-				<div id="env_info_bar_1" class="info_bar"></div>
-
-				<input id="env_name_B" value="Zargo's Rache" type="button" class="proxy_browser" onclick="document.getElementById('env_browser_B').click();"/>
-				<input id="env_browser_B" class="search_file" type="file">
-
-			</div>
-
-			<div class="save_box">
-				<p class="text_box" onclick="save_env(1)">&#128220;</p>
-			</div>
-
-			<div class="player_controller">
-				
-				<div id="info_bar_5" class="info_bar">
-					<div id="vol_lvl_5" class="vol_lvl"></div>
-					<div id="fade_goal_viz_5" class="fade_goal_viz"></div>
-				</div>
-
-				<div class="button_container">
-					<button class="player_button" onclick="play_pause(5)">PLAY</button>
-					<button class="player_button" onclick="mute_(5)">MUTE</button>
-					<button class="player_button" onclick="fain(5)">FAIN</button>
-					<button class="player_button" onclick="fout(5)">FOUT</button>
-					<button class="player_button" onclick="increase_vol(5)">VOL+</button>
-					<button class="player_button" onclick="decrease_vol(5)">VOL-</button>
-					<button class="player_button" onclick="reset(5)">RSET</button>
-					<button class="player_button" onclick="edit_url(5)">EDIT</button>
-				</div>
-				
-				<div class="player_container">
-					<div id="player5">hjkl</div>
-				</div>
-
-			</div>
-
-			<div class="player_controller">
-				
-				<div  id="info_bar_6" class="info_bar">
-					<div id="vol_lvl_6" class="vol_lvl"></div>
-					<div id="fade_goal_viz_6" class="fade_goal_viz"></div>
-				</div>
-
-				<div class="button_container">
-					<button class="player_button" onclick="play_pause(6)">PLAY</button>
-					<button class="player_button" onclick="mute_(6)">MUTE</button>
-					<button class="player_button" onclick="fain(6)">FAIN</button>
-					<button class="player_button" onclick="fout(6)">FOUT</button>
-					<button class="player_button" onclick="increase_vol(6)">VOL+</button>
-					<button class="player_button" onclick="decrease_vol(6)">VOL-</button>
-					<button class="player_button" onclick="reset(6)">RSET</button>
-					<button class="player_button" onclick="edit_url(6)">EDIT</button>
-				</div>
-				
-				<div class="player_container">
-					<div id="player6">hjkl</div>
-				</div>
-
-			</div>
-
-			<div class="player_controller">
-				
-				<div id="info_bar_7" class="info_bar">
-					<div id="vol_lvl_7" class="vol_lvl"></div>
-					<div id="fade_goal_viz_7" class="fade_goal_viz"></div>
-				</div>
-
-				<div class="button_container">
-					<button class="player_button" onclick="play_pause(7)">PLAY</button>
-					<button class="player_button" onclick="mute_(7)">MUTE</button>
-					<button class="player_button" onclick="fain(7)">FAIN</button>
-					<button class="player_button" onclick="fout(7)">FOUT</button>
-					<button class="player_button" onclick="increase_vol(7)">VOL+</button>
-					<button class="player_button" onclick="decrease_vol(7)">VOL-</button>
-					<button class="player_button" onclick="reset(7)">RSET</button>
-					<button class="player_button" onclick="edit_url(7)">EDIT</button>
-				</div>
-				
-				<div class="player_container">
-					<div id="player7">hjkl</div>
-				</div>
-
-			</div>
-
-			<div class="player_controller">
-				
-				<div id="info_bar_8" class="info_bar">
-					<div id="vol_lvl_8" class="vol_lvl"></div>
-					<div id="fade_goal_viz_8" class="fade_goal_viz"></div>
-				</div>
-
-				<div class="button_container">
-					<button class="player_button" onclick="play_pause(8)">PLAY</button>
-					<button class="player_button" onclick="mute_(8)">MUTE</button>
-					<button class="player_button" onclick="fain(8)">FAIN</button>
-					<button class="player_button" onclick="fout(8)">FOUT</button>
-					<button class="player_button" onclick="increase_vol(8)">VOL+</button>
-					<button class="player_button" onclick="decrease_vol(8)">VOL-</button>
-					<button class="player_button" onclick="reset(8)">RSET</button>
-					<button class="player_button" onclick="edit_url(8)">EDIT</button>
-				</div>
-				
-				<div class="player_container">
-					<div id="player8">hjkl</div>
-				</div>
-
-			</div>
-
-			<div class="player_controller">
-				
-				<div id="info_bar_9" class="info_bar">
-					<div id="vol_lvl_9" class="vol_lvl"></div>
-					<div id="fade_goal_viz_9" class="fade_goal_viz"></div>
-				</div>
-
-				<div class="button_container">
-					<button class="player_button" onclick="play_pause(9)">PLAY</button>
-					<button class="player_button" onclick="mute_(9)">MUTE</button>
-					<button class="player_button" onclick="fain(9)">FAIN</button>
-					<button class="player_button" onclick="fout(9)">FOUT</button>
-					<button class="player_button" onclick="increase_vol(9)">VOL+</button>
-					<button class="player_button" onclick="decrease_vol(9)">VOL-</button>
-					<button class="player_button" onclick="reset(9)">RSET</button>
-					<button class="player_button" onclick="edit_url(9)">EDIT</button>
-				</div>
-				
-				<div class="player_container">
-					<div id="player9">hjkl</div>
-				</div>
-
-			</div>
+		<div class="save_box">
+			<p class="text_box" onclick="save_env(0)">&#128220;</p>
 		</div>
 
-		<div class="player_controller_section">
+		<div class="player_controller">
 
-			<div class="enviroment_header">
-
-				<div id="env_info_bar_2" class="info_bar"></div>
-
-				<input id="env_name_C" value="Elfenhertz Laboratorium" type="button" class="proxy_browser" onclick="document.getElementById('env_browser_C').click();"/>
-				<input id="env_browser_C" class="search_file" type="file">
-				
+			<div id="info_bar_0" class="info_bar">
+				<div id="vol_lvl_0" class="vol_lvl"></div>
+				<div id="fade_goal_viz_0" class="fade_goal_viz"></div>
 			</div>
 
-			<div class="save_box">
-				<p class="text_box" onclick="save_env(2)">&#128220;</p>
+			<div class="button_container">
+				<button class="player_button" onclick="play_pause(0)">PLAY</button>
+				<button class="player_button" onclick="mute_(0)">MUTE</button>
+				<button class="player_button" onclick="fain(0)">FAIN</button>
+				<button class="player_button" onclick="fout(0)">FOUT</button>
+				<button class="player_button" onclick="increase_vol(0)">VOL+</button>
+				<button class="player_button" onclick="decrease_vol(0)">VOL-</button>
+				<button class="player_button" onclick="reset(0)">RSET</button>
+				<button class="player_button" onclick="edit_url(0)">EDIT</button>
 			</div>
 
-			<div class="player_controller">
-				
-				<div id="info_bar_10" class="info_bar">
-					<div id="vol_lvl_10" class="vol_lvl"></div>
-					<div id="fade_goal_viz_10" class="fade_goal_viz"></div>
-				</div>
-
-				<div class="button_container">
-					<button class="player_button" onclick="play_pause(10)">PLAY</button>
-					<button class="player_button" onclick="mute_(10)">MUTE</button>
-					<button class="player_button" onclick="fain(10)">FAIN</button>
-					<button class="player_button" onclick="fout(10)">FOUT</button>
-					<button class="player_button" onclick="increase_vol(10)">VOL+</button>
-					<button class="player_button" onclick="decrease_vol(10)">VOL-</button>
-					<button class="player_button" onclick="reset(10)">RSET</button>
-					<button class="player_button" onclick="edit_url(10)">EDIT</button>
-				</div>
-				
-				<div class="player_container">
-					<div id="player10">hjkl</div>
-				</div>
-
+			<div class="player_container">
+				<div id="player0">hjkl</div>
 			</div>
 
-			<div class="player_controller">
-				
-				<div id="info_bar_11" class="info_bar">
-					<div id="vol_lvl_11" class="vol_lvl"></div>
-					<div id="fade_goal_viz_11" class="fade_goal_viz"></div>
-				</div>
-
-				<div class="button_container">
-					<button class="player_button" onclick="play_pause(11)">PLAY</button>
-					<button class="player_button" onclick="mute_(11)">MUTE</button>
-					<button class="player_button" onclick="fain(11)">FAIN</button>
-					<button class="player_button" onclick="fout(11)">FOUT</button>
-					<button class="player_button" onclick="increase_vol(11)">VOL+</button>
-					<button class="player_button" onclick="decrease_vol(11)">VOL-</button>
-					<button class="player_button" onclick="reset(11)">RSET</button>
-					<button class="player_button" onclick="edit_url(11)">EDIT</button>
-				</div>
-				
-				<div class="player_container">
-					<div id="player11">hjkl</div>
-				</div>
-
-			</div>
-
-			<div class="player_controller">
-				
-				<div id="info_bar_12" class="info_bar">
-					<div id="vol_lvl_12" class="vol_lvl"></div>
-					<div id="fade_goal_viz_12" class="fade_goal_viz"></div>
-				</div>
-
-				<div class="button_container">
-					<button class="player_button" onclick="play_pause(12)">PLAY</button>
-					<button class="player_button" onclick="mute_(12)">MUTE</button>
-					<button class="player_button" onclick="fain(12)">FAIN</button>
-					<button class="player_button" onclick="fout(12)">FOUT</button>
-					<button class="player_button" onclick="increase_vol(12)">VOL+</button>
-					<button class="player_button" onclick="decrease_vol(12)">VOL-</button>
-					<button class="player_button" onclick="reset(12)">RSET</button>
-					<button class="player_button" onclick="edit_url(12)">EDIT</button>
-				</div>
-				
-				<div class="player_container">
-					<div id="player12">hjkl</div>
-				</div>
-
-			</div>
-
-			<div class="player_controller">
-				
-				<div id="info_bar_13" class="info_bar">
-					<div id="vol_lvl_13" class="vol_lvl"></div>
-					<div id="fade_goal_viz_13" class="fade_goal_viz"></div>
-				</div>
-
-				<div class="button_container">
-					<button class="player_button" onclick="play_pause(13)">PLAY</button>
-					<button class="player_button" onclick="mute_(13)">MUTE</button>
-					<button class="player_button" onclick="fain(13)">FAIN</button>
-					<button class="player_button" onclick="fout(13)">FOUT</button>
-					<button class="player_button" onclick="increase_vol(13)">VOL+</button>
-					<button class="player_button" onclick="decrease_vol(13)">VOL-</button>
-					<button class="player_button" onclick="reset(13)">RSET</button>
-					<button class="player_button" onclick="edit_url(13)">EDIT</button>
-				</div>
-				
-				<div class="player_container">
-					<div id="player13">hjkl</div>
-				</div>
-
-			</div>
-
-			<div class="player_controller">
-				
-				<div id="info_bar_14" class="info_bar">
-					<div id="vol_lvl_14" class="vol_lvl"></div>
-					<div id="fade_goal_viz_14" class="fade_goal_viz"></div>
-				</div>
-
-				<div class="button_container">
-					<button class="player_button" onclick="play_pause(14)">PLAY</button>
-					<button class="player_button" onclick="mute_(14)">MUTE</button>
-					<button class="player_button" onclick="fain(14)">FAIN</button>
-					<button class="player_button" onclick="fout(14)">FOUT</button>
-					<button class="player_button" onclick="increase_vol(14)">VOL+</button>
-					<button class="player_button" onclick="decrease_vol(14)">VOL-</button>
-					<button class="player_button" onclick="reset(14)">RSET</button>
-					<button class="player_button" onclick="edit_url(14)">EDIT</button>
-				</div>
-				
-				<div class="player_container">
-					<div id="player14">hjkl</div>
-				</div>
-
-			</div>
 		</div>
 
-		<script>
-			// download emoji options 128190 (disk) 128204 (pin) 128220 (scroll) 128274 (lock) 128737 (shield)
+		<div class="player_controller">
 
-			// cover yt logo with btn (play/pause)
+			<div id="info_bar_1" class="info_bar">
+				<div id="vol_lvl_1" class="vol_lvl"></div>
+				<div id="fade_goal_viz_1" class="fade_goal_viz"></div>
+			</div>
 
-			// TALE TUNES
+			<div class="button_container">
+				<button class="player_button" onclick="play_pause(1)">PLAY</button>
+				<button class="player_button" onclick="mute_(1)">MUTE</button>
+				<button class="player_button" onclick="fain(1)">FAIN</button>
+				<button class="player_button" onclick="fout(1)">FOUT</button>
+				<button class="player_button" onclick="increase_vol(1)">VOL+</button>
+				<button class="player_button" onclick="decrease_vol(1)">VOL-</button>
+				<button class="player_button" onclick="reset(1)">RSET</button>
+				<button class="player_button" onclick="edit_url(1)">EDIT</button>
+			</div>
 
-			// load env urls from and update (env A)
-			document.getElementById('env_browser_A').onchange = function()
-			{
-			  var file = this.files[0];
-			  // remove suffix
-			  let env_name = file.name.slice(0, -4);
-			  // set env name to loaded env name
-			  document.getElementById('env_name_A').value = env_name;
-			  
-			  var reader = new FileReader();
-			  reader.onload = function(progressEvent)
-			  {
-			    var urls = this.result.split(/\r\n|\n/).slice(0, 5);
-			    segment_A_urls = urls;  
-			    update_env(0, urls);  
-			  };
-			  reader.readAsText(file);
+			<div class="player_container">
+				<div id="player1">hjkl</div>
+			</div>
+
+		</div>
+
+		<div class="player_controller">
+
+			<div id="info_bar_2" class="info_bar">
+				<div id="vol_lvl_2" class="vol_lvl"></div>
+				<div id="fade_goal_viz_2" class="fade_goal_viz"></div>
+			</div>
+
+			<div class="button_container">
+				<button class="player_button" onclick="play_pause(2)">PLAY</button>
+				<button class="player_button" onclick="mute_(2)">MUTE</button>
+				<button class="player_button" onclick="fain(2)">FAIN</button>
+				<button class="player_button" onclick="fout(2)">FOUT</button>
+				<button class="player_button" onclick="increase_vol(2)">VOL+</button>
+				<button class="player_button" onclick="decrease_vol(2)">VOL-</button>
+				<button class="player_button" onclick="reset(2)">RSET</button>
+				<button class="player_button" onclick="edit_url(2)">EDIT</button>
+			</div>
+
+			<div class="player_container">
+				<div id="player2">hjkl</div>
+			</div>
+
+		</div>
+
+		<div class="player_controller">
+
+			<div id="info_bar_3" class="info_bar">
+				<div id="vol_lvl_3" class="vol_lvl"></div>
+				<div id="fade_goal_viz_3" class="fade_goal_viz"></div>
+			</div>
+
+			<div class="button_container">
+				<button class="player_button" onclick="play_pause(3)">PLAY</button>
+				<button class="player_button" onclick="mute_(3)">MUTE</button>
+				<button class="player_button" onclick="fain(3)">FAIN</button>
+				<button class="player_button" onclick="fout(3)">FOUT</button>
+				<button class="player_button" onclick="increase_vol(3)">VOL+</button>
+				<button class="player_button" onclick="decrease_vol(3)">VOL-</button>
+				<button class="player_button" onclick="reset(3)">RSET</button>
+				<button class="player_button" onclick="edit_url(3)">EDIT</button>
+			</div>
+
+			<div class="player_container">
+				<div id="player3">hjkl</div>
+			</div>
+
+		</div>
+
+		<div class="player_controller">
+
+			<div id="info_bar_4" class="info_bar">
+				<div id="vol_lvl_4" class="vol_lvl"></div>
+				<div id="fade_goal_viz_4" class="fade_goal_viz"></div>
+			</div>
+
+			<div class="button_container">
+				<button class="player_button" onclick="play_pause(4)">PLAY</button>
+				<button class="player_button" onclick="mute_(4)">MUTE</button>
+				<button class="player_button" onclick="fain(4)">FAIN</button>
+				<button class="player_button" onclick="fout(4)">FOUT</button>
+				<button class="player_button" onclick="increase_vol(4)">VOL+</button>
+				<button class="player_button" onclick="decrease_vol(4)">VOL-</button>
+				<button class="player_button" onclick="reset(4)">RSET</button>
+				<button class="player_button" onclick="edit_url(4)">EDIT</button>
+			</div>
+
+			<div class="player_container">
+				<div id="player4">hjkl</div>
+			</div>
+
+		</div>
+	</div>
+
+	<div class="player_controller_section">
+
+		<div class="enviroment_header">
+
+			<div id="env_info_bar_1" class="info_bar"></div>
+
+			<input id="env_name_B" value="Zargo's Rache" type="button" class="proxy_browser"
+				onclick="document.getElementById('env_browser_B').click();" />
+			<input id="env_browser_B" class="search_file" type="file">
+
+		</div>
+
+		<div class="save_box">
+			<p class="text_box" onclick="save_env(1)">&#128220;</p>
+		</div>
+
+		<div class="player_controller">
+
+			<div id="info_bar_5" class="info_bar">
+				<div id="vol_lvl_5" class="vol_lvl"></div>
+				<div id="fade_goal_viz_5" class="fade_goal_viz"></div>
+			</div>
+
+			<div class="button_container">
+				<button class="player_button" onclick="play_pause(5)">PLAY</button>
+				<button class="player_button" onclick="mute_(5)">MUTE</button>
+				<button class="player_button" onclick="fain(5)">FAIN</button>
+				<button class="player_button" onclick="fout(5)">FOUT</button>
+				<button class="player_button" onclick="increase_vol(5)">VOL+</button>
+				<button class="player_button" onclick="decrease_vol(5)">VOL-</button>
+				<button class="player_button" onclick="reset(5)">RSET</button>
+				<button class="player_button" onclick="edit_url(5)">EDIT</button>
+			</div>
+
+			<div class="player_container">
+				<div id="player5">hjkl</div>
+			</div>
+
+		</div>
+
+		<div class="player_controller">
+
+			<div id="info_bar_6" class="info_bar">
+				<div id="vol_lvl_6" class="vol_lvl"></div>
+				<div id="fade_goal_viz_6" class="fade_goal_viz"></div>
+			</div>
+
+			<div class="button_container">
+				<button class="player_button" onclick="play_pause(6)">PLAY</button>
+				<button class="player_button" onclick="mute_(6)">MUTE</button>
+				<button class="player_button" onclick="fain(6)">FAIN</button>
+				<button class="player_button" onclick="fout(6)">FOUT</button>
+				<button class="player_button" onclick="increase_vol(6)">VOL+</button>
+				<button class="player_button" onclick="decrease_vol(6)">VOL-</button>
+				<button class="player_button" onclick="reset(6)">RSET</button>
+				<button class="player_button" onclick="edit_url(6)">EDIT</button>
+			</div>
+
+			<div class="player_container">
+				<div id="player6">hjkl</div>
+			</div>
+
+		</div>
+
+		<div class="player_controller">
+
+			<div id="info_bar_7" class="info_bar">
+				<div id="vol_lvl_7" class="vol_lvl"></div>
+				<div id="fade_goal_viz_7" class="fade_goal_viz"></div>
+			</div>
+
+			<div class="button_container">
+				<button class="player_button" onclick="play_pause(7)">PLAY</button>
+				<button class="player_button" onclick="mute_(7)">MUTE</button>
+				<button class="player_button" onclick="fain(7)">FAIN</button>
+				<button class="player_button" onclick="fout(7)">FOUT</button>
+				<button class="player_button" onclick="increase_vol(7)">VOL+</button>
+				<button class="player_button" onclick="decrease_vol(7)">VOL-</button>
+				<button class="player_button" onclick="reset(7)">RSET</button>
+				<button class="player_button" onclick="edit_url(7)">EDIT</button>
+			</div>
+
+			<div class="player_container">
+				<div id="player7">hjkl</div>
+			</div>
+
+		</div>
+
+		<div class="player_controller">
+
+			<div id="info_bar_8" class="info_bar">
+				<div id="vol_lvl_8" class="vol_lvl"></div>
+				<div id="fade_goal_viz_8" class="fade_goal_viz"></div>
+			</div>
+
+			<div class="button_container">
+				<button class="player_button" onclick="play_pause(8)">PLAY</button>
+				<button class="player_button" onclick="mute_(8)">MUTE</button>
+				<button class="player_button" onclick="fain(8)">FAIN</button>
+				<button class="player_button" onclick="fout(8)">FOUT</button>
+				<button class="player_button" onclick="increase_vol(8)">VOL+</button>
+				<button class="player_button" onclick="decrease_vol(8)">VOL-</button>
+				<button class="player_button" onclick="reset(8)">RSET</button>
+				<button class="player_button" onclick="edit_url(8)">EDIT</button>
+			</div>
+
+			<div class="player_container">
+				<div id="player8">hjkl</div>
+			</div>
+
+		</div>
+
+		<div class="player_controller">
+
+			<div id="info_bar_9" class="info_bar">
+				<div id="vol_lvl_9" class="vol_lvl"></div>
+				<div id="fade_goal_viz_9" class="fade_goal_viz"></div>
+			</div>
+
+			<div class="button_container">
+				<button class="player_button" onclick="play_pause(9)">PLAY</button>
+				<button class="player_button" onclick="mute_(9)">MUTE</button>
+				<button class="player_button" onclick="fain(9)">FAIN</button>
+				<button class="player_button" onclick="fout(9)">FOUT</button>
+				<button class="player_button" onclick="increase_vol(9)">VOL+</button>
+				<button class="player_button" onclick="decrease_vol(9)">VOL-</button>
+				<button class="player_button" onclick="reset(9)">RSET</button>
+				<button class="player_button" onclick="edit_url(9)">EDIT</button>
+			</div>
+
+			<div class="player_container">
+				<div id="player9">hjkl</div>
+			</div>
+
+		</div>
+	</div>
+
+	<div class="player_controller_section">
+
+		<div class="enviroment_header">
+
+			<div id="env_info_bar_2" class="info_bar"></div>
+
+			<input id="env_name_C" value="Elfenhertz Laboratorium" type="button" class="proxy_browser"
+				onclick="document.getElementById('env_browser_C').click();" />
+			<input id="env_browser_C" class="search_file" type="file">
+
+		</div>
+
+		<div class="save_box">
+			<p class="text_box" onclick="save_env(2)">&#128220;</p>
+		</div>
+
+		<div class="player_controller">
+
+			<div id="info_bar_10" class="info_bar">
+				<div id="vol_lvl_10" class="vol_lvl"></div>
+				<div id="fade_goal_viz_10" class="fade_goal_viz"></div>
+			</div>
+
+			<div class="button_container">
+				<button class="player_button" onclick="play_pause(10)">PLAY</button>
+				<button class="player_button" onclick="mute_(10)">MUTE</button>
+				<button class="player_button" onclick="fain(10)">FAIN</button>
+				<button class="player_button" onclick="fout(10)">FOUT</button>
+				<button class="player_button" onclick="increase_vol(10)">VOL+</button>
+				<button class="player_button" onclick="decrease_vol(10)">VOL-</button>
+				<button class="player_button" onclick="reset(10)">RSET</button>
+				<button class="player_button" onclick="edit_url(10)">EDIT</button>
+			</div>
+
+			<div class="player_container">
+				<div id="player10">hjkl</div>
+			</div>
+
+		</div>
+
+		<div class="player_controller">
+
+			<div id="info_bar_11" class="info_bar">
+				<div id="vol_lvl_11" class="vol_lvl"></div>
+				<div id="fade_goal_viz_11" class="fade_goal_viz"></div>
+			</div>
+
+			<div class="button_container">
+				<button class="player_button" onclick="play_pause(11)">PLAY</button>
+				<button class="player_button" onclick="mute_(11)">MUTE</button>
+				<button class="player_button" onclick="fain(11)">FAIN</button>
+				<button class="player_button" onclick="fout(11)">FOUT</button>
+				<button class="player_button" onclick="increase_vol(11)">VOL+</button>
+				<button class="player_button" onclick="decrease_vol(11)">VOL-</button>
+				<button class="player_button" onclick="reset(11)">RSET</button>
+				<button class="player_button" onclick="edit_url(11)">EDIT</button>
+			</div>
+
+			<div class="player_container">
+				<div id="player11">hjkl</div>
+			</div>
+
+		</div>
+
+		<div class="player_controller">
+
+			<div id="info_bar_12" class="info_bar">
+				<div id="vol_lvl_12" class="vol_lvl"></div>
+				<div id="fade_goal_viz_12" class="fade_goal_viz"></div>
+			</div>
+
+			<div class="button_container">
+				<button class="player_button" onclick="play_pause(12)">PLAY</button>
+				<button class="player_button" onclick="mute_(12)">MUTE</button>
+				<button class="player_button" onclick="fain(12)">FAIN</button>
+				<button class="player_button" onclick="fout(12)">FOUT</button>
+				<button class="player_button" onclick="increase_vol(12)">VOL+</button>
+				<button class="player_button" onclick="decrease_vol(12)">VOL-</button>
+				<button class="player_button" onclick="reset(12)">RSET</button>
+				<button class="player_button" onclick="edit_url(12)">EDIT</button>
+			</div>
+
+			<div class="player_container">
+				<div id="player12">hjkl</div>
+			</div>
+
+		</div>
+
+		<div class="player_controller">
+
+			<div id="info_bar_13" class="info_bar">
+				<div id="vol_lvl_13" class="vol_lvl"></div>
+				<div id="fade_goal_viz_13" class="fade_goal_viz"></div>
+			</div>
+
+			<div class="button_container">
+				<button class="player_button" onclick="play_pause(13)">PLAY</button>
+				<button class="player_button" onclick="mute_(13)">MUTE</button>
+				<button class="player_button" onclick="fain(13)">FAIN</button>
+				<button class="player_button" onclick="fout(13)">FOUT</button>
+				<button class="player_button" onclick="increase_vol(13)">VOL+</button>
+				<button class="player_button" onclick="decrease_vol(13)">VOL-</button>
+				<button class="player_button" onclick="reset(13)">RSET</button>
+				<button class="player_button" onclick="edit_url(13)">EDIT</button>
+			</div>
+
+			<div class="player_container">
+				<div id="player13">hjkl</div>
+			</div>
+
+		</div>
+
+		<div class="player_controller">
+
+			<div id="info_bar_14" class="info_bar">
+				<div id="vol_lvl_14" class="vol_lvl"></div>
+				<div id="fade_goal_viz_14" class="fade_goal_viz"></div>
+			</div>
+
+			<div class="button_container">
+				<button class="player_button" onclick="play_pause(14)">PLAY</button>
+				<button class="player_button" onclick="mute_(14)">MUTE</button>
+				<button class="player_button" onclick="fain(14)">FAIN</button>
+				<button class="player_button" onclick="fout(14)">FOUT</button>
+				<button class="player_button" onclick="increase_vol(14)">VOL+</button>
+				<button class="player_button" onclick="decrease_vol(14)">VOL-</button>
+				<button class="player_button" onclick="reset(14)">RSET</button>
+				<button class="player_button" onclick="edit_url(14)">EDIT</button>
+			</div>
+
+			<div class="player_container">
+				<div id="player14">hjkl</div>
+			</div>
+
+		</div>
+	</div>
+
+	<script>
+		// download emoji options 128190 (disk) 128204 (pin) 128220 (scroll) 128274 (lock) 128737 (shield)
+
+		// cover yt logo with btn (play/pause)
+
+		// TALE TUNES
+
+		// load env urls from and update (env A)
+		document.getElementById('env_browser_A').onchange = function () {
+			var file = this.files[0];
+			// remove suffix
+			let env_name = file.name.slice(0, -4);
+			// set env name to loaded env name
+			document.getElementById('env_name_A').value = env_name;
+
+			var reader = new FileReader();
+			reader.onload = function (progressEvent) {
+				var urls = this.result.split(/\r\n|\n/).slice(0, 5);
+				segment_A_urls = urls;
+				update_env(0, urls);
 			};
+			reader.readAsText(file);
+		};
 
-			// load env urls from and update (env B)
-			document.getElementById('env_browser_B').onchange = function()
-			{
-			  var file = this.files[0];
-			  // remove suffix
-			  let env_name = file.name.slice(0, -4);
-			  // set env name to loaded env name
-			  document.getElementById('env_name_B').value = env_name;
-			  
-			  var reader = new FileReader();
-			  reader.onload = function(progressEvent)
-			  {
-			    var urls = this.result.split(/\r\n|\n/).slice(0, 5);
-			    segment_B_urls = urls;   
-			    update_env(1, urls);  
-			  };
-			  reader.readAsText(file);
+		// load env urls from and update (env B)
+		document.getElementById('env_browser_B').onchange = function () {
+			var file = this.files[0];
+			// remove suffix
+			let env_name = file.name.slice(0, -4);
+			// set env name to loaded env name
+			document.getElementById('env_name_B').value = env_name;
+
+			var reader = new FileReader();
+			reader.onload = function (progressEvent) {
+				var urls = this.result.split(/\r\n|\n/).slice(0, 5);
+				segment_B_urls = urls;
+				update_env(1, urls);
 			};
+			reader.readAsText(file);
+		};
 
-			// load env urls from and update (env C)
-			document.getElementById('env_browser_C').onchange = function()
-			{
-			  var file = this.files[0];
-			  // remove suffix
-			  let env_name = file.name.slice(0, -4);
-			  // set env name to loaded env name
-			  document.getElementById('env_name_C').value = env_name;
-			  
-			  var reader = new FileReader();
-			  reader.onload = function(progressEvent)
-			  {
-			    var urls = this.result.split(/\r\n|\n/).slice(0, 5);
-			    segment_C_urls = urls;     
-			    update_env(2, urls);  
-			  };
-			  reader.readAsText(file);
+		// load env urls from and update (env C)
+		document.getElementById('env_browser_C').onchange = function () {
+			var file = this.files[0];
+			// remove suffix
+			let env_name = file.name.slice(0, -4);
+			// set env name to loaded env name
+			document.getElementById('env_name_C').value = env_name;
+
+			var reader = new FileReader();
+			reader.onload = function (progressEvent) {
+				var urls = this.result.split(/\r\n|\n/).slice(0, 5);
+				segment_C_urls = urls;
+				update_env(2, urls);
 			};
+			reader.readAsText(file);
+		};
 
-			// download env urls to a file
-			function save_env(env_index)
-			{ 
-			  var urls;
-			  if (env_index == 0) {urls = segment_A_urls;}
-			  if (env_index == 1) {urls = segment_B_urls;}
-			  if (env_index == 2) {urls = segment_C_urls;}
+		// download env urls to a file
+		function save_env(env_index) {
+			var urls;
+			if (env_index == 0) { urls = segment_A_urls; }
+			if (env_index == 1) { urls = segment_B_urls; }
+			if (env_index == 2) { urls = segment_C_urls; }
 
-			  // format urls in separate lines (easy to read and edit)
-			  var data = urls[0] + "\n" + urls[1] + "\n" + urls[2] + "\n" + urls[3] + "\n" + urls[4] + "\n";
+			// format urls in separate lines (easy to read and edit)
+			var data = urls[0] + "\n" + urls[1] + "\n" + urls[2] + "\n" + urls[3] + "\n" + urls[4] + "\n";
 
-			  // promt to enter file name 
-			  let save_as = prompt("Save as:", "Bossfight: Medusa's vs Golem");
-			  if (save_as != null)
-			  {
-			    var file = new Blob([data], {type: ".txt"});
-			    
-			    if (window.navigator.msSaveOrOpenBlob)
-			    {
-			      window.navigator.msSaveOrOpenBlob(file, save_as + ".txt");
-			      console.log("A");   
-			    }
-			    else
-			    {
-			      console.log("B");
-			      var a = document.createElement("a"), url = URL.createObjectURL(file);
-			      a.href = url;
-			      a.download = save_as + ".txt";
-			      document.body.appendChild(a);
-			      a.click();
-			      setTimeout(function()
-			      {
-			          document.body.removeChild(a);
-			          window.URL.revokeObjectURL(url);  
-			      }, 0); 
-			    }
-			  }
+			// promt to enter file name 
+			let save_as = prompt("Save as:", "Bossfight: Medusa's vs Golem");
+			if (save_as != null) {
+				var file = new Blob([data], { type: ".txt" });
+
+				if (window.navigator.msSaveOrOpenBlob) {
+					window.navigator.msSaveOrOpenBlob(file, save_as + ".txt");
+					console.log("A");
+				}
+				else {
+					console.log("B");
+					var a = document.createElement("a"), url = URL.createObjectURL(file);
+					a.href = url;
+					a.download = save_as + ".txt";
+					document.body.appendChild(a);
+					a.click();
+					setTimeout(function () {
+						document.body.removeChild(a);
+						window.URL.revokeObjectURL(url);
+					}, 0);
+				}
 			}
+		}
 
-			let segment_A_urls = [
-			  "https://www.youtube.com/watch?v=Paq-0sRPovA&list=PLniTzKxa2c_dxZoQ_0L5kDpIChdiJnCR9&index=4",
-			  "https://www.youtube.com/watch?v=AfN3_ERtn3E&list=PLniTzKxa2c_dxZoQ_0L5kDpIChdiJnCR9&index=7",
-			  "https://www.youtube.com/watch?v=bNOmxepDcm4&list=PLniTzKxa2c_dxZoQ_0L5kDpIChdiJnCR9&index=15",
-			  "https://www.youtube.com/watch?v=2WChXX9R3zM&list=PLniTzKxa2c_dxZoQ_0L5kDpIChdiJnCR9&index=17",
-			  "https://www.youtube.com/watch?v=rnrK3zxsKdA&list=PLniTzKxa2c_dxZoQ_0L5kDpIChdiJnCR9&index=11"
-			]
+		let segment_A_urls = [
+			"https://www.youtube.com/watch?v=Paq-0sRPovA&list=PLniTzKxa2c_dxZoQ_0L5kDpIChdiJnCR9&index=4",
+			"https://www.youtube.com/watch?v=AfN3_ERtn3E&list=PLniTzKxa2c_dxZoQ_0L5kDpIChdiJnCR9&index=7",
+			"https://www.youtube.com/watch?v=bNOmxepDcm4&list=PLniTzKxa2c_dxZoQ_0L5kDpIChdiJnCR9&index=15",
+			"https://www.youtube.com/watch?v=2WChXX9R3zM&list=PLniTzKxa2c_dxZoQ_0L5kDpIChdiJnCR9&index=17",
+			"https://www.youtube.com/watch?v=rnrK3zxsKdA&list=PLniTzKxa2c_dxZoQ_0L5kDpIChdiJnCR9&index=11"
+		]
 
-			let segment_B_urls = [
-			  "https://www.youtube.com/watch?v=4G_CC6GXgQM&list=PLniTzKxa2c_dxZoQ_0L5kDpIChdiJnCR9&index=6  ",
-			  "https://www.youtube.com/watch?v=_52K0E_gNY0&list=PLniTzKxa2c_dxZoQ_0L5kDpIChdiJnCR9&index=13",
-			  "https://www.youtube.com/watch?v=r1PopjZ6_Hg&list=PLniTzKxa2c_dxZoQ_0L5kDpIChdiJnCR9&index=8",
-			  "https://www.youtube.com/watch?v=LGySKsbqbik&list=PLniTzKxa2c_dxZoQ_0L5kDpIChdiJnCR9&index=12",
-			  "https://www.youtube.com/watch?v=Vsok_dWP_rk&list=PLniTzKxa2c_c1_37LC3vlJTuWPgZ1txxp&index=4"
-			]
+		let segment_B_urls = [
+			"https://www.youtube.com/watch?v=4G_CC6GXgQM&list=PLniTzKxa2c_dxZoQ_0L5kDpIChdiJnCR9&index=6  ",
+			"https://www.youtube.com/watch?v=_52K0E_gNY0&list=PLniTzKxa2c_dxZoQ_0L5kDpIChdiJnCR9&index=13",
+			"https://www.youtube.com/watch?v=r1PopjZ6_Hg&list=PLniTzKxa2c_dxZoQ_0L5kDpIChdiJnCR9&index=8",
+			"https://www.youtube.com/watch?v=LGySKsbqbik&list=PLniTzKxa2c_dxZoQ_0L5kDpIChdiJnCR9&index=12",
+			"https://www.youtube.com/watch?v=Vsok_dWP_rk&list=PLniTzKxa2c_c1_37LC3vlJTuWPgZ1txxp&index=4"
+		]
 
-			let segment_C_urls = [
-			  "https://www.youtube.com/watch?v=gVKEM4K8J8A&list=PLniTzKxa2c_c1_37LC3vlJTuWPgZ1txxp&index=31",
-			  "https://www.youtube.com/watch?v=7Uxs7bwJ1Bg&list=PLniTzKxa2c_c1_37LC3vlJTuWPgZ1txxp&index=13",
-			  "https://www.youtube.com/watch?v=r1PopjZ6_Hg&list=PLniTzKxa2c_dMPngp56B6OKeMrDiz0Mt0&index=14",
-			  "https://www.youtube.com/watch?v=lwQIbazNol0",
-			  "https://www.youtube.com/watch?v=0na-AVs7OJs"  
-			]
+		let segment_C_urls = [
+			"https://www.youtube.com/watch?v=gVKEM4K8J8A&list=PLniTzKxa2c_c1_37LC3vlJTuWPgZ1txxp&index=31",
+			"https://www.youtube.com/watch?v=7Uxs7bwJ1Bg&list=PLniTzKxa2c_c1_37LC3vlJTuWPgZ1txxp&index=13",
+			"https://www.youtube.com/watch?v=r1PopjZ6_Hg&list=PLniTzKxa2c_dMPngp56B6OKeMrDiz0Mt0&index=14",
+			"https://www.youtube.com/watch?v=lwQIbazNol0",
+			"https://www.youtube.com/watch?v=0na-AVs7OJs"
+		]
 
-			// redo update_env function to avoid this
-			let concat_urls = segment_A_urls.concat(segment_B_urls.concat(segment_C_urls));
-			let players_rdy = 0;
+		// redo update_env function to avoid this
+		let concat_urls = segment_A_urls.concat(segment_B_urls.concat(segment_C_urls));
+		let players_rdy = 0;
 
-			// holds API player objects
-			const players = [];
-			// Vol is the value increasing during fading
-			const vols = [];
-			// Fadegoal is the value to reach via fading
-			const fade_goals = [];
+		// holds API player objects
+		const players = [];
+		// Vol is the value increasing during fading
+		const vols = [];
+		// Fadegoal is the value to reach via fading
+		const fade_goals = [];
 
-			// JS arrays are wierd
-			for(let i = 0; i < 15; i++)
-			{
-			  vols.push(100); fade_goals.push(100);
+		// JS arrays are wierd
+		for (let i = 0; i < 15; i++) {
+			vols.push(100); fade_goals.push(100);
+		}
+
+		function loadScript() {
+			if (typeof (YT) == 'undefined' || typeof (YT.Player) == 'undefined') {
+				var tag = document.createElement('script');
+				tag.src = "https://www.youtube.com/iframe_api";
+				var firstScriptTag = document.getElementsByTagName('script')[0];
+				firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 			}
+		}
 
-			function loadScript() 
-			{
-			  if (typeof(YT) == 'undefined' || typeof(YT.Player) == 'undefined')
-			  {
-			    var tag = document.createElement('script');
-			    tag.src = "https://www.youtube.com/iframe_api";
-			    var firstScriptTag = document.getElementsByTagName('script')[0];
-			    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-			  }
-			}
+		function loadPlayer() {
+			window.onYouTubePlayerAPIReady = function () {
+				onYouTubePlayer();
+			};
+		}
 
-			function loadPlayer() 
-			{
-			  window.onYouTubePlayerAPIReady = function() 
-			  {
-			  onYouTubePlayer();
-			  };
-			}
+		loadScript();
 
-			loadScript();
+		// Convert videos url to videoID
+		function getYouTubeVideoId(url) {
+			let regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/; // ???
+			let match = url.match(regExp);
+			return (match && match[7].length == 11) ? match[7] : false;
+		}
 
-			// Convert videos url to videoID
-			function getYouTubeVideoId(url)
-			{
-			  let regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/; // ???
-			  let match = url.match(regExp);
-			  return (match && match[7].length == 11) ? match[7] : false;
-			}
-
-			// This function is called by YouTube once the the API is ready.
-			function onYouTubeIframeAPIReady()
-			{
+		// This function is called by YouTube once the the API is ready.
+		function onYouTubeIframeAPIReady() {
 			// init all envs
 			update_env(0, segment_A_urls);
 			update_env(1, segment_B_urls);
 			update_env(2, segment_C_urls);
+		}
+
+		function update_env(segment_index, new_urls) {
+			// override segment_ruls:
+			if (segment_index == 0) { segment_A_urls = new_urls; }
+			if (segment_index == 1) { segment_B_urls = new_urls; }
+			if (segment_index == 2) { segment_C_urls = new_urls; }
+			concat_urls = segment_A_urls.concat(segment_B_urls.concat(segment_C_urls));
+
+			for (let i = (5 * segment_index); i < ((5 * segment_index) + 5); i++) {
+				elem = document.getElementById("player" + String(i));
+				elem_parent = elem.parentNode;
+				if (elem) { elem.remove(); }
+				new_div_elem = document.createElement('div');
+				new_div_elem.setAttribute("id", "player" + String(i));
+				elem_parent.appendChild(new_div_elem);
+
+				players[i] = new YT.Player("player" + String(i),
+					{
+						height: "100%",
+						width: "100%",
+						videoId: getYouTubeVideoId(concat_urls[i]),
+
+						//origin: "https://www.youtube.com", // fix some vids not playing?!
+						//playsinline: "1",
+
+						events:
+						{
+							onReady: onPlayerReady
+						}
+					});
+			}
+		}
+
+		function update_single_player(index, new_url) {
+			// update relevant segment_urls based on index 0-14
+			if (index < 5) {
+				segment_A_urls[index] = new_url;
+			} else if (index >= 5 && index < 10) {
+				segment_B_urls[index - 5] = new_url;
+			} else {
+				segment_C_urls[index - 10] = new_url;
 			}
 
-			function update_env(segment_index, new_urls)
-			{
-			  // override segment_ruls:
-			  if (segment_index == 0){segment_A_urls = new_urls;}
-			  if (segment_index == 1){segment_B_urls = new_urls;}
-			  if (segment_index == 2){segment_C_urls = new_urls;}
-			  concat_urls = segment_A_urls.concat(segment_B_urls.concat(segment_C_urls));
+			// recreate the player
+			let elem = document.getElementById("player" + String(index));
+			let elem_parent = elem.parentNode;
+			if (elem) { elem.remove(); }
+			let new_div_elem = document.createElement('div');
+			new_div_elem.setAttribute("id", "player" + String(index));
+			elem_parent.appendChild(new_div_elem);
 
-			  for (let i = (5 * segment_index); i < ((5 * segment_index) + 5); i++)
-			  { 
-			    elem = document.getElementById("player" + String(i));
-			    elem_parent = elem.parentNode;
-			    if (elem) {elem.remove();}
-			    new_div_elem = document.createElement('div');
-			    new_div_elem.setAttribute("id", "player" + String(i));
-			    elem_parent.appendChild(new_div_elem);
+			players[index] = new YT.Player("player" + String(index), {
+				height: "100%",
+				width: "100%",
+				videoId: getYouTubeVideoId(new_url),
+				events: { onReady: onPlayerReady }
+			});
+		}
 
-			    players[i] = new YT.Player("player" + String(i),
-			    {
-			      height: "100%", 
-			      width: "100%",
-			      videoId: getYouTubeVideoId(concat_urls[i]),
+		function onPlayerReady(event) {
+			event.target.playVideo();
+			event.target.stopVideo();
 
-			      //origin: "https://www.youtube.com", // fix some vids not playing?!
-			      //playsinline: "1",
+			players_rdy += 1;
+			console.log(players_rdy);
+			if (players_rdy >= 15) {
+				removeFadeOut(document.getElementById('flash_screen'), 1000);
+				setTimeout(function () { removeFadeOut(document.getElementById('flash_screen_bg'), 500); }, 1000);
+			}
+		}
 
-			      events:
-			      {
-			        onReady: onPlayerReady
-			      }
-			    });
-			  }
+		// for 1/10 of a second updating fading function
+		setInterval(update, 100);
+
+		function set_fade_goal(index, goal) {
+			fade_goals[index] = goal;
+		}
+
+		function update() {
+			// Fade volume up or down, depending on goal
+			for (let i = 0; i < 15; i++) {
+				let fade_value = 0.5;
+				//scale down fade value when almost silent
+				if (fade_goals[i] <= 0 && vols[i] < 10 && vols[i] != 0) {
+					fade_value = 0.1;
+					console.log("smooth decrease happening!")
+				}
+
+				if (vols[i] < fade_goals[i]) {
+					players[i].setVolume(vols[i] + 0.5);
+					vols[i] += 0.5;
+				}
+				if (vols[i] > fade_goals[i]) {
+					players[i].setVolume(vols[i] - 0.5);
+					vols[i] -= 0.5;
+				}
+				// adjust goals above or below boundries
+				if (fade_goals[i] < 0) {
+					fade_goals[i] = 0;
+				}
+				if (fade_goals[i] > 100) {
+					fade_goals[i] = 100;
+				}
+
+				// Adjust goals viz
+				document.getElementById('fade_goal_viz_' + String(i)).style.top = String(100 - fade_goals[i]) + "%";
+
+				// hide if goal is 0 and unhide if not
+				viz_opacity = "1.0"
+				if (fade_goals[i] <= 0) {
+					viz_opacity = "0.0"
+				}
+				document.getElementById('fade_goal_viz_' + String(i)).style.opacity = viz_opacity;
+
+				// set info div color, when playing and volume != 0
+
+				if (vols[i] != 0 && players[i].getPlayerState() == 1) {
+					document.getElementById('info_bar_' + String(i)).style.backgroundColor = "orange"; /*vv*/
+				}
+				else {
+					document.getElementById('info_bar_' + String(i)).style.backgroundColor = "grey";
+				}
+				// update volume level viz
+				document.getElementById('vol_lvl_' + String(i)).style.height = String(vols[i] * (-1) + 100) + "%";
 			}
 
-			function update_single_player(index, new_url)
-			{
-			  //update relevant segment_urls based on index 0-14
-			  if (index < 5) {segment_A_urls[index] = new_url;}
-			  if (index > 5 && index < 10) {segment_B_urls[index - 5] = new_url;}
-			  else {segment_C_urls[index -10] = new_url;}
+		}
 
-			  elem = document.getElementById("player" + String(index));
-			      elem_parent = elem.parentNode;
-			      if (elem) {elem.remove();}
-			      new_div_elem = document.createElement('div');
-			      new_div_elem.setAttribute("id", "player" + String(index));
-			      elem_parent.appendChild(new_div_elem);
+		function play_pause(index) {
+			let player_state = players[index].getPlayerState();
 
-			      players[index] = new YT.Player("player" + String(index),
-			      {
-			        height: "100%", 
-			        width: "100%",
-			        videoId: getYouTubeVideoId(new_url),
-			        
-			        //origin: "https://www.youtube.com", // fix some vids not playing?!
-			        //playsinline: "1",
-
-			        events: 
-			        {
-			          onReady: onPlayerReady
-			        },
-			      });
+			if (player_state == 2 | player_state == 0 | player_state == -1 | player_state == 5) {
+				players[index].setVolume(100);
+				vols[index] = 100;
+				fade_goals[index] = 100;
+				players[index].playVideo();
 			}
-
-			function onPlayerReady(event)
-			{
-			  event.target.playVideo();
-			  event.target.stopVideo();
-			  
-			  players_rdy += 1;
-			  console.log(players_rdy);
-			  if (players_rdy >= 15)
-			  {
-			    removeFadeOut(document.getElementById('flash_screen'), 1000);
-			    setTimeout(function(){removeFadeOut(document.getElementById('flash_screen_bg'), 500);}, 1000);
-			  }
+			if (player_state == 1) {
+				players[index].pauseVideo();
 			}
+		}
 
-			// for 1/10 of a second updating fading function
-			setInterval(update, 100);
+		function fain(index) {
+			let player_state = players[index].getPlayerState()
 
-			function set_fade_goal(index, goal)
-			{
-			  fade_goals[index] = goal;
+			if (player_state == 2 | player_state == 5) {
+				vols[index] = 0;
+				players[index].playVideo();
 			}
+			set_fade_goal(index, 100);
+		}
 
-			function update()
-			{
-			  // Fade volume up or down, depending on goal
-			  for (let i = 0; i < 15; i++)
-			  {
-			    let fade_value = 0.5;
-			    //scale down fade value when almost silent
-			    if (fade_goals[i] <= 0 && vols[i] < 10 && vols[i] != 0)
-			      {
-			        fade_value = 0.1;
-			        console.log("smooth decrease happening!")
-			      }
+		function fout(index) {
+			set_fade_goal(index, 0);
+		}
 
-			    if (vols[i] < fade_goals[i])
-			    {
-			      players[i].setVolume(vols[i] + 0.5);
-			      vols[i] += 0.5;
-			    }
-			    if (vols[i] > fade_goals[i])
-			    {
-			      players[i].setVolume(vols[i] - 0.5);
-			      vols[i] -= 0.5;
-			    }
-			    // adjust goals above or below boundries
-			    if (fade_goals[i] < 0)
-			    {
-			      fade_goals[i] = 0;
-			    }
-			    if (fade_goals[i] > 100)
-			    {
-			      fade_goals[i] = 100;
-			    }
-			    
-			    // Adjust goals viz
-			    document.getElementById('fade_goal_viz_' + String(i)).style.top = String(100 - fade_goals[i]) + "%";
-			   
-			    // hide if goal is 0 and unhide if not
-			    viz_opacity = "1.0"
-			    if (fade_goals[i] <= 0)
-			    {
-			      viz_opacity = "0.0"
-			    }
-			    document.getElementById('fade_goal_viz_' + String(i)).style.opacity = viz_opacity;
+		function increase_vol(index) {
+			set_fade_goal(index, fade_goals[index] + 20);
+		}
 
-			    // set info div color, when playing and volume != 0
+		function decrease_vol(index) {
+			set_fade_goal(index, fade_goals[index] - 20);
+		}
 
-			    if (vols[i] != 0 && players[i].getPlayerState() == 1)
-			    {
-			      document.getElementById('info_bar_' + String(i)).style.backgroundColor = "orange"; /*vv*/
-			    }
-			    else
-			    {
-			      document.getElementById('info_bar_' + String(i)).style.backgroundColor = "grey"; 
-			    }
-			    // update volume level viz
-			    document.getElementById('vol_lvl_' + String(i)).style.height = String(vols[i]*(-1)+100) + "%";
-			  }
+		function mute_(index) {
+			players[index].setVolume(0);
+			set_fade_goal(index, 0);
+			vols[index] = 0;
+		}
 
+		function reset(index) {
+			players[index].stopVideo();
+		}
+
+		function edit_url(index) {
+
+			var selected;
+			//get current url to display or copy
+			if (index < 5) { selected = segment_A_urls[index]; console.log("AAA"); }
+			if (index >= 5 && index < 10) { selected = segment_B_urls[index - 5]; console.log("BBB"); }
+			if (index >= 10) { selected = segment_C_urls[index - 10]; console.log("CCC"); }
+
+			console.log(selected);
+
+			let new_url = prompt("Enter URL:", selected);
+			if (new_url != null) {
+				update_single_player(index, new_url);
 			}
+		}
 
-			function play_pause(index)
-			{
-			  let player_state = players[index].getPlayerState();
+		// to hide splash screen during loading iframes
+		function removeFadeOut(el, speed) {
+			var seconds = speed / 1000;
+			el.style.transition = "opacity " + seconds + "s ease";
 
-			  if (player_state == 2 | player_state == 0 | player_state == -1 | player_state == 5)
-			  {
-			    players[index].setVolume(100);
-			    vols[index] = 100;
-			    fade_goals[index] = 100;
-			    players[index].playVideo();
-			  }
-			  if (player_state == 1)
-			  {
-			    players[index].pauseVideo();
-			  }
-			}
-			  
-			function fain(index)
-			{
-			  let player_state = players[index].getPlayerState()
+			el.style.opacity = 0;
+			setTimeout(function () {
+				el.parentNode.removeChild(el);
+			}, speed);
+		}
 
-			  if (player_state == 2 | player_state == 5)
-			  {
-			    vols[index] = 0;
-			    players[index].playVideo();
-			  }
-			  set_fade_goal(index, 100);
-			}
+		//get video thumbnails by url
+		function get_thumbnail(url) {
+			x = String(getYouTubeVideoId(url));
+			src = "https://img.youtube.com/vi/" + x + "/2.jpg",
+				img = document.createElement('img');
+			img.src = src;
+			document.body.appendChild(img);
+		}
 
-			function fout(index)
-			{
-			  set_fade_goal(index, 0);
-			}
+		//get_thumbnail("https://www.youtube.com/watch?v=-vTNrzL3xa8")
+	</script>
+</body>
 
-			function increase_vol(index)
-			{
-			  set_fade_goal(index, fade_goals[index] + 20);
-			}
-
-			function decrease_vol(index)
-			{
-			  set_fade_goal(index, fade_goals[index] - 20);
-			}
-
-			function mute_(index)
-			{
-			  players[index].setVolume(0);
-			  set_fade_goal(index, 0);
-			  vols[index] = 0;
-			}
-
-			function reset(index)
-			{
-			  players[index].stopVideo();
-			}
-
-			function edit_url(index) {
-
-			  var selected;
-			  //get current url to display or copy
-			  if (index < 5) {selected = segment_A_urls[index]; console.log("AAA");}
-			  if (index >= 5 && index < 10) {selected = segment_B_urls[index - 5]; console.log("BBB");}
-			  if (index >= 10) {selected = segment_C_urls[index -10]; console.log("CCC");}
-
-			  console.log(selected);
-
-			  let new_url = prompt("Enter URL:", selected);
-			  if (new_url != null) {
-			    update_single_player(index, new_url);
-			  }
-			}
-
-			// to hide splash screen during loading iframes
-			function removeFadeOut( el, speed ) 
-			{
-			    var seconds = speed/1000;
-			    el.style.transition = "opacity "+seconds+"s ease";
-
-			    el.style.opacity = 0;
-			    setTimeout(function() {
-			        el.parentNode.removeChild(el);
-			    }, speed);
-			}
-
-			//get video thumbnails by url
-			function get_thumbnail(url)
-			{
-			  x = String(getYouTubeVideoId(url));
-			  src = "https://img.youtube.com/vi/" + x + "/2.jpg",
-			  img = document.createElement('img');
-			  img.src = src;
-			  document.body.appendChild(img);
-			}
-
-			//get_thumbnail("https://www.youtube.com/watch?v=-vTNrzL3xa8")
-		</script>
-	</body>
 </html>
