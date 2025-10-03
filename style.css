@@ -4,7 +4,7 @@ body {
 }
 
 .select-app {
-    width: 160px;
+    padding: 0px 20px;
     height: 90px;
     border-radius: 10px;
     display: flex;
@@ -22,4 +22,10 @@ body {
     box-shadow: 2px 2px 15px rgba(0, 0, 0, 0.9);
     background-color: rgb(146, 214, 114);
     color: rgb(20, 7, 39);
+}
+
+.greeting-msg {
+    margin-top: 100px;
+    font-size: 30px;
+    margin: auto;
 }
