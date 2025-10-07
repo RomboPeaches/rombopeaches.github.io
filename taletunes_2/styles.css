@@ -12,9 +12,9 @@
 
     --box-shadow: var(--clear);
 
-    --titles: #92d672;
+    --titles: #6abcff;
     --semi-clear: rgb(74, 129, 62);
-    --very-dark: rgba(20, 7, 39, 1.0);
+    --very-dark: rgb(84, 65, 94);
     --taletunes: var(--titles);
 
     --edit-btn: rgba(23, 33, 33, 0);
@@ -178,7 +178,7 @@ body {
     border-radius: 0px;
     padding: 0 0 23px 20px;
     font-size: 86px;
-    border-left: solid 8px var(--taletunes);
+    border-left: solid 1px var(--taletunes);
  }
 
 #empty-msg {
