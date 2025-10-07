@@ -9,7 +9,7 @@ body {
     margin: 0;
     height: 100vh;
     font-family: 'Ostrich-Sans', sans-serif;
-    background: linear-gradient(0deg,rgba(13, 79, 75, 1) 0%, rgba(19, 29, 94, 1) 100%);
+    background: linear-gradient(0deg,rgb(6, 8, 41) 0%, rgb(66, 89, 189) 100%);
 }
 
 .select-app {
@@ -20,18 +20,20 @@ body {
     align-items: center;
     justify-content: right;
     padding: 20px;
-    color: rgb(146, 214, 114);
+    color: rgb(231, 244, 255);
     font-size: 1rem;
     font-weight: 100;
-    box-shadow: 1px 1px 10px rgba(21, 70, 67, 0.7);
-    border: 2px rgb(146, 214, 114) solid;
-
+    box-shadow: 1px 1px 10px rgba(21, 70, 67, 1.0);
+    border: 1px rgb(192, 207, 219) solid;
+    background-color: rgb(66, 89, 189) 100%;
 }
 
 .select-app:hover {
-    box-shadow: 2px 2px 15px rgba(146, 214, 114, 0.9);
-    background-color: rgba(146, 214, 114, 0.7);
+    /*box-shadow: 2px 2px 15px rgb(54, 68, 129);*/
+    background-color: rgba(199, 199, 199, 0.9);
     color: rgb(19, 29, 94);
+    /*transform: scaleX(1.1);*/
+    transition-duration: 200ms;
 }
 
 .greeting-msg {

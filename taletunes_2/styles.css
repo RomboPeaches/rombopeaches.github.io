@@ -1,3 +1,10 @@
+@font-face {
+  font-family: 'Ostrich-Sans';
+  src: url('/ostrich-sans/ostrich-Bold.ttf') format('opentype');
+  font-weight: 400; /* normal weight */
+  font-style: normal;
+}
+
 :root {
     --controller_width: 200px;
     /*if final remove other border-radius: ...*/
@@ -14,7 +21,7 @@
 
     --titles: #6abcff;
     --semi-clear: rgb(74, 129, 62);
-    --very-dark: rgb(84, 65, 94);
+    --very-dark: rgb(6, 20, 49);
     --taletunes: var(--titles);
 
     --edit-btn: rgba(23, 33, 33, 0);
@@ -79,7 +86,7 @@
 }
 
 * {
-    font-family: monospace;
+    font-family: 'Ostrich-Sans', sans-serif;
     font-size: 11px;
     box-sizing: border-box;
     padding: 0;
@@ -121,7 +128,8 @@ body {
     background-repeat: repeat;
     background-attachment: fixed;
     transition: filter 0.1s ease;
-    background-color: var(--very-dark);
+    /*background-color: var(--very-dark);*/
+    background: linear-gradient(0deg,rgba(13, 79, 75, 1) 0%, var(--very-dark) 100%);
 }
 
 #vetical-align-container-outer {
@@ -224,8 +232,8 @@ body {
     justify-content: center;
     align-items: center;
     text-align: center;
-    width: 41px;
-    height: 41px;
+    width: 61px;
+    height: 61px;
     cursor: pointer;
     color: var(--titles);
     border: solid 1px var(--titles);
@@ -313,6 +321,18 @@ body {
     color: var(--titles);
     /*background-color: var(--light-opaque) !important;*/
     background-color: var(--clear) !important;
+    outline: solid var(--titles) 1px;
+    cursor: pointer;
+    box-shadow: none;
+}
+
+.group-toggle-btn.active:hover,
+.group-name:hover {
+    
+    background-color: var(--light-opaque)!important;
+    color: var(--very-dark) !important;
+    /*background-color: var(--light-opaque) !important;*/
+    /*background-color: var(--clear) !important;*/
     outline: solid var(--titles) 1px;
     cursor: pointer;
     box-shadow: none;

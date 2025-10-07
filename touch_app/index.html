@@ -22,27 +22,27 @@
             overflow: hidden;
         }
 
-        #fullscreen-btn {
+        #fullscreen-btn {align-content: center;
+            position: absolute;
             padding: 10px 20px;
-            margin-top: 20px;
-            font-size: 1.2em;
+            font-size: 20px;
             border: none;
             border-radius: 8px;
             cursor: pointer;
-            background-color: #007bff;
+            background-color: rgb(87, 78, 206);
             color: white;
             transition: background-color 0.3s;
             z-index: 10;
         }
 
         #fullscreen-btn:hover {
-            background-color: #0056b3;
+            background-color: rgb(68, 61, 156);
         }
 
         /* --- Fullscreen 2x3 grid --- */
         .box-container {
             display: grid;
-            width: 80%;
+            width: 70%;
             aspect-ratio: 3 / 2;
             grid-template-columns: repeat(3, 1fr);
             grid-template-rows: repeat(2, 1fr);
@@ -73,8 +73,10 @@
 </head>
 
 <body>
+    <button id="fullscreen-btn">Fullscreen</button>
     <div class="box-container">
-        <div style="background-color: rgb(255, 118, 186);" class="box">A</div>
+        <div style="background-color: rgb(255, 118, 186);" class="box">A
+        </div>
         <audio class="sound" src="Toy Squeaky Toy Squeaks - QuickSounds.com.mp3"></audio>
         
         <div style="background-color: rgb(143, 214, 128);" class="box">B</div>
@@ -92,7 +94,6 @@
         <div style="background-color: rgb(105, 175, 255);" class="box">?</div>
         <audio class="sound" src="Chime - QuickSounds.com.mp3"></audio>
     </div>
-    <button id="fullscreen-btn">Fullscreen</button>
 
     <script>
         // --- Fullscreen toggle ---
@@ -118,13 +119,22 @@
             "rgb(105, 175, 255)",
         ];
 
-        const bgColorsDark = [
+        
+        /*const bgColorsDark = [
             "rgb(192, 52, 122)",
             "rgb(78, 154, 62)",
             "rgb(192, 151, 47)",
             "rgb(192, 40, 48)",
             "rgb(123, 41, 186)",
             "rgb(37, 107, 187)",
+        ];*/
+        const bgColorsDark = [
+            "rgb(255, 118, 186)",
+            "rgb(143, 214, 128)",
+            "rgb(255, 213, 105)",
+            "rgb(255, 105, 113)",
+            "rgb(190, 105, 255)",
+            "rgb(105, 175, 255)",
         ];
 
         const boxes = Array.from(document.getElementsByClassName("box"));
