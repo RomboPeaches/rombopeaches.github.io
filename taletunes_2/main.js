@@ -75,7 +75,7 @@ class Tune {
 */
 
 // build and return test data object
-function testData() {
+/*function testData() {
   const test_urls = [
     "https://www.youtube.com/watch?v=kgq21eM26nY",
     "https://www.youtube.com/watch?v=4KGBB32EPLw",
@@ -321,7 +321,7 @@ function testData() {
   // holds previously saved data
   const testData = {
     groups: [
-      buildGroup("nature_0", [
+      /*buildGroup("nature_0", [
         "https://www.youtube.com/watch?v=omBqRDJZhc8&list=PLniTzKxa2c_dMPngp56B6OKeMrDiz0Mt0&index=34",
         "https://www.youtube.com/watch?v=xNN7iTA57jM&list=PLniTzKxa2c_dMPngp56B6OKeMrDiz0Mt0&index=2",
         "https://www.youtube.com/watch?v=F8bYaMoQ2sM&list=PLniTzKxa2c_fogTSXZK1gAWtVbv7P51LI&index=78",
@@ -612,6 +612,13 @@ function testData() {
         "https://www.youtube.com/watch?v=I0n7DbaEMX0&list=PLniTzKxa2c_drhk_HxO2dfHz6EyPJzUvi&index=12",
         "https://www.youtube.com/watch?v=juMabblyLZU&list=PLniTzKxa2c_cIgV0Kxf7irM5o2enyZ63W&index=26",
       ]),
+      buildGroup("group_example", [
+        "https://www.youtube.com/watch?v=5Jzp5H4mQVE",
+        "https://www.youtube.com/watch?v=lWvRxwH0l2o&list=PLniTzKxa2c_dV_oGIbz45E8f5KnD9hMaB&index=3",
+        "https://www.youtube.com/watch?v=7hEyNFHBZ_w&list=RD7hEyNFHBZ_w&start_radio=1&t=10s",
+        "https://www.youtube.com/watch?v=XXJ35GGOJEY&list=PLniTzKxa2c_drhk_HxO2dfHz6EyPJzUvi&index=12",
+        "https://www.youtube.com/watch?v=HmUknzxOtlY&list=PLniTzKxa2c_dV_oGIbz45E8f5KnD9hMaB&index=5",
+      ]),
     ],
     settings: [],
   };
@@ -647,7 +654,23 @@ function testData() {
   }
 
   return testData;
+}*/
+
+function testData() {
+  return {
+    groups: [
+      buildGroup("tune_group_example", [
+        "https://www.youtube.com/watch?v=5Jzp5H4mQVE",
+        "https://www.youtube.com/watch?v=lWvRxwH0l2o&list=PLniTzKxa2c_dV_oGIbz45E8f5KnD9hMaB&index=3",
+        "https://www.youtube.com/watch?v=7hEyNFHBZ_w&list=RD7hEyNFHBZ_w&start_radio=1&t=10s",
+        "https://www.youtube.com/watch?v=XXJ35GGOJEY&list=PLniTzKxa2c_drhk_HxO2dfHz6EyPJzUvi&index=12",
+        "https://www.youtube.com/watch?v=HmUknzxOtlY&list=PLniTzKxa2c_dV_oGIbz45E8f5KnD9hMaB&index=5",
+      ]),
+    ],
+    settings: [],
+  };
 }
+
 
 function buildGroup(name, urls = []) {
   let urls_unique = [...new Set(urls)];
@@ -667,13 +690,24 @@ function getRandomInt(min = 5, max = 7) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-function useDefaultData() {
+/*function useDefaultData() {
   // use the default data or test data
   console.log("--- no saved data --- loading default ---");
   data.groups = testData().groups;
   data.settings = testData().settings;
   data.groups.forEach((element) => addGroup(element.name));
+}*/
+
+function useDefaultData() {
+  console.log("--- no saved data --- loading default ---");
+  const defaultData = testData(); // safe now
+
+  data.groups = defaultData.groups;
+  data.settings = defaultData.settings;
+
+  data.groups.forEach((element) => addGroup(element.name));
 }
+
 
 /*
 function buildTestGroup(array, n, name) {
@@ -689,7 +723,7 @@ function buildTestGroup(array, n, name) {
 }
 */
 
-function checkForSavedData() {
+/*function checkForSavedData() {
   // load saved data
   console.log("--- checking for saved data ---");
   let savedData = localStorage.getItem("taletunes_data");
@@ -724,9 +758,34 @@ function checkForSavedData() {
   }
 
   if (useDefault != false) {
+
     useDefaultData();
   }
+}*/
+
+function checkForSavedData() {
+  console.log("--- checking for saved data ---");
+  let savedData = localStorage.getItem("taletunes_data");
+  let useDefault = true;
+
+  if (savedData) {
+    try {
+      let parsedData = JSON.parse(savedData);
+      if (parsedData && Array.isArray(parsedData.groups) && parsedData.groups.length > 0) {
+        data.groups = parsedData.groups;
+        data.settings = parsedData.settings;
+        parsedData.groups.forEach((g) => addGroup(g.name));
+        useDefault = false;
+      }
+    } catch (err) {
+      console.warn("Error parsing saved data:", err);
+      useDefault = true;
+    }
+  }
+
+  if (useDefault) useDefaultData();
 }
+
 
 function downloadBackup() {
   const savedData = localStorage.getItem("taletunes_data");
@@ -1950,7 +2009,6 @@ window.onload = function () {
   document
     .getElementById("group-toggle-container")
     .scrollIntoView({ behavior: "smooth", block: "center" });
-  checkForSavedData();
 
   // debug - are the trackcontroller not loading the thumbnails now?
   //console.log("ON LOAD");

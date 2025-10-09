@@ -8,7 +8,7 @@
 :root {
     --controller_width: 200px;
     /*if final remove other border-radius: ...*/
-    --border-radius: 3px;
+    --border-radius: 5px;
 
     --lighter: rgb(0, 0, 0);
     --light: rgb(28, 28, 28);
@@ -218,6 +218,8 @@ body {
     justify-content: end;
     gap: 16px;
     margin: 20px 0;
+    padding-left: 64px;
+
 }
 
 .player-iframe {

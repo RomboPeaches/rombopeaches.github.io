@@ -9,12 +9,12 @@ body {
     margin: 0;
     height: 100vh;
     font-family: 'Ostrich-Sans', sans-serif;
-    background: linear-gradient(0deg,rgb(6, 8, 41) 0%, rgb(66, 89, 189) 100%);
+    background: linear-gradient(0deg,rgb(99, 201, 121) 0%, rgb(5, 18, 54) 100%);
 }
 
 .select-app {
-    height: 90px;
-    width: 180px;
+    height: 30px;
+    width: 400px;
     border-radius: 5px;
     display: flex;
     align-items: center;
@@ -31,7 +31,7 @@ body {
 .select-app:hover {
     /*box-shadow: 2px 2px 15px rgb(54, 68, 129);*/
     background-color: rgba(199, 199, 199, 0.9);
-    color: rgb(19, 29, 94);
+    color: rgba(19, 29, 94, 1.0);
     /*transform: scaleX(1.1);*/
     transition-duration: 200ms;
 }
