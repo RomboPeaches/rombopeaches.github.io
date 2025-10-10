@@ -6,6 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="styles.css" />
     <title>taletunes</title>
+
+    <!-- Basic Open Graph tags -->
+    <meta property="og:title" content="My Awesome Website" />
+    <meta property="og:description" content="dhfjkdghdjkhdfjsk! dsjklfdsjklfjsdkl!" />
+    <meta property="og:image" content="https://rombopeaches.github.io/app_imgs/tt2.png" />
+    <meta property="og:url" content="https://rombopeaches.github.io/" />
+    <meta property="og:type" content="content?!" />
 </head>
 
 <body>
@@ -60,7 +67,8 @@
                         <div id="resize" class="group-menu-btn" onclick="toggleTrackControllerSize()">&#9633;</div>
                         <div id="toggle-titles" class="group-menu-btn" onclick="toggleTitles()">&#1090;</div>
                         <button id="download-json" class="group-menu-btn" onclick="downloadBackup()">&#8615;</button>
-                        <input id="import-json-input" type="file" accept="application/json" onchange="importBackup(event)">
+                        <input id="import-json-input" type="file" accept="application/json"
+                            onchange="importBackup(event)">
                         <label for="import-json-input" id="download-json-label" class="group-menu-btn">&#8613;</label>
                         <!--div id="test" class="group-menu-btn" onclick="copyToClipboard('Nani?!');">c2cb</div-->
                         <div id="new-group" class="group-menu-btn" onclick="showAddGroupPopUp()">[ new group ]
@@ -88,12 +96,16 @@
                         immersive sound-design at your fingertips.
                         <br>
                         <br>
-                        The Pencil-Icon toggles Edit-Mode so you can add a group and youtube-urls to it. Activate or deactivate a group by clicking it. Hit the [add-Tune] to add a youtube-url to the group. Clicking the apearing image lets you play the audio and also increase or decrease the audio volume. Clicking low sets the target Volume, clicking left or right sets the Fading-Speed from immediate to a 30s transition. 
+                        The Pencil-Icon toggles Edit-Mode so you can add a group and youtube-urls to it. Activate or
+                        deactivate a group by clicking it. Hit the [add-Tune] to add a youtube-url to the group.
+                        Clicking the apearing image lets you play the audio and also increase or decrease the audio
+                        volume. Clicking low sets the target Volume, clicking left or right sets the Fading-Speed from
+                        immediate to a 30s transition.
                     </div>
+                </div>
             </div>
-        </div>
 
-    </div>
+        </div>
     </div>
 
     <script src="main.js"></script>
