@@ -880,6 +880,9 @@ function hideGroupElement(groupName) {
     hiddenGroupObject.tunes.forEach((tune) => {
       tune.stepSize = 0.4; // fade out delay // refactor when final fading function
       tune.fadeTargetVolume = 0;
+      tune.player = getPlayerByGroupNameAndUrl(groupName, tune.url);
+      tune.title = tune.player.videoTitle;
+      console.log(tune.title);
     });
     groupElement.remove();
   }
@@ -1240,6 +1243,7 @@ function initPlayer(groupName, url) {
 
 function onPlayerReady(event) {
   event.target.setVolume(0);
+  getTuneByPlayer(event.target).title = event.target.videoTitle; 
 
   console.log("-------------", event.target);
 }
@@ -1255,10 +1259,10 @@ function onPlayerStateChange(event) {
   ];
   console.log(
     "--- player state changed --- [ " +
-      event.data +
-      " : " +
-      states[event.data + 1] +
-      " ] "
+    event.data +
+    " : " +
+    states[event.data + 1] +
+    " ] "
   );
 }
 
@@ -1413,7 +1417,7 @@ function showGroupElement(groupName) {
         });
 
         trackController.addEventListener("mouseleave", function (event) {
-          //trackControllerInfoBar.innerHTML = "";
+          trackControllerInfoBar.innerHTML = "";
           trackControllerInfoBar.innerHTML = groupObject.tunes[i].title;
           console.log(
             groupObject.tunes[i].title,
@@ -1712,6 +1716,7 @@ function addTuneToGroup(groupName, url) {
 
             // remove player
             let player = getPlayerByGroupNameAndUrl(groupName, url);
+            tune.player = player;
             let p_index = data.players.indexOf(player);
             data.players.splice(p_index, 1);
             // remove player iframe
@@ -1784,7 +1789,13 @@ function addTuneToGroup(groupName, url) {
           });
 
           trackController.addEventListener("mouseleave", function () {
-            trackControllerInfoBar.innerHTML = tune.player.videoTitle;
+            console.log("------------------------------------tune.title: " + tune.title);
+            const player = tune.player; // safer than undeclared var
+            if (player && player.videoTitle) {
+              trackControllerInfoBar.innerHTML = player.videoTitle;
+            } else {
+              trackControllerInfoBar.innerHTML = "";
+            }
           });
 
           // new -

@@ -175,6 +175,11 @@ body {
 
 #right #if-empty {
     display: none;
+    position: relative;
+    align-items: center;
+    border-radius: 0px;
+    padding: 0 0 23px 20px;
+    border-left: solid 1px var(--taletunes);
 }
 
 /*empty right*/
