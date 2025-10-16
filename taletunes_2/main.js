@@ -52,11 +52,11 @@ class Group {
 }
 
 class Tune {
-  constructor(url) {
+  constructor(groupName, url) {
     this.url = url;
     this.tags = ""; //this.tags or central (all)?
     this.title = "";
-    this.group = ""; // todo + refactor or nah? nah!
+    this.groupName = groupName; // todo + refactor or nah? nah!
     this.isVolume = 0;
     this.player = null;
     this.killCounter = 0;
@@ -659,7 +659,7 @@ class Tune {
 function testData() {
   return {
     groups: [
-      buildGroup("tune_group_example", [
+      buildGroup("my group", [
         "https://www.youtube.com/watch?v=5Jzp5H4mQVE",
         "https://www.youtube.com/watch?v=lWvRxwH0l2o&list=PLniTzKxa2c_dV_oGIbz45E8f5KnD9hMaB&index=3",
         "https://www.youtube.com/watch?v=7hEyNFHBZ_w&list=RD7hEyNFHBZ_w&start_radio=1&t=10s",
@@ -677,7 +677,7 @@ function buildGroup(name, urls = []) {
   let group = new Group(name);
   group.active = false;
   urls_unique.forEach((url) => {
-    group.tunes.push(new Tune(url));
+    group.tunes.push(new Tune(name, url));
   });
   // force inactive on initial load
   group.active = false;
@@ -1243,9 +1243,14 @@ function initPlayer(groupName, url) {
 
 function onPlayerReady(event) {
   event.target.setVolume(0);
-  getTuneByPlayer(event.target).title = event.target.videoTitle; 
+  let tune = getTuneByPlayer(event.target);
+  tune.title = event.target.videoTitle;
+  tune.player = event.target;
 
-  console.log("-------------", event.target);
+
+
+
+  console.log(tune.groupName, "*************                *************");
 }
 
 function onPlayerStateChange(event) {
@@ -1417,11 +1422,15 @@ function showGroupElement(groupName) {
         });
 
         trackController.addEventListener("mouseleave", function (event) {
-          trackControllerInfoBar.innerHTML = "";
+          trackControllerInfoBar.innerHTML = groupObject.tunes[i].title;
           trackControllerInfoBar.innerHTML = groupObject.tunes[i].title;
           console.log(
             groupObject.tunes[i].title,
             "----------------------------- debug"
+          );
+          console.log(
+            groupObject.tunes[i].player.videoTitle,
+            "-----------------------------------                ---------- debug"
           );
         });
 
@@ -1560,6 +1569,7 @@ function update() {
       let player = getPlayerByGroupNameAndUrl(group.name, tune.url);
 
       try {
+
         if (player && player.getPlayerState() == 1 && tune.stepSize !== "set") {
           if (
             tune.stepSize >= Math.abs(tune.fadeTargetVolume - tune.isVolume)
@@ -1581,6 +1591,7 @@ function update() {
             tune.fadeTargetVolume = 0;
           }
           if (tune.isVolume <= 0) {
+            tune.title = player.videoTitle;
             player.stopVideo();
             console.log("--- STOPPED ---");
             tune.fadeTargetVolume = -1;
@@ -1606,19 +1617,33 @@ function update() {
           if (tune.isVolume <= 0) {
             tune.isVolume = 0;
           }
+
         }
         // set videoTitles
         if (player && tune.trackControllerInfoBar.innerHTML == "") {
-          tune.trackControllerInfoBar.innerHTML = getPlayerByGroupNameAndUrl(
-            group.name,
-            tune.url
-          ).videoTitle;
+
+          try {
+            tune.trackControllerInfoBar.innerHTML = getPlayerByGroupNameAndUrl(
+              group.name,
+              tune.url
+            ).videoTitle;
+          } catch {
+            console.log(getPlayerByGroupNameAndUrl(group.name, tune.url).videoTitle + "AAAAAAAAAAAAAAAAAAAAAAAAAAAa");
+          }
+          try {
+            tune.trackControllerInfoBar.innerHTML = tune.title;
+          }
+          catch {
+            console.log(tune.title + "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB")
+          }
+
         }
 
         //console.log("UPDATE - OK!");
       } catch (error) {
         //console.log("UPDATE - FAILED!");
       }
+
     });
   });
 }
@@ -1695,7 +1720,7 @@ function addTuneToGroup(groupName, url) {
         let groupElement = document.getElementById(groupName);
         if (groupElement) {
           let trackController = document.createElement("div");
-          let tune = new Tune(url);
+          let tune = new Tune(groupName, url);
           getGroupObjectByName(groupName).tunes.push(tune);
           tune.url = url;
           tune.deleted = false;
@@ -1794,7 +1819,7 @@ function addTuneToGroup(groupName, url) {
             if (player && player.videoTitle) {
               trackControllerInfoBar.innerHTML = player.videoTitle;
             } else {
-              trackControllerInfoBar.innerHTML = "";
+              trackControllerInfoBar.innerHTML = tune.title;
             }
           });
 
@@ -1829,10 +1854,11 @@ function addTuneToGroup(groupName, url) {
 function toggleEditMode() {
   if (data.mode === "edit") {
     data.mode = "play";
+    document.getElementById("mode-toggle").innerHTML = "&#9998";
   } else {
     data.mode = "edit";
+    document.getElementById("mode-toggle").innerHTML = "&#9998";
   }
-  document.getElementById("mode-toggle").innerHMTL = data.mode;
 }
 
 function toggleTrackControllerSize() {

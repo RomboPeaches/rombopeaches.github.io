@@ -1,15 +1,16 @@
 @font-face {
-  font-family: 'Ostrich-Sans';
-  src: url('/ostrich-sans/ostrich-Bold.ttf') format('opentype');
-  font-weight: 400; /* normal weight */
-  font-style: normal;
+    font-family: 'Ostrich-Sans';
+    src: url('/ostrich-sans/ostrich-Bold.ttf') format('opentype');
+    font-weight: 400;
+    /* normal weight */
+    font-style: normal;
 }
 
 body {
     margin: 0;
     height: 100vh;
     font-family: 'Ostrich-Sans', sans-serif;
-    background: linear-gradient(0deg,rgb(99, 201, 121) 0%, rgb(5, 18, 54) 100%);
+    background: linear-gradient(0deg, #e0e2d1 0%, #44433b 100%);
 }
 
 .select-app {
@@ -23,9 +24,10 @@ body {
     color: rgb(231, 244, 255);
     font-size: 1rem;
     font-weight: 100;
-    box-shadow: 1px 1px 10px rgba(21, 70, 67, 1.0);
+    box-shadow: 1px 1px 10px rgb(59, 56, 29);
     border: 1px rgb(192, 207, 219) solid;
     background-color: rgb(66, 89, 189) 100%;
+    transition-duration: 800ms;
 }
 
 .select-app:hover {
@@ -34,6 +36,7 @@ body {
     color: rgba(19, 29, 94, 1.0);
     /*transform: scaleX(1.1);*/
     transition-duration: 200ms;
+    font-size: 2rem;
 }
 
 .greeting-msg {

@@ -295,10 +295,10 @@ body {
 #new-group {
     display: none;
     font-size: 11px;
-    min-width: fit-content;
     padding: 0 12px;
+    width: 138px;
+    min-width: fit-content;
 }
-
 
 #cancel-video.edit-mode,
 #new-group.edit-mode {
@@ -311,7 +311,7 @@ body {
     cursor: pointer;
     white-space: pre-line;
     word-wrap: break-word;
-    width: fit-content;
+    min-width: 138px; /*fit-content*/
     max-width: 100%;
     height: fit-content;
     padding: 10px;
