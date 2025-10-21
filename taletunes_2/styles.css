@@ -311,7 +311,7 @@ body {
     cursor: pointer;
     white-space: pre-line;
     word-wrap: break-word;
-    min-width: 138px; /*fit-content*/
+    min-width: fit-content;
     max-width: 100%;
     height: fit-content;
     padding: 10px;

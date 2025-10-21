@@ -15,45 +15,50 @@
         justify-content: center;
         align-items: center;
         flex-wrap: wrap;
-        height: 80VH;
+        height: 100vh;
         font-weight: 100;
         font-size: 100px;
         color: rgb(190, 190, 190);
+  
       ">
     <div style="
-          display: inline-flex;
-          gap: 20px; 
+          display: flex;
+          flex-direction: column;
+          gap: 20px;
           flex-wrap: wrap;
-          width: 90%;
+          width: fit-content;
+          height: fit-content;
+          align-items: center;
           justify-content: center;
         ">
       <div style="
           width: 100%;
-          font-size: 40px;
+          font-size: 20px;
           font-weight: 200;
-          color: rgb(255, 174, 0);
+          color: rgb(255, 174, 0);text-align: right;
+
         ">
       </div>
       <a href="taletunes_2/" style="text-decoration: none">
-        <div class="select-app">TALETUNES 2</div>
+        <div class="select-app">TALETUNES 2 - Audio-Mixer</div>
       </a>
       <a href="taletunes_1/" style="text-decoration: none">
         <div class="select-app">TALETUNES 1</div>
       </a>
       <a href="frequenzgenerator/" style="text-decoration: none">
-        <div class="select-app">HZ TO MIDI</div>
+        <div class="select-app">MIDI</div>
       </a>
       <a href="touch_app/" style="text-decoration: none">
-        <div class="select-app">TOUCH APP</div>
+        <div class="select-app">TOUCH</div>
       </a>
       <a href="gps_test/" style="text-decoration: none">
-        <div class="select-app">GPS TEST</div>
+        <div class="select-app">LOCATION</div>
       </a>
       <a href="scroll_test/" style="text-decoration: none">
-        <div class="select-app">SCROLL TEST</div>
+        <div class="select-app">SCROLL</div>
       </a>
       <a href="share_test/" style="text-decoration: none">
-        <div class="select-app">SHARE BUTTON TEST</div>
+        <div class="select-app">SHARE</div>
       </a>
       <!--a href="/" style="text-decoration: none">
         <div class="select-app"></div>
@@ -73,5 +78,44 @@
     </div>
   </div>
 </body>
+
+<script>
+
+/*function applyColorsToGroup(className) {
+  // Fixed HEX colors
+  const colors = [ 
+    "#264653",
+    "#287271",
+    "#2a9d8f",
+    "#8AB17D",    
+    "#e9c46a",
+    "#EFB366",
+    "#f4a261",
+    "#EE8959",
+    "#e76f51",
+  ];
+
+  // Get all elements with the given class
+  const elems = document.getElementsByClassName(className);
+
+  if (!elems.length) {
+    console.warn(`No elements found with class "${className}"`);
+    return;
+  }
+
+  // Assign colors cyclically
+  for (let i = 0; i < elems.length; i++) {
+    const color = colors[i % colors.length];
+    elems[i].style.backgroundColor = color; // ✅ use the color directly
+  }
+}
+
+// Wait until DOM is ready
+document.addEventListener("DOMContentLoaded", () => {
+  applyColorsToGroup("select-app");
+});*/
+
+
+</script>
 
 </html>

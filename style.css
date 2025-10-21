@@ -10,33 +10,36 @@ body {
     margin: 0;
     height: 100vh;
     font-family: 'Ostrich-Sans', sans-serif;
-    background: linear-gradient(0deg, #e0e2d1 0%, #44433b 100%);
+    background: linear-gradient(0deg, rgba(13, 79, 75, 1) 0%, rgb(6, 20, 49) 100%);
 }
 
 .select-app {
-    height: 30px;
-    width: 400px;
-    border-radius: 5px;
+    height: fit-content;
+    width: 260px;
+    height: 40px;;
+    border-radius: 6px;
     display: flex;
     align-items: center;
-    justify-content: right;
+    justify-content: left;
     padding: 20px;
-    color: rgb(231, 244, 255);
+    color: #6abcff;
     font-size: 1rem;
-    font-weight: 100;
-    box-shadow: 1px 1px 10px rgb(59, 56, 29);
-    border: 1px rgb(192, 207, 219) solid;
-    background-color: rgb(66, 89, 189) 100%;
-    transition-duration: 800ms;
+    font-weight: 400;
+    box-shadow: 1px 1px 10px rgba(48, 45, 40, 0.4);
+    background-color: rgba(43, 41, 44, 0.1);
+    transition-duration: 0ms;
+    border: solid 1px #6abcff;
+    overflow: visible;
 }
 
 .select-app:hover {
     /*box-shadow: 2px 2px 15px rgb(54, 68, 129);*/
-    background-color: rgba(199, 199, 199, 0.9);
-    color: rgba(19, 29, 94, 1.0);
     /*transform: scaleX(1.1);*/
     transition-duration: 200ms;
-    font-size: 2rem;
+    /*transform: rotate(90deg);*/
+    
+    background-color: #6abcff5e;
+    
 }
 
 .greeting-msg {
