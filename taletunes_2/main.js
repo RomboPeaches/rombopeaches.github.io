@@ -881,8 +881,12 @@ function hideGroupElement(groupName) {
       tune.stepSize = 0.4; // fade out delay // refactor when final fading function
       tune.fadeTargetVolume = 0;
       tune.player = getPlayerByGroupNameAndUrl(groupName, tune.url);
-      tune.title = tune.player.videoTitle;
-      console.log(tune.title);
+      try {
+        tune.title = tune.player.videoTitle;
+        console.log(tune.title);
+      } catch {
+        console.log("tune.player.videoTitle:", tune.title);
+      }
     });
     groupElement.remove();
   }
