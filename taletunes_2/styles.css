@@ -19,7 +19,7 @@
 
     --box-shadow: var(--clear);
 
-    --titles: #6abcff;
+    --titles: #00a2ff;
     --semi-clear: rgb(74, 129, 62);
     --very-dark: rgb(6, 20, 49);
     --taletunes: var(--titles);
@@ -129,7 +129,8 @@ body {
     background-attachment: fixed;
     transition: filter 0.1s ease;
     /*background-color: var(--very-dark);*/
-    background: linear-gradient(0deg,rgba(13, 79, 75, 1) 0%, var(--very-dark) 100%);
+    /*background: linear-gradient(0deg,rgba(13, 79, 75, 1) 0%, var(--very-dark) 100%);*/
+    background: linear-gradient(0deg, rgba(13, 79, 75, 1) 0%, rgb(6, 20, 49) 100%);
 }
 
 #vetical-align-container-outer {

@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0" />
+<title>Vertical Snap + Horizontal Subpages</title>
+
+<style>
+/* RESET */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  overflow: hidden;
+  font-family: system-ui, sans-serif;
+}
+
+/* VERTICAL SCROLLER */
+.vertical-container {
+  height: 100vh;
+  overflow-y: auto;
+  scroll-snap-type: y mandatory;
+  scroll-behavior: smooth;
+}
+
+/* FULLSCREEN PAGES */
+.page {
+  height: 100vh;
+  scroll-snap-align: start;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+}
+
+/* COLORS */
+.page:nth-child(1) { background: #111; color: #fff; }
+.page:nth-child(2) { background: #222; color: #fff; }
+.page:nth-child(3) { background: #333; color: #fff; }
+.page:nth-child(4) { background: #444; color: #fff; }
+
+/* HORIZONTAL PAGE */
+.horizontal-wrapper {
+  width: 100%;
+  height: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  display: flex;
+  scroll-snap-type: x mandatory;
+  touch-action: pan-x;
+}
+
+.horizontal-wrapper::-webkit-scrollbar {
+  display: none;
+}
+
+.subpage {
+  min-width: 100vw;
+  height: 100vh;
+  scroll-snap-align: start;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+  transition: transform 0.25s ease;
+}
+
+.subpage:nth-child(1) { background: #005; }
+.subpage:nth-child(2) { background: #006; }
+.subpage:nth-child(3) { background: #007; }
+
+/* EDGE RESISTANCE ANIMATION */
+.edge-left {
+  animation: edgeLeft 0.25s ease;
+}
+
+.edge-right {
+  animation: edgeRight 0.25s ease;
+}
+
+@keyframes edgeLeft {
+  0% { transform: translateX(0); }
+  50% { transform: translateX(20px); }
+  100% { transform: translateX(0); }
+}
+
+@keyframes edgeRight {
+  0% { transform: translateX(0); }
+  50% { transform: translateX(-20px); }
+  100% { transform: translateX(0); }
+}
+</style>
+</head>
+
+<body>
+
+<div class="vertical-container">
+
+  <section class="page">
+    Page 1
+  </section>
+
+  <section class="page">
+    Page 2
+  </section>
+
+  <!-- PAGE WITH HORIZONTAL SUBPAGES -->
+  <section class="page">
+    <div class="horizontal-wrapper" id="horizontal">
+      <div class="subpage">Subpage 1</div>
+      <div class="subpage">Subpage 2</div>
+      <div class="subpage">Subpage 3</div>
+    </div>
+  </section>
+
+  <section class="page">
+    Page 4
+  </section>
+
+</div>
+
+<script>
+const horizontal = document.getElementById('horizontal');
+const subpages = horizontal.querySelectorAll('.subpage');
+
+let isAnimating = false;
+
+horizontal.addEventListener('wheel', (e) => {
+  const maxScroll = horizontal.scrollWidth - horizontal.clientWidth;
+
+  if ((horizontal.scrollLeft === 0 && e.deltaX < 0) ||
+      (horizontal.scrollLeft >= maxScroll && e.deltaX > 0)) {
+
+    e.preventDefault();
+
+    if (isAnimating) return;
+    isAnimating = true;
+
+    const target = e.deltaX < 0 ? subpages[0] : subpages[subpages.length - 1];
+    target.classList.add(e.deltaX < 0 ? 'edge-left' : 'edge-right');
+
+    setTimeout(() => {
+      target.classList.remove('edge-left', 'edge-right');
+      isAnimating = false;
+    }, 250);
+  }
+}, { passive: false });
+
+/* TOUCH EDGE DETECTION */
+let startX = 0;
+
+horizontal.addEventListener('touchstart', (e) => {
+  startX = e.touches[0].clientX;
+});
+
+horizontal.addEventListener('touchend', (e) => {
+  const deltaX = e.changedTouches[0].clientX - startX;
+  const maxScroll = horizontal.scrollWidth - horizontal.clientWidth;
+
+  if (horizontal.scrollLeft === 0 && deltaX > 40) {
+    subpages[0].classList.add('edge-left');
+    setTimeout(() => subpages[0].classList.remove('edge-left'), 250);
+  }
+
+  if (horizontal.scrollLeft >= maxScroll && deltaX < -40) {
+    subpages[subpages.length - 1].classList.add('edge-right');
+    setTimeout(() => subpages[subpages.length - 1].classList.remove('edge-right'), 250);
+  }
+});
+</script>
+
+</body>
+</html>

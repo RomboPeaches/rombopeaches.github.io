@@ -7,16 +7,33 @@
 }
 
 body {
-    margin: 0;
+    margin: 100px;
     height: 100vh;
     font-family: 'Ostrich-Sans', sans-serif;
     background: linear-gradient(0deg, rgba(13, 79, 75, 1) 0%, rgb(6, 20, 49) 100%);
 }
 
+#spacer {
+    display: flex;
+    flex-wrap: wrap;
+    font-weight: 100;
+    font-size: 100px;
+    color: rgb(190, 190, 190);
+}
+
+#container {
+    display: flex;
+    flex-wrap: wrap;
+justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
 .select-app {
+    transition-duration: 800ms;
     height: fit-content;
-    width: 260px;
-    height: 40px;;
+    width: 160px;
+    height: 160px;
     border-radius: 6px;
     display: flex;
     align-items: center;
@@ -26,8 +43,7 @@ body {
     font-size: 1rem;
     font-weight: 400;
     box-shadow: 1px 1px 10px rgba(48, 45, 40, 0.4);
-    background-color: rgba(43, 41, 44, 0.1);
-    transition-duration: 0ms;
+    background-color: rgba(255, 255, 255, 0.062);
     border: solid 1px #6abcff;
     overflow: visible;
 }
@@ -37,9 +53,9 @@ body {
     /*transform: scaleX(1.1);*/
     transition-duration: 200ms;
     /*transform: rotate(90deg);*/
-    
+
     background-color: #6abcff5e;
-    
+
 }
 
 .greeting-msg {
