@@ -1,0 +1,67 @@
+const daten = {
+  lebenszahlen: {
+    1:{
+      titel:"Kreativität & Zuversicht",
+      kurztext:"Du bist hier, um zu starten und zu führen.",
+      text:"Menschen mit der Lebenszahl 1 tragen einen starken inneren Impuls, Dinge in Bewegung zu bringen. Du spürst oft früh, was möglich ist, und hast den Mut, erste Schritte zu gehen, wo andere noch zögern. Deine größte Lernaufgabe liegt darin, Führung nicht als Druck, sondern als natürliche Ausstrahlung zu leben."
+    },
+    2:{
+      titel:"Kooperation & Balance",
+      kurztext:"Du bist hier, um Verbindung zu leben.",
+      text:"Mit der Lebenszahl 2 hast du feine Antennen für Stimmungen, Menschen und unausgesprochene Bedürfnisse. Du kannst vermitteln, beruhigen und echte Nähe schaffen. Gleichzeitig besteht deine Entwicklung darin, dich nicht selbst zu verlieren, sondern deine eigenen Bedürfnisse genauso ernst zu nehmen wie die der anderen."
+    },
+    3:{
+      titel:"Ausdruck & Sensibilität",
+      kurztext:"Du bist hier, um sichtbar zu sein.",
+      text:"Die Lebenszahl 3 steht für kreative Energie und den Wunsch, dich mitzuteilen. Du bringst Leichtigkeit, Humor und Inspiration in dein Umfeld. Oft spürst du viele Ideen gleichzeitig – deine Herausforderung ist es, nicht in Zerstreuung zu geraten, sondern deiner wichtigsten Botschaft treu zu bleiben."
+    },
+    4:{
+      titel:"Stabilität & Prozess",
+      kurztext:"Du bist hier, um tragfähige Strukturen zu bauen.",
+      text:"Menschen mit der Lebenszahl 4 besitzen ein starkes Bedürfnis nach Ordnung, Sicherheit und Verlässlichkeit. Du kannst Dinge langfristig aufbauen und Verantwortung tragen. Deine Lernkurve liegt darin, Flexibilität zuzulassen und Struktur als Unterstützung zu nutzen – nicht als inneren Käfig."
+    },
+    5:{
+      titel:"Freiheit & Entwicklung",
+      kurztext:"Du bist hier, um dich durch Erfahrung zu entwickeln.",
+      text:"Die Lebenszahl 5 bringt Beweglichkeit, Neugier und Lust auf Veränderung. Du lernst durch Erleben und brauchst Abwechslung, um dich lebendig zu fühlen. Gleichzeitig darfst du lernen, Freiheit nicht mit Flucht zu verwechseln, sondern dir bewusste Stabilität als inneres Zuhause zu schaffen."
+    },
+    6:{
+      titel:"Fürsorge & Verantwortung",
+      kurztext:"Du bist hier, um Verbindung zu halten.",
+      text:"Mit der Lebenszahl 6 trägst du eine natürliche Fähigkeit, zu halten, zu begleiten und Harmonie zu schaffen. Du hast ein großes Herz und spürst Verantwortung für andere. Deine Entwicklung besteht darin, Fürsorge nicht mit Selbstaufgabe zu verwechseln und liebevolle Grenzen zu setzen."
+    },
+    7:{
+      titel:"Wahrheit & Vertrauen",
+      kurztext:"Du bist hier, um Erkenntnis zu leben.",
+      text:"Die Lebenszahl 7 sucht Tiefe, Sinn und innere Wahrheit. Du hast einen starken analytischen und intuitiven Zugang zur Welt. Oft ziehst du dich zurück, um zu verstehen. Deine Aufgabe ist es, Erkenntnisse nicht nur zu denken, sondern sie mutig ins Leben zu bringen."
+    },
+    8:{
+      titel:"Macht & Fülle",
+      kurztext:"Du bist hier, um wirksam zu sein.",
+      text:"Menschen mit der Lebenszahl 8 besitzen große Umsetzungskraft und das Potenzial für Einfluss und Erfolg. Du kannst Verantwortung tragen und Dinge groß machen. Deine Entwicklung liegt darin, Macht mit inneren Werten zu verbinden und deinen Selbstwert nicht nur über Leistung zu definieren."
+    },
+    9:{
+      titel:"Weisheit & Mitgefühl",
+      kurztext:"Du bist hier, um Sinn zu stiften.",
+      text:"Die Lebenszahl 9 steht für Mitgefühl, Abschluss und innere Reife. Du hast ein weites Herz und oft ein tiefes Verständnis für menschliche Prozesse. Deine Lernaufgabe besteht darin, nicht alles zu tragen, sondern Grenzen zu setzen und Mitgefühl in konkrete, heilsame Schritte zu verwandeln."
+    }
+  },
+
+  meisterzahlen: {
+    11:{
+      titel:"Intuitive Führung",
+      kurztext:"Intuition erden und klar ausdrücken.",
+      text:"Die Meisterzahl 11 ist hochsensibel und hoch kreativ. Du spürst Stimmungen und Wahrheiten oft früher als andere. Gleichzeitig brauchst du Erdung, damit dein Nervensystem stabil bleibt. Deine Stärke entfaltet sich, wenn du deiner Intuition vertraust und sie in klare Worte und Handlungen übersetzt."
+    },
+    22:{
+      titel:"Meister-Baumeister",
+      kurztext:"Vision mit Umsetzungskraft verbinden.",
+      text:"Mit der Meisterzahl 22 trägst du das Potenzial, große Visionen real werden zu lassen. Du kannst Systeme, Projekte oder Lebenswerke aufbauen. Deine Herausforderung ist es, dich nicht zu überfordern, sondern Etappen zu gehen und Unterstützung zuzulassen, damit Größe nicht zur Last wird."
+    },
+    33:{
+      titel:"Meister-Herz",
+      kurztext:"Heilung durch Präsenz und Grenzen.",
+      text:"Die Meisterzahl 33 steht für tiefe Herzkraft und Heilimpulse. Du wirkst oft still, aber sehr verbindend. Deine Lernaufgabe liegt weniger im Geben, sondern im Bleiben: im Kontakt bleiben, Bedürfnisse aussprechen und Grenzen setzen, damit deine Liebe stabil fließen kann."
+    }
+  }
+};
