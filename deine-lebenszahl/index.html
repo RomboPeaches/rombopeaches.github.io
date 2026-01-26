@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lebenszahl Rechner</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: #f5f5f5;
+    color: #111111;
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+}
+
+.container {
+    max-width: 480px;
+    width: 100%;
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+h1 {
+    text-align: center;
+    color: #333333;
+    margin-bottom: 12px;
+}
+
+p.intro {
+    text-align: center;
+    font-size: 14px;
+    color: #555555;
+    margin-bottom: 24px;
+}
+
+/* Input */
+input[type="text"] {
+    width: 100%;
+    padding: 14px;
+    font-size: 18px;
+    border-radius: 12px;
+    border: 2px solid #cccccc;
+    background: #fefefe;
+    color: #111111;
+    outline: none;
+    text-align: center;
+    box-sizing: border-box; /* <-- hier */
+}
+
+
+/* Button */
+button.calc {
+    width: 100%;
+    margin-top: 16px;
+    padding: 14px;
+    font-size: 18px;
+    border-radius: 12px;
+    border: none;
+    background: #333333;
+    color: #ffffff;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+button.calc:hover {
+    background: #555555;
+}
+
+/* Results */
+.result {
+    margin-top: 24px;
+}
+
+.row {
+    display: flex;
+    justify-content: space-between;
+    padding: 14px;
+    margin-top: 10px;
+    border-radius: 12px;
+    font-size: 18px;
+    background: #eeeeee;
+    color: #111111;
+}
+
+.row.master {
+    font-weight: bold;
+    background: #cccccc;
+}
+
+.row.life {
+    background: #dddddd;
+    font-weight: bold;
+    font-size: 22px;
+    text-align: center;
+}
+
+/* Responsive mobile-first */
+@media (max-width: 480px){
+    .row {
+        font-size: 16px;
+        padding: 12px;
+    }
+    input[type="text"], button.calc {
+        font-size: 16px;
+        padding: 12px;
+    }
+}
+</style>
+</head>
+
+<body>
+<div class="container">
+<h1>Was ist deine Lebenszahl?</h1>
+<p class="intro">
+    Gib dein Geburtsdatum ein im Format DD.MM.YYYY, um deine Lebenszahl zu berechnen.
+</p>
+
+<input type="text" id="birthdate" placeholder="z.B. 12.05.1945">
+<button class="calc" onclick="berechne()">Berechnen</button>
+
+<div class="result" id="output"></div>
+</div>
+
+<script>
+function quersumme(z){
+    return z.toString().split("").reduce((a,b)=>a+Number(b),0);
+}
+
+function berechne(){
+    const output=document.getElementById("output");
+    output.innerHTML="";
+    
+    const input=document.getElementById("birthdate").value.trim();
+    const match = input.match(/^(\d{1,2})\.(\d{1,2})\.(\d{4})$/);
+    if(!match){
+        output.innerHTML=`<div class="row">Ungültiges Datum</div>`;
+        return;
+    }
+    const d=Number(match[1]);
+    const m=Number(match[2]);
+    const y=Number(match[3]);
+
+    const date=new Date(y,m-1,d);
+    if(date.getFullYear()!=y || date.getMonth()!=m-1 || date.getDate()!=d || date>new Date() || y<1900){
+        output.innerHTML=`<div class="row">Ungültiges Datum</div>`;
+        return;
+    }
+
+    const digits=(""+d+m+y).replace(/\D/g,"");
+    let current=quersumme(digits);
+
+    while(current>=10){
+        let cls="row";
+        let label="Falt-Zahl";
+        if([11,22,33].includes(current)){
+            cls="row master";
+            label="Meisterzahl";
+        }
+        output.innerHTML+=`<div class="${cls}"><span>${label}</span><span>${current}</span></div>`;
+        current=quersumme(current);
+    }
+
+    output.innerHTML+=`<div class="row life"><span>Lebenszahl</span><span>${current}</span></div>`;
+}
+</script>
+
+</body>
+</html>
