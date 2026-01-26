@@ -93,7 +93,8 @@
     <div class="container">
         <h1>Bestimme Deine Flow to Grow Lebenszahl</h1>
         <p>Finde deinen inneren Kompass
-            Deine Lebenszahlen zeigt dir deine Stärken, mögliche Blockaden und verborgenen Chancen. Gib dein Geburtsdatum ein
+            Deine Lebenszahlen zeigt dir deine Stärken, mögliche Blockaden und verborgenen Chancen. Gib dein
+            Geburtsdatum ein
             und entdecke, wie du wieder in deinen Flow kommst.</p>
         <input id="birthdate" placeholder="12.05.1945">
         <button id="calcBtn" onclick="berechne()">Berechnen</button>
@@ -104,22 +105,59 @@
         // JSON direkt eingebunden
         const daten = {
             lebenszahlen: {
-                "1": { "titel": "Kreativität & Zuversicht", "text": "Du bist hier, um zu starten: Ideen werden bei dir zu Realität, wenn du dir vertraust. Mut, Klarheit und Pioniergeist begleiten dich. Du neigst dazu, Verantwortung allein zu tragen – entdecke den Flow, wenn du Vertrauen zulässt." },
-                "2": { "titel": "Kooperation & Balance", "text": "Du bist hier, um Verbindung zu meistern: echte Nähe ohne Selbstverlust. Empathie, Diplomatie und Teamgeist sind deine Stärken. Achte darauf, dich nicht zu überanpassen, sondern authentisch zu bleiben." },
-                "3": { "titel": "Ausdruck & Sensibilität", "text": "Du bist hier, um deine Stimme zu leben: kreativ, ehrlich und spürbar. Kommunikation, Humor und Inspiration begleiten dich. Vorsicht vor Zerstreuung – wähle deine Botschaften bewusst." },
-                "4": { "titel": "Stabilität & Prozess", "text": "Du bist hier, um Strukturen zu schaffen: zuverlässig, pragmatisch, ausdauernd. Disziplin und Organisation helfen dir. Wachsam vor Starrheit – Flexibilität bringt Balance." },
-                "5": { "titel": "Freiheit & Entwicklung", "text": "Du bist hier, um Freiheit zu lernen, die verbindlich ist: beweglich, neugierig und lernbereit. Passe auf, dass Unruhe und Bindungsangst nicht deinen Flow blockieren." },
-                "6": { "titel": "Fürsorge & Verantwortung", "text": "Du bist hier, um Verantwortung reif zu leben: Harmonie, Heilung und Fürsorge stehen im Mittelpunkt. Vorsicht vor Überkontrolle – Balance ist der Schlüssel." },
-                "7": { "titel": "Wahrheit & Vertrauen", "text": "Du bist hier, um Wahrheit zu erkennen und zu leben: tief, intuitiv, weise. Isolation und Zweifel können dich bremsen – teile Erkenntnisse und handle bewusst." },
-                "8": { "titel": "Macht & Fülle", "text": "Du bist hier, um wirksam zu sein: Erfolg, Einfluss und Umsetzungskraft im Einklang mit Werten. Vorsicht vor Kontrolle und Leistungsdruck – Führung im Flow." },
-                "9": { "titel": "Weisheit & Mitgefühl", "text": "Du bist hier, um abzuschließen, Mitgefühl zu leben und loszulassen. Weitblick, Heilung und Integrität begleiten dich – achte darauf, dich nicht selbst zu verlieren." }
+                "1": {
+                    "titel": "Kreativität & Zuversicht",
+                    "text": "Du bist hier, um anzufangen: Ideen werden bei dir Realität, wenn du dir vertraust. Mut, Klarheit und Pioniergeist begleiten dich. Du neigst dazu, Verantwortung allein zu tragen – finde den Flow, indem du Vertrauen zulässt."
+                },
+                "2": {
+                    "titel": "Kooperation & Balance",
+                    "text": "Du bist hier, um Verbindung zu meistern: echte Nähe ohne Selbstverlust. Empathie, Diplomatie und Teamgeist sind deine Stärken. Achte darauf, dich nicht zu sehr anzupassen, sondern authentisch zu bleiben."
+                },
+                "3": {
+                    "titel": "Ausdruck & Sensibilität",
+                    "text": "Du bist hier, um deine Stimme zu leben: kreativ, ehrlich und spürbar. Kommunikation, Humor und Inspiration begleiten dich. Vermeide Zerstreuung – wähle deine Botschaften bewusst."
+                },
+                "4": {
+                    "titel": "Stabilität & Prozess",
+                    "text": "Du bist hier, um Strukturen zu schaffen: zuverlässig, pragmatisch und ausdauernd. Disziplin und Organisation unterstützen dich. Wachsam vor Starrheit – Flexibilität bringt Balance."
+                },
+                "5": {
+                    "titel": "Freiheit & Entwicklung",
+                    "text": "Du bist hier, um Freiheit zu lernen, die tragfähig ist: beweglich, neugierig und lernbereit. Achte darauf, dass Unruhe oder Bindungsangst deinen Flow nicht blockieren."
+                },
+                "6": {
+                    "titel": "Fürsorge & Verantwortung",
+                    "text": "Du bist hier, um Verantwortung reif zu leben: Harmonie, Heilung und Fürsorge stehen im Mittelpunkt. Überkontrolle vermeiden – Balance ist entscheidend."
+                },
+                "7": {
+                    "titel": "Wahrheit & Vertrauen",
+                    "text": "Du bist hier, um Wahrheit zu erkennen und zu leben: tief, intuitiv und weise. Isolation und Zweifel können dich bremsen – teile deine Erkenntnisse und handle bewusst."
+                },
+                "8": {
+                    "titel": "Macht & Fülle",
+                    "text": "Du bist hier, um wirksam zu sein: Erfolg, Einfluss und Umsetzungskraft im Einklang mit deinen Werten. Vorsicht vor Kontrolle und Leistungsdruck – führe im Flow."
+                },
+                "9": {
+                    "titel": "Weisheit & Mitgefühl",
+                    "text": "Du bist hier, um abzuschließen, Mitgefühl zu leben und loszulassen. Weitblick, Heilung und Integrität begleiten dich – achte darauf, dich nicht selbst zu verlieren."
+                }
             },
             meisterzahlen: {
-                "11": { "titel": "Intuitive Führung", "text": "Hoch sensibel und kreativ: du spürst Stimmungen, Menschen und Wahrheiten früh. Vorsicht vor Überreizung – klare Grenzen stabilisieren deine Intuition." },
-                "22": { "titel": "Meister-Baumeister", "text": "Vision mit Umsetzungskraft: du baust Projekte, die bleiben. Überanspruch und Perfektionismus können blockieren – gehe deine Etappen bewusst." },
-                "33": { "titel": "Meister-Herz", "text": "Herzführung mit großer Tiefe: Liebe, Heilung und Versöhnung sind dein Flow. Rückzug und hohe innere Maßstäbe können dich bremsen – bleib im Kontakt zu dir." }
+                "11": {
+                    "titel": "Intuitive Führung",
+                    "text": "Hoch sensibel und kreativ: du spürst Stimmungen, Menschen und Wahrheiten früh. Achte auf Überreizung – klare Grenzen stabilisieren deine Intuition."
+                },
+                "22": {
+                    "titel": "Meister-Baumeister",
+                    "text": "Vision mit Umsetzungskraft: du erschaffst Projekte, die Bestand haben. Überforderung und Perfektionismus können blockieren – gehe deine Etappen bewusst."
+                },
+                "33": {
+                    "titel": "Meister-Herz",
+                    "text": "Herzführung mit großer Tiefe: Liebe, Heilung und Versöhnung sind dein Flow. Rückzug und zu hohe innere Ansprüche können dich bremsen – bleib im Kontakt mit dir selbst."
+                }
             }
         };
+
 
         function quersumme(z) { return z.toString().split("").reduce((a, b) => a + Number(b), 0); }
         function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
