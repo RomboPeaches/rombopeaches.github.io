@@ -8,22 +8,28 @@
 
     <style>
         body {
-            margin: 0;
+            margin: 20px;
             font-family: system-ui, Arial;
-            background: #f2f2f2;
+            background: #ac352c;
             display: flex;
             justify-content: center;
-            padding: 20px;
+            align-content: center;
+            padding: 0px;
+            min-height: 100vh;
+            background: #fff;
         }
 
         .container {
-            background: #AC352C;
+            display: flex;
+            flex-direction: column;
             background: linear-gradient(180deg, #AC352C, #235463);
-            max-width: 520px;
+            /*background: rgb(175, 47, 47);*/
+            height: fit-content;
             width: 100%;
-            padding: 24px;
+            padding: 0 20px;
             border-radius: 10px;
-            box-shadow: 0 1px 10px rgba(0, 0, 0, .15);
+            box-shadow: 0 1px 10px rgba(165, 71, 71, 0.15);
+            max-width: 600px;
         }
 
         .teaser {
@@ -56,10 +62,12 @@
 
         button {
             background: #56a8bd;
-            color: #fff;
+            color: #ffffff;
             border: 0;
             font-weight: bold;
-            cursor: pointer
+            cursor: pointer;
+            background: #56a8bd;
+
         }
 
         button:disabled {
@@ -69,7 +77,7 @@
 
         .result {
             color: rgb(255, 255, 255);
-            margin-bottom: 2px;
+            margin-bottom: 10px;
         }
 
         .row {
@@ -107,6 +115,7 @@
             border-radius: 6px;
             overflow: hidden;
             color: #fff;
+            margin-bottom: 20px;
         }
 
         .calc-text {
@@ -116,7 +125,9 @@
         .progress-bar {
             height: 100%;
             width: 0%;
-            background: #56a8bd;
+            background: #6cb8ff;
+            border-radius: 5px;
+            background: #fda155;
         }
 
         .footer {
@@ -125,144 +136,153 @@
         }
 
         #output {
-            margin: 20px;
+            margin: 0px;
         }
 
+        #output-wrapper {
+            background: hotpink;
+        }
     </style>
 </head>
 
 <body>
     <div class="container">
         <h1>Bestimme Deine Flow-to-Grow Lebenszahl</h1>
-        <p class="teaser">Finde deinen inneren Kompass. Deine Lebenszahl zeigt dir deine Stärken, mögliche Blockaden und verborgenen Chancen. Entdecke, wie du in deinen Flow kommst.</p>
-        <label class="result" for="input">Geburtsdatum eingeben:</label>
+        <p class="teaser">Finde deinen inneren Kompass. Deine Lebenszahl zeigt dir deine Stärken, mögliche Blockaden und
+            verborgenen Chancen. Entdecke, wie du in deinen Flow kommst.</p>
+            <label class="result" for="input">Geburtsdatum eingeben:</label>
             <input id="birthdate" placeholder="12.05.1945">
-        <button id="calcBtn" onclick="berechne()">Meine Lebenszahl berechnen!</button>
-        <div id="output"></div>
-    </div>
+            <button id="calcBtn" onclick="berechne()">Meine Lebenszahl berechnen!</button>
+            <div id="output">
+            </div>
+            <div id="container-results"></div>
 
-    <script>
-        // JSON direkt eingebunden
-        const daten = {
-            lebenszahlen: {
-                "1": {
-                    "titel": "Kreativität & Zuversicht",
-                    "text": "Du bist hier, um anzufangen: Ideen werden bei dir Realität, wenn du dir vertraust. Mut, Klarheit und Pioniergeist begleiten dich. Du neigst dazu, Verantwortung allein zu tragen – finde den Flow, indem du Vertrauen zulässt."
+        <script>
+            // JSON direkt eingebunden
+            const daten = {
+                lebenszahlen: {
+                    "1": {
+                        "titel": "Kreativität & Zuversicht",
+                        "text": "Du bist hier, um anzufangen: Ideen werden bei dir Realität, wenn du dir vertraust. Mut, Klarheit und Pioniergeist begleiten dich. Du neigst dazu, Verantwortung allein zu tragen – finde den Flow, indem du Vertrauen zulässt."
+                    },
+                    "2": {
+                        "titel": "Kooperation & Balance",
+                        "text": "Du bist hier, um Verbindung zu meistern: echte Nähe ohne Selbstverlust. Empathie, Diplomatie und Teamgeist sind deine Stärken. Achte darauf, dich nicht zu sehr anzupassen, sondern authentisch zu bleiben."
+                    },
+                    "3": {
+                        "titel": "Ausdruck & Sensibilität",
+                        "text": "Du bist hier, um deine Stimme zu leben: kreativ, ehrlich und spürbar. Kommunikation, Humor und Inspiration begleiten dich. Vermeide Zerstreuung – wähle deine Botschaften bewusst."
+                    },
+                    "4": {
+                        "titel": "Stabilität & Prozess",
+                        "text": "Du bist hier, um Strukturen zu schaffen: zuverlässig, pragmatisch und ausdauernd. Disziplin und Organisation unterstützen dich. Wachsam vor Starrheit – Flexibilität bringt Balance."
+                    },
+                    "5": {
+                        "titel": "Freiheit & Entwicklung",
+                        "text": "Du bist hier, um Freiheit zu lernen, die tragfähig ist: beweglich, neugierig und lernbereit. Achte darauf, dass Unruhe oder Bindungsangst deinen Flow nicht blockieren."
+                    },
+                    "6": {
+                        "titel": "Fürsorge & Verantwortung",
+                        "text": "Du bist hier, um Verantwortung reif zu leben: Harmonie, Heilung und Fürsorge stehen im Mittelpunkt. Überkontrolle vermeiden – Balance ist entscheidend."
+                    },
+                    "7": {
+                        "titel": "Wahrheit & Vertrauen",
+                        "text": "Du bist hier, um Wahrheit zu erkennen und zu leben: tief, intuitiv und weise. Isolation und Zweifel können dich bremsen – teile deine Erkenntnisse und handle bewusst."
+                    },
+                    "8": {
+                        "titel": "Macht & Fülle",
+                        "text": "Du bist hier, um wirksam zu sein: Erfolg, Einfluss und Umsetzungskraft im Einklang mit deinen Werten. Vorsicht vor Kontrolle und Leistungsdruck – führe im Flow."
+                    },
+                    "9": {
+                        "titel": "Weisheit & Mitgefühl",
+                        "text": "Du bist hier, um abzuschließen, Mitgefühl zu leben und loszulassen. Weitblick, Heilung und Integrität begleiten dich – achte darauf, dich nicht selbst zu verlieren."
+                    }
                 },
-                "2": {
-                    "titel": "Kooperation & Balance",
-                    "text": "Du bist hier, um Verbindung zu meistern: echte Nähe ohne Selbstverlust. Empathie, Diplomatie und Teamgeist sind deine Stärken. Achte darauf, dich nicht zu sehr anzupassen, sondern authentisch zu bleiben."
-                },
-                "3": {
-                    "titel": "Ausdruck & Sensibilität",
-                    "text": "Du bist hier, um deine Stimme zu leben: kreativ, ehrlich und spürbar. Kommunikation, Humor und Inspiration begleiten dich. Vermeide Zerstreuung – wähle deine Botschaften bewusst."
-                },
-                "4": {
-                    "titel": "Stabilität & Prozess",
-                    "text": "Du bist hier, um Strukturen zu schaffen: zuverlässig, pragmatisch und ausdauernd. Disziplin und Organisation unterstützen dich. Wachsam vor Starrheit – Flexibilität bringt Balance."
-                },
-                "5": {
-                    "titel": "Freiheit & Entwicklung",
-                    "text": "Du bist hier, um Freiheit zu lernen, die tragfähig ist: beweglich, neugierig und lernbereit. Achte darauf, dass Unruhe oder Bindungsangst deinen Flow nicht blockieren."
-                },
-                "6": {
-                    "titel": "Fürsorge & Verantwortung",
-                    "text": "Du bist hier, um Verantwortung reif zu leben: Harmonie, Heilung und Fürsorge stehen im Mittelpunkt. Überkontrolle vermeiden – Balance ist entscheidend."
-                },
-                "7": {
-                    "titel": "Wahrheit & Vertrauen",
-                    "text": "Du bist hier, um Wahrheit zu erkennen und zu leben: tief, intuitiv und weise. Isolation und Zweifel können dich bremsen – teile deine Erkenntnisse und handle bewusst."
-                },
-                "8": {
-                    "titel": "Macht & Fülle",
-                    "text": "Du bist hier, um wirksam zu sein: Erfolg, Einfluss und Umsetzungskraft im Einklang mit deinen Werten. Vorsicht vor Kontrolle und Leistungsdruck – führe im Flow."
-                },
-                "9": {
-                    "titel": "Weisheit & Mitgefühl",
-                    "text": "Du bist hier, um abzuschließen, Mitgefühl zu leben und loszulassen. Weitblick, Heilung und Integrität begleiten dich – achte darauf, dich nicht selbst zu verlieren."
+                meisterzahlen: {
+                    "11": {
+                        "titel": "Intuitive Führung",
+                        "text": "Hoch sensibel und kreativ: du spürst Stimmungen, Menschen und Wahrheiten früh. Achte auf Überreizung – klare Grenzen stabilisieren deine Intuition."
+                    },
+                    "22": {
+                        "titel": "Meister-Baumeister",
+                        "text": "Vision mit Umsetzungskraft: du erschaffst Projekte, die Bestand haben. Überforderung und Perfektionismus können blockieren – gehe deine Etappen bewusst."
+                    },
+                    "33": {
+                        "titel": "Meister-Herz",
+                        "text": "Herzführung mit großer Tiefe: Liebe, Heilung und Versöhnung sind dein Flow. Rückzug und zu hohe innere Ansprüche können dich bremsen – bleib im Kontakt mit dir selbst."
+                    }
                 }
-            },
-            meisterzahlen: {
-                "11": {
-                    "titel": "Intuitive Führung",
-                    "text": "Hoch sensibel und kreativ: du spürst Stimmungen, Menschen und Wahrheiten früh. Achte auf Überreizung – klare Grenzen stabilisieren deine Intuition."
-                },
-                "22": {
-                    "titel": "Meister-Baumeister",
-                    "text": "Vision mit Umsetzungskraft: du erschaffst Projekte, die Bestand haben. Überforderung und Perfektionismus können blockieren – gehe deine Etappen bewusst."
-                },
-                "33": {
-                    "titel": "Meister-Herz",
-                    "text": "Herzführung mit großer Tiefe: Liebe, Heilung und Versöhnung sind dein Flow. Rückzug und zu hohe innere Ansprüche können dich bremsen – bleib im Kontakt mit dir selbst."
-                }
-            }
-        };
+            };
 
 
-        function quersumme(z) { return z.toString().split("").reduce((a, b) => a + Number(b), 0); }
-        function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+            function quersumme(z) { return z.toString().split("").reduce((a, b) => a + Number(b), 0); }
+            function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 
-        async function berechne() {
-            const out = document.getElementById("output");
-            const input = document.getElementById("birthdate").value;
-            const m = input.match(/^(\d{1,2})\.(\d{1,2})\.(\d{4})$/);
-            if (!m) { out.innerHTML = "Ungültiges Datum"; return; }
-            const d = +m[1], mo = +m[2], y = +m[3];
-            const date = new Date(y, mo - 1, d);
-            if (date.getFullYear() != y || date.getMonth() != mo - 1 || date.getDate() != d || y < 1900 || date > new Date()) { out.innerHTML = "Ungültiges Datum"; return; }
+            async function berechne() {
+                const out = document.getElementById("output");
+                const results = document.getElementById("container-results");
+                const input = document.getElementById("birthdate").value;
+                const m = input.match(/^(\d{1,2})\.(\d{1,2})\.(\d{4})$/);
+                if (!m) { out.innerHTML = "Ungültiges Datum"; return; }
+                const d = +m[1], mo = +m[2], y = +m[3];
+                const date = new Date(y, mo - 1, d);
+                if (date.getFullYear() != y || date.getMonth() != mo - 1 || date.getDate() != d || y < 1900 || date > new Date()) { out.innerHTML = "Ungültiges Datum"; return; }
 
-            // Ladeanimation
-            out.innerHTML = `
+                // Ladeanimation
+                out.innerHTML = `
     <div class="calc-text">Berechnung läuft...</div>
     <div class="progress-container"><div id="bar" class="progress-bar"></div></div>`;
-            const bar = document.getElementById("bar");
-            for (let i = 0; i <= 100; i++) {
-                bar.style.width = i + "%";
-                await sleep(30);
-            }
+                const bar = document.getElementById("bar");
+                for (let i = 0; i <= 100; i++) {
+                    bar.style.width = i + "%";
+                    await sleep(30);
+                }
+                out.innerHTML = "";
+                results.innerHTML = "";
 
-            // Berechnung
-            const digits = ("" + d + mo + y).replace(/\D/g, "");
-            let current = quersumme(digits);
-            let falts = [], master = null;
+                // Berechnung
+                const digits = ("" + d + mo + y).replace(/\D/g, "");
+                let current = quersumme(digits);
+                let falts = [], master = null;
 
-            while (current >= 10) {
-                if ([11, 22, 33].includes(current)) master = current;
-                falts.push(current);
-                current = quersumme(current);
-            }
+                while (current >= 10) {
+                    if ([11, 22, 33].includes(current)) master = current;
+                    falts.push(current);
+                    current = quersumme(current);
+                }
 
-            const lebenszahl = current;
-            out.innerHTML = "<label class='result'>Deine Auswertung:</label>";
+                const lebenszahl = current;
+                results.innerHTML = "<label class='result'>Deine Auswertung:</label>";
 
-            // Zahlen zuerst
-            out.innerHTML += `<div class="row life"><span>Lebenszahl:</span><span>${lebenszahl}</span></div>`;
-            if (master) {
-                out.innerHTML += `<div class="row master"><span>Meisterzahl:</span><span>${master}</span></div>`;
-            }
-            falts.reverse().forEach(f => {
-                if (f !== master) out.innerHTML += `<div class="row"><span>Falt-Zahl:</span><span>${f}</span></div>`;
-            });
+                // Zahlen zuerst
+                results.innerHTML += `<div class="row life"><span>Lebenszahl:</span><span>${lebenszahl}</span></div>`;
+                if (master) {
+                    results.innerHTML += `<div class="row master"><span>Meisterzahl:</span><span>${master}</span></div>`;
+                }
+                falts.reverse().forEach(f => {
+                    if (f !== master) results.innerHTML += `<div class="row"><span>Innere-Zahl:</span><span>${f}</span></div>`;
+                });
 
-            // Beschreibungen
-            const l = daten.lebenszahlen[lebenszahl];
-            out.innerHTML += `<div class="description"><h3>${l.titel}</h3><p>${l.text}</p></div>`;
+                // Beschreibungen
+                const l = daten.lebenszahlen[lebenszahl];
+                results.innerHTML += `<div class="description"><h3>${l.titel}</h3><p>${l.text}</p></div>`;
 
-            if (master) {
-                const m = daten.meisterzahlen[master];
-                out.innerHTML += `<div class="description"><h3>${m.titel}</h3><p>${m.text}</p></div>`;
-            }
+                if (master) {
+                    const m = daten.meisterzahlen[master];
+                    results.innerHTML += `<div class="description"><h3>${m.titel}</h3><p>${m.text}</p></div>`;
+                }
 
-            // Newsletter Block
-            out.innerHTML += `
+                // Newsletter Block
+                results.innerHTML += `
   <div class="footer">
     <h2>Gesundheits-Newsletter</h2>
-    <p>Erhalte Impulse und Anregungen rund um deine Lebenszahl, Seminar-Angebote, Coachings:</p>
+    <p>Erhalte Impulse und Anregungen rund um deine Lebenszahl, Seminare, Angebote</p>
     <input placeholder="E-Mail">
     <button>Jetzt anmelden!</button>
   </div>`;
-        }
-    </script>
+            }
+        </script>
+
 </body>
 
 </html>
