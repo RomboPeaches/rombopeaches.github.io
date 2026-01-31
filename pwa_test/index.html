@@ -1,18 +1,53 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  <title>My PWA</title>
-  <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#000000">
-</head>
-<body>
-  <h1>Hello PWA</h1>
+<script>
+(async () => {
+  const log = (msg) => {
+    console.log("[PWA]", msg);
+    const el = document.createElement("div");
+    el.textContent = msg;
+    document.body.appendChild(el);
+  };
 
-  <script>
-    if ("serviceWorker" in navigator) {
-      navigator.serviceWorker.register("service-worker.js");
+  // HTTPS Check
+  log("Protocol: " + location.protocol);
+
+  // Manifest Check
+  const manifestLink = document.querySelector('link[rel="manifest"]');
+  if (manifestLink) {
+    log("Manifest found: " + manifestLink.href);
+    fetch(manifestLink.href)
+      .then(r => r.json())
+      .then(j => log("Manifest loaded: " + j.name))
+      .catch(e => log("Manifest error: " + e));
+  } else {
+    log("Manifest NOT found");
+  }
+
+  // Service Worker Check
+  if ("serviceWorker" in navigator) {
+    try {
+      const reg = await navigator.serviceWorker.getRegistration();
+      if (reg) {
+        log("Service Worker active");
+      } else {
+        log("Service Worker NOT registered");
+      }
+    } catch (e) {
+      log("SW error: " + e);
     }
-  </script>
-</body>
-</html>
+  } else {
+    log("Service Worker not supported");
+  }
+
+  // Installability
+  window.addEventListener("beforeinstallprompt", () => {
+    log("Install prompt available (Chromium)");
+  });
+
+  // Standalone mode
+  const isStandalone =
+    window.matchMedia("(display-mode: standalone)").matches ||
+    window.navigator.standalone === true;
+
+  log("Standalone mode: " + isStandalone);
+})();
+</script>
