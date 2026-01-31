@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Meine PWA</title>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#4CAF50">
+</head>
+<body>
+  <h1>Hello World PWA!</h1>
+  <p>Diese App funktioniert auf Desktop und Mobil.</p>
+
+  <script>
+    // Service Worker registrieren
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js')
+        .then(() => console.log('Service Worker registriert'))
+        .catch(err => console.error('Service Worker Fehler:', err));
+    }
+  </script>
+</body>
+</html>
