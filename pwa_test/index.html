@@ -1,68 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Hello World PWA</title>
-  <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#4CAF50">
-  <style>
-    body { font-family: Arial, sans-serif; text-align: center; padding: 50px; }
-    #installBtn, #manualInstall { padding: 10px 20px; font-size: 16px; margin-top: 20px; }
-    #manualInstall { font-size: 14px; color: #333; display:none; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hello World PWA</title>
+<link rel="manifest" href="manifest.json">
 </head>
 <body>
-  <h1>Hello World PWA!</h1>
-  <p>This app works on desktop and mobile, offline too.</p>
+<h1>Hello World PWA</h1>
 
-  <!-- Chrome/Edge Install Button -->
-  <button id="installBtn" style="display:none;">Install App</button>
+<!-- Install Button für Chrome / Edge -->
+<button id="installBtn" style="display:none;">Install App</button>
 
-  <!-- iOS / Firefox / DuckDuckGo Instructions -->
-  <div id="manualInstall">
-    <p>
-      To install this app:<br>
-      <strong>iOS / Safari / DuckDuckGo:</strong> Tap <em>Share → Add to Home Screen</em><br>
-      <strong>Firefox Desktop:</strong> Menu → Install “Hello World PWA”
-    </p>
-  </div>
+<!-- Anleitung für andere Browser -->
+<div id="manualInstall">
+  <p>
+    Firefox / Safari / iOS / DuckDuckGo:<br>
+    Bitte Menü → Add to Home Screen
+  </p>
+</div>
 
-  <script>
-    // --- Service Worker Registration ---
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('sw.js')
-        .then(() => console.log('Service Worker registered'))
-        .catch(err => console.error('Service Worker registration failed:', err));
-    }
+<script>
+// Service Worker registrieren
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('sw.js')
+    .then(() => console.log('SW registered'))
+    .catch(err => console.error('SW failed', err));
+}
 
-    // --- PWA Install Button Logic for Chrome/Edge ---
-    let deferredPrompt;
-    const installBtn = document.getElementById('installBtn');
+// PWA Install Button Logic für Chrome / Edge
+let deferredPrompt;
+const installBtn = document.getElementById('installBtn');
 
-    window.addEventListener('beforeinstallprompt', (e) => {
-      e.preventDefault();
-      deferredPrompt = e;
-      installBtn.style.display = 'inline-block';
-    });
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  installBtn.style.display = 'inline-block';
+});
 
-    installBtn.addEventListener('click', async () => {
-      if (!deferredPrompt) return;
-      deferredPrompt.prompt();
-      const choice = await deferredPrompt.userChoice;
-      console.log(`User response to install prompt: ${choice.outcome}`);
-      deferredPrompt = null;
-      installBtn.style.display = 'none';
-    });
-
-    // --- Manual instructions for iOS and Firefox ---
-    const isIos = /iphone|ipad|ipod/.test(window.navigator.userAgent.toLowerCase());
-    const isInStandalone = ('standalone' in window.navigator) && window.navigator.standalone;
-    const isFirefox = typeof InstallTrigger !== 'undefined';
-
-    if ((isIos && !isInStandalone) || isFirefox) {
-      document.getElementById('manualInstall').style.display = 'block';
-    }
-  </script>
+installBtn.addEventListener('click', async () => {
+  if (!deferredPrompt) return;
+  deferredPrompt.prompt();
+  const choice = await deferredPrompt.userChoice;
+  console.log('User response:', choice.outcome);
+  deferredPrompt = null;
+  installBtn.style.display = 'none';
+});
+</script>
 </body>
 </html>
+
