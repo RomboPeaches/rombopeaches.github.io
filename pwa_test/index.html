@@ -1,23 +1,53 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Meine PWA</title>
+  <title>Hello World PWA</title>
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#4CAF50">
+  <style>
+    body { font-family: Arial, sans-serif; text-align: center; padding: 50px; }
+    #installBtn { padding: 10px 20px; font-size: 16px; margin-top: 20px; }
+  </style>
 </head>
 <body>
   <h1>Hello World PWA!</h1>
-  <p>Diese App funktioniert auf Desktop und Mobil.</p>
+  <p>This app works on desktop and mobile, offline too.</p>
+
+  <button id="installBtn" style="display:none;">Install App</button>
 
   <script>
-    // Service Worker registrieren
+    // --- Service Worker Registration ---
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('sw.js')
-        .then(() => console.log('Service Worker registriert'))
-        .catch(err => console.error('Service Worker Fehler:', err));
+        .then(() => console.log('Service Worker registered'))
+        .catch(err => console.error('Service Worker error:', err));
     }
+
+    // --- PWA Install Button Logic ---
+    let deferredPrompt;
+    const installBtn = document.getElementById('installBtn');
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault(); // Prevent automatic prompt
+      deferredPrompt = e;
+      installBtn.style.display = 'inline-block';
+    });
+
+    installBtn.addEventListener('click', async () => {
+      if (!deferredPrompt) return;
+      deferredPrompt.prompt(); // Show install prompt
+      const choice = await deferredPrompt.userChoice;
+      if (choice.outcome === 'accepted') {
+        console.log('User accepted the install prompt');
+      } else {
+        console.log('User dismissed the install prompt');
+      }
+      deferredPrompt = null;
+      installBtn.style.display = 'none';
+    });
   </script>
 </body>
 </html>
+
