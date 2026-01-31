@@ -1,52 +1,18 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Hello World PWA</title>
-<link rel="manifest" href="manifest.json">
+  <meta charset="utf-8">
+  <title>My PWA</title>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#000000">
 </head>
 <body>
-<h1>Hello World PWA</h1>
+  <h1>Hello PWA</h1>
 
-<!-- Install Button für Chrome / Edge -->
-<button id="installBtn" style="display:none;">Install App</button>
-
-<!-- Anleitung für andere Browser -->
-<div id="manualInstall">
-  <p>
-    Firefox / Safari / iOS / DuckDuckGo:<br>
-    Bitte Menü → Add to Home Screen
-  </p>
-</div>
-
-<script>
-// Service Worker registrieren
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('sw.js')
-    .then(() => console.log('SW registered'))
-    .catch(err => console.error('SW failed', err));
-}
-
-// PWA Install Button Logic für Chrome / Edge
-let deferredPrompt;
-const installBtn = document.getElementById('installBtn');
-
-window.addEventListener('beforeinstallprompt', (e) => {
-  e.preventDefault();
-  deferredPrompt = e;
-  installBtn.style.display = 'inline-block';
-});
-
-installBtn.addEventListener('click', async () => {
-  if (!deferredPrompt) return;
-  deferredPrompt.prompt();
-  const choice = await deferredPrompt.userChoice;
-  console.log('User response:', choice.outcome);
-  deferredPrompt = null;
-  installBtn.style.display = 'none';
-});
-</script>
+  <script>
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("service-worker.js");
+    }
+  </script>
 </body>
 </html>
-
