@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Hello World PWA</title>
-  <link rel="manifest" href="/manifest.json">
+  <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#4CAF50">
   <style>
     body { font-family: Arial, sans-serif; text-align: center; padding: 50px; }
@@ -31,7 +31,7 @@
   <script>
     // --- Service Worker Registration ---
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/sw.js')
+      navigator.serviceWorker.register('sw.js')
         .then(() => console.log('Service Worker registered'))
         .catch(err => console.error('Service Worker registration failed:', err));
     }
@@ -41,7 +41,7 @@
     const installBtn = document.getElementById('installBtn');
 
     window.addEventListener('beforeinstallprompt', (e) => {
-      e.preventDefault(); // Prevent automatic prompt
+      e.preventDefault();
       deferredPrompt = e;
       installBtn.style.display = 'inline-block';
     });
@@ -66,4 +66,3 @@
   </script>
 </body>
 </html>
-

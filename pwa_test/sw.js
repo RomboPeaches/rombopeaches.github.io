@@ -1,20 +1,22 @@
 const cacheName = 'pwa-hello-world-v1';
 const filesToCache = [
-  '/',
-  '/index.html',
-  '/manifest.json',
-  '/icon-192.png',
-  '/icon-512.png'
+  'index.html',
+  'manifest.json',
+  'icon-192.png',
+  'icon-512.png'
 ];
 
 self.addEventListener('install', event => {
   event.waitUntil(
-    caches.open(cacheName).then(cache => cache.addAll(filesToCache))
+    caches.open(cacheName)
+      .then(cache => cache.addAll(filesToCache))
+      .catch(err => console.error('Cache install failed:', err))
   );
 });
 
 self.addEventListener('fetch', event => {
   event.respondWith(
-    caches.match(event.request).then(response => response || fetch(event.request))
+    caches.match(event.request)
+      .then(response => response || fetch(event.request))
   );
 });
