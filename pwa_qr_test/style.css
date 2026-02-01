@@ -1,22 +1,98 @@
+/* Global styles */
 body {
-  font-family: system-ui, sans-serif;
+  margin: 0;
+  font-family: system-ui, -apple-system, sans-serif;
+  background: linear-gradient(135deg, #121212, #1a1a1a);
+  color: #f5f5f5;
   text-align: center;
   padding: 1rem;
+  transition: background 0.3s, color 0.3s;
 }
 
+/* Headings */
+h1, h2 {
+  margin: 0.5rem 0;
+  font-weight: 600;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+}
+
+/* Video frame */
 video {
   width: 100%;
   max-width: 400px;
-  border-radius: 8px;
+  border: 3px solid #1E90FF;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.6);
   margin: 1rem 0;
 }
 
+/* Buttons */
 button {
   font-size: 1.2rem;
-  padding: 0.5rem 1rem;
+  font-weight: 600;
+  padding: 0.6rem 1.2rem;
+  margin: 0.8rem 0;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  background: linear-gradient(45deg, #1E90FF, #FF9500);
+  color: #fff;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.4);
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+
+button:hover, button:active {
+  transform: scale(1.05);
+  box-shadow: 0 6px 14px rgba(0,0,0,0.5);
+}
+
+/* Status & result */
+#status {
+  font-weight: 600;
+  color: #00FFCC; /* teal/cyan for live feedback */
+  margin: 0.5rem 0;
 }
 
 #result {
+  background: rgba(30, 144, 255, 0.15); /* semi-transparent blue */
+  border-left: 4px solid #FF9500;
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
   word-break: break-all;
-  margin: 1rem;
+  margin: 0.5rem auto;
+  max-width: 400px;
+}
+
+/* History list */
+#history {
+  list-style: none;
+  padding: 0;
+  margin: 1rem auto;
+  max-width: 400px;
+}
+
+#history li {
+  background: rgba(255, 255, 255, 0.05);
+  border-left: 4px solid #1E90FF;
+  border-radius: 8px;
+  padding: 0.5rem 0.8rem;
+  margin: 0.3rem 0;
+  text-align: left;
+  font-size: 0.95rem;
+  overflow-wrap: break-word;
+  transition: background 0.2s;
+}
+
+#history li:hover {
+  background: rgba(30, 144, 255, 0.1);
+}
+
+/* Links inside results/history */
+a {
+  color: #FF9500;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
 }
