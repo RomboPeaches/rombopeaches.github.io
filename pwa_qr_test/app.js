@@ -16,19 +16,31 @@ if ("serviceWorker" in navigator) {
   navigator.serviceWorker.register("service-worker.js");
 }
 
+// Scanning control
+let scanning = false;
+let stream = null;
+
 // Start scanning
 startBtn.onclick = async () => {
+  if (scanning) {
+    alert("Scan already in progress.");
+    return;
+  }
+
   if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
     alert("Camera not supported on this device/browser.");
     return;
   }
 
   try {
-    const stream = await navigator.mediaDevices.getUserMedia({
+    // Start camera
+    stream = await navigator.mediaDevices.getUserMedia({
       video: { facingMode: "environment" }
     });
     video.srcObject = stream;
     video.play();
+    scanning = true;
+    statusDiv.textContent = "Scanning...";
     requestAnimationFrame(scanFrame);
   } catch (err) {
     console.error("getUserMedia error:", err);
@@ -38,17 +50,18 @@ startBtn.onclick = async () => {
 
 // Scan loop
 function scanFrame() {
+  if (!scanning) return; // Stop scanning if flag is false
+
   if (video.readyState === video.HAVE_ENOUGH_DATA) {
     canvas.width = video.videoWidth;
     canvas.height = video.videoHeight;
 
-    // Draw video frame
     ctx.drawImage(video, 0, 0);
-
     const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+
     let detected = false;
 
-    // Use native BarcodeDetector if available
+    // Native BarcodeDetector
     if ("BarcodeDetector" in window) {
       const detector = new BarcodeDetector({ formats: ["qr_code"] });
       detector.detect(imageData)
@@ -56,7 +69,6 @@ function scanFrame() {
           if (codes.length > 0) {
             detected = true;
             handleResult(codes[0].rawValue);
-            statusDiv.textContent = "QR detected (native)";
           } else {
             statusDiv.textContent = "No QR detected (native)";
           }
@@ -72,9 +84,8 @@ function scanFrame() {
       if (code) {
         detected = true;
         handleResult(code.data);
-        statusDiv.textContent = "QR detected (jsQR)";
 
-        // Draw green rectangle around QR
+        // Draw green rectangle
         drawRect(code.location);
       } else {
         statusDiv.textContent = "No QR detected (jsQR)";
@@ -86,13 +97,12 @@ function scanFrame() {
     console.log("Frame processed, detected:", detected);
   }
 
-  requestAnimationFrame(scanFrame);
+  if (scanning) requestAnimationFrame(scanFrame);
 }
 
-// Draw rectangle around QR code detected by jsQR
+// Draw rectangle around QR code
 function drawRect(location) {
   if (!location) return;
-
   ctx.lineWidth = 4;
   ctx.strokeStyle = "lime";
   ctx.beginPath();
@@ -104,11 +114,23 @@ function drawRect(location) {
   ctx.stroke();
 }
 
-// Handle detected QR code
+// Handle QR code detection
 function handleResult(text) {
+  // Stop scanning immediately
+  scanning = false;
+
+  // Stop camera
+  if (stream) {
+    stream.getTracks().forEach(track => track.stop());
+    stream = null;
+  }
+
+  // Show result
   resultDiv.innerHTML = makeClickable(text);
+  statusDiv.textContent = "QR detected! Press Start Scan to scan again.";
   console.log("QR detected:", text);
 
+  // Save history
   history.unshift(text);
   history = history.slice(0, 20);
   localStorage.setItem("qr-history", JSON.stringify(history));
