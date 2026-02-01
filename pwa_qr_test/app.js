@@ -8,6 +8,9 @@ const historyList = document.getElementById("history");
 const statusDiv = document.getElementById("status");
 const overlay = document.getElementById("overlay");
 
+// Hide result initially
+resultDiv.style.display = "none";
+
 // Load history from localStorage
 let history = JSON.parse(localStorage.getItem("qr-history") || "[]");
 renderHistory();
@@ -25,8 +28,10 @@ let stream = null;
 startBtn.onclick = async () => {
   if (scanning) return;
 
-  overlay.style.opacity = 0; // hide overlay
-  resultDiv.innerHTML = "";
+  overlay.style.opacity = 0;                       // hide overlay
+  const lastResultContainer = document.getElementById("lastResultContainer");
+  lastResultContainer.style.display = "none";     // hide heading + previous result
+  resultDiv.innerHTML = "";                        // clear previous content
   statusDiv.textContent = "Scanning...";
 
   if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
@@ -49,12 +54,12 @@ startBtn.onclick = async () => {
   }
 };
 
+
 // Scan loop
 function scanFrame() {
   if (!scanning) return; // stop if not scanning
 
   if (video.readyState === video.HAVE_ENOUGH_DATA) {
-    // square canvas
     canvas.width = video.videoWidth;
     canvas.height = video.videoHeight;
 
@@ -63,7 +68,6 @@ function scanFrame() {
 
     let detected = false;
 
-    // Native BarcodeDetector
     if ("BarcodeDetector" in window) {
       const detector = new BarcodeDetector({ formats: ["qr_code"] });
       detector.detect(imageData)
@@ -79,9 +83,7 @@ function scanFrame() {
           console.error("BarcodeDetector error:", err);
           statusDiv.textContent = "BarcodeDetector error, see console";
         });
-    }
-    // jsQR fallback
-    else if (typeof jsQR !== "undefined") {
+    } else if (typeof jsQR !== "undefined") {
       const code = jsQR(imageData.data, canvas.width, canvas.height);
       if (code) {
         detected = true;
@@ -127,17 +129,29 @@ function handleResult(text) {
   // Show overlay
   overlay.style.opacity = 1;
 
-  // Display QR content
-  resultDiv.innerHTML = makeClickable(text);
+  const lastResultContainer = document.getElementById("lastResultContainer");
+
+  // Display result only if text is not empty
+  if (text && text.trim() !== "") {
+    resultDiv.innerHTML = makeClickable(text);
+    lastResultContainer.style.display = "block"; // show heading + result
+  } else {
+    resultDiv.innerHTML = "";
+    lastResultContainer.style.display = "none"; // hide container if empty
+  }
+
   statusDiv.textContent = "QR detected! Press Start Scan to scan again.";
   console.log("QR detected:", text);
 
-  // Save history
-  history.unshift(text);
-  history = history.slice(0, 20);
-  localStorage.setItem("qr-history", JSON.stringify(history));
-  renderHistory();
+  // Save history only if text is not empty
+  if (text && text.trim() !== "") {
+    history.unshift(text);
+    history = history.slice(0, 20);
+    localStorage.setItem("qr-history", JSON.stringify(history));
+    renderHistory();
+  }
 }
+
 
 // Render history
 function renderHistory() {

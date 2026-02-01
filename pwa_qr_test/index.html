@@ -18,23 +18,25 @@
 
 <body>
 
-  <h1>QR Scanner</h1>
+  <h1>Rabbatt-Code-Scanner</h1>
 
-<div class="video-container">
-  <video id="video" playsinline></video>
-  <canvas id="canvas"></canvas>
-  <div id="overlay">QR SCANNED</div>
-</div>
+  <div class="video-container">
+    <video id="video" playsinline></video>
+    <canvas id="canvas"></canvas>
+    <div id="overlay">QR SCANNED</div>
+  </div>
 
   <button id="startBtn">Start Scan</button>
 
   <h2>Status</h2>
   <div id="status">Waiting to scan...</div>
 
-  <h2>Last result:</h2>
-  <div id="result"></div>
+  <div id="lastResultContainer">
+    <h2>Last result:</h2>
+    <div id="result"></div>
+  </div>
 
-  <h2>History (offline)</h2>
+  <h2>Erfasste Scans:</h2>
   <ul id="history"></ul>
 
   <!-- jsQR library for fallback -->

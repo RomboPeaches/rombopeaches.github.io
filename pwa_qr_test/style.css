@@ -74,6 +74,11 @@ button:hover, button:active {
   word-break: break-all;
   margin: 0.5rem auto;
   max-width: 400px;
+  display: none; /* hide by default */
+}
+
+#lastResultContainer {
+  display: none; /* hidden initially */
 }
 
 /* History list */
