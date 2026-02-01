@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- PWA manifest -->
+  <link rel="manifest" href="manifest.json">
+
+  <!-- iOS support -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+  <title>QR Scanner PWA</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <h1>QR Scanner</h1>
+
+  <!-- Camera preview -->
+  <video id="video" playsinline></video>
+
+  <!-- Canvas used to analyze frames -->
+  <canvas id="canvas" hidden></canvas>
+
+  <button id="startBtn">Start Scan</button>
+
+  <h2>Last result:</h2>
+  <div id="result"></div>
+
+  <h2>History (offline)</h2>
+  <ul id="history"></ul>
+
+  <script src="app.js"></script>
+</body>
+</html>
