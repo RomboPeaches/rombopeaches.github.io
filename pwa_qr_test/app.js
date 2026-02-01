@@ -5,12 +5,13 @@ const ctx = canvas.getContext("2d");
 const startBtn = document.getElementById("startBtn");
 const resultDiv = document.getElementById("result");
 const historyList = document.getElementById("history");
+const statusDiv = document.getElementById("status");
 
-// Load history from localStorage (offline persistence)
+// Load history from localStorage
 let history = JSON.parse(localStorage.getItem("qr-history") || "[]");
 renderHistory();
 
-// Register service worker for offline
+// Register service worker
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker.register("service-worker.js");
 }
@@ -22,33 +23,32 @@ startBtn.onclick = async () => {
     return;
   }
 
-  const stream = await navigator.mediaDevices.getUserMedia({
-    video: { facingMode: "environment" }
-  });
-
-  video.srcObject = stream;
-  video.play();
-
-  requestAnimationFrame(scanFrame);
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({
+      video: { facingMode: "environment" }
+    });
+    video.srcObject = stream;
+    video.play();
+    requestAnimationFrame(scanFrame);
+  } catch (err) {
+    console.error("getUserMedia error:", err);
+    alert("Failed to access camera: " + err.message);
+  }
 };
 
-
 // Scan loop
-// Add a small status div in index.html, above the result div
-// <div id="status"></div>
-const statusDiv = document.getElementById("status");
-
 function scanFrame() {
   if (video.readyState === video.HAVE_ENOUGH_DATA) {
     canvas.width = video.videoWidth;
     canvas.height = video.videoHeight;
 
+    // Draw video frame
     ctx.drawImage(video, 0, 0);
-    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
 
+    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
     let detected = false;
 
-    // Native BarcodeDetector
+    // Use native BarcodeDetector if available
     if ("BarcodeDetector" in window) {
       const detector = new BarcodeDetector({ formats: ["qr_code"] });
       detector.detect(imageData)
@@ -56,6 +56,7 @@ function scanFrame() {
           if (codes.length > 0) {
             detected = true;
             handleResult(codes[0].rawValue);
+            statusDiv.textContent = "QR detected (native)";
           } else {
             statusDiv.textContent = "No QR detected (native)";
           }
@@ -64,18 +65,21 @@ function scanFrame() {
           console.error("BarcodeDetector error:", err);
           statusDiv.textContent = "BarcodeDetector error, see console";
         });
-    } 
+    }
     // Fallback to jsQR
     else if (typeof jsQR !== "undefined") {
       const code = jsQR(imageData.data, canvas.width, canvas.height);
       if (code) {
         detected = true;
         handleResult(code.data);
+        statusDiv.textContent = "QR detected (jsQR)";
+
+        // Draw green rectangle around QR
+        drawRect(code.location);
       } else {
         statusDiv.textContent = "No QR detected (jsQR)";
       }
-    } 
-    else {
+    } else {
       statusDiv.textContent = "No QR library available";
     }
 
@@ -85,21 +89,31 @@ function scanFrame() {
   requestAnimationFrame(scanFrame);
 }
 
+// Draw rectangle around QR code detected by jsQR
+function drawRect(location) {
+  if (!location) return;
+
+  ctx.lineWidth = 4;
+  ctx.strokeStyle = "lime";
+  ctx.beginPath();
+  ctx.moveTo(location.topLeftCorner.x, location.topLeftCorner.y);
+  ctx.lineTo(location.topRightCorner.x, location.topRightCorner.y);
+  ctx.lineTo(location.bottomRightCorner.x, location.bottomRightCorner.y);
+  ctx.lineTo(location.bottomLeftCorner.x, location.bottomLeftCorner.y);
+  ctx.closePath();
+  ctx.stroke();
+}
+
+// Handle detected QR code
 function handleResult(text) {
-  // Show result in UI
   resultDiv.innerHTML = makeClickable(text);
-
-  // Log for debugging
   console.log("QR detected:", text);
-  statusDiv.textContent = "QR detected!";
 
-  // Save to history
   history.unshift(text);
-  history = history.slice(0, 20); // limit size
+  history = history.slice(0, 20);
   localStorage.setItem("qr-history", JSON.stringify(history));
   renderHistory();
 }
-
 
 // Render offline history
 function renderHistory() {
