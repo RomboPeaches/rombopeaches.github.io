@@ -6,12 +6,13 @@ const startBtn = document.getElementById("startBtn");
 const resultDiv = document.getElementById("result");
 const historyList = document.getElementById("history");
 const statusDiv = document.getElementById("status");
+const overlay = document.getElementById("overlay");
 
 // Load history from localStorage
 let history = JSON.parse(localStorage.getItem("qr-history") || "[]");
 renderHistory();
 
-// Register service worker
+// Register service worker for offline
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker.register("service-worker.js");
 }
@@ -20,12 +21,13 @@ if ("serviceWorker" in navigator) {
 let scanning = false;
 let stream = null;
 
-// Start scanning
+// Start scanning button
 startBtn.onclick = async () => {
-  if (scanning) {
-    alert("Scan already in progress.");
-    return;
-  }
+  if (scanning) return;
+
+  overlay.style.opacity = 0; // hide overlay
+  resultDiv.innerHTML = "";
+  statusDiv.textContent = "Scanning...";
 
   if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
     alert("Camera not supported on this device/browser.");
@@ -40,7 +42,6 @@ startBtn.onclick = async () => {
     video.srcObject = stream;
     video.play();
     scanning = true;
-    statusDiv.textContent = "Scanning...";
     requestAnimationFrame(scanFrame);
   } catch (err) {
     console.error("getUserMedia error:", err);
@@ -50,13 +51,14 @@ startBtn.onclick = async () => {
 
 // Scan loop
 function scanFrame() {
-  if (!scanning) return; // Stop scanning if flag is false
+  if (!scanning) return; // stop if not scanning
 
   if (video.readyState === video.HAVE_ENOUGH_DATA) {
+    // square canvas
     canvas.width = video.videoWidth;
     canvas.height = video.videoHeight;
 
-    ctx.drawImage(video, 0, 0);
+    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
     const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
 
     let detected = false;
@@ -78,14 +80,12 @@ function scanFrame() {
           statusDiv.textContent = "BarcodeDetector error, see console";
         });
     }
-    // Fallback to jsQR
+    // jsQR fallback
     else if (typeof jsQR !== "undefined") {
       const code = jsQR(imageData.data, canvas.width, canvas.height);
       if (code) {
         detected = true;
         handleResult(code.data);
-
-        // Draw green rectangle
         drawRect(code.location);
       } else {
         statusDiv.textContent = "No QR detected (jsQR)";
@@ -100,7 +100,7 @@ function scanFrame() {
   if (scanning) requestAnimationFrame(scanFrame);
 }
 
-// Draw rectangle around QR code
+// Draw rectangle around QR (jsQR)
 function drawRect(location) {
   if (!location) return;
   ctx.lineWidth = 4;
@@ -114,9 +114,8 @@ function drawRect(location) {
   ctx.stroke();
 }
 
-// Handle QR code detection
+// Handle detected QR
 function handleResult(text) {
-  // Stop scanning immediately
   scanning = false;
 
   // Stop camera
@@ -125,7 +124,10 @@ function handleResult(text) {
     stream = null;
   }
 
-  // Show result
+  // Show overlay
+  overlay.style.opacity = 1;
+
+  // Display QR content
   resultDiv.innerHTML = makeClickable(text);
   statusDiv.textContent = "QR detected! Press Start Scan to scan again.";
   console.log("QR detected:", text);
@@ -137,7 +139,7 @@ function handleResult(text) {
   renderHistory();
 }
 
-// Render offline history
+// Render history
 function renderHistory() {
   historyList.innerHTML = "";
   history.forEach(item => {
@@ -147,7 +149,7 @@ function renderHistory() {
   });
 }
 
-// Auto-link URLs
+// Make URLs clickable
 function makeClickable(text) {
   if (text.startsWith("http")) {
     return `<a href="${text}" target="_blank">${text}</a>`;
