@@ -34,6 +34,10 @@ startBtn.onclick = async () => {
 
 
 // Scan loop
+// Add a small status div in index.html, above the result div
+// <div id="status"></div>
+const statusDiv = document.getElementById("status");
+
 function scanFrame() {
   if (video.readyState === video.HAVE_ENOUGH_DATA) {
     canvas.width = video.videoWidth;
@@ -42,33 +46,60 @@ function scanFrame() {
     ctx.drawImage(video, 0, 0);
     const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
 
-    // Use native API if available
+    let detected = false;
+
+    // Native BarcodeDetector
     if ("BarcodeDetector" in window) {
       const detector = new BarcodeDetector({ formats: ["qr_code"] });
-      detector.detect(imageData).then(codes => {
-        if (codes.length) handleResult(codes[0].rawValue);
-      });
+      detector.detect(imageData)
+        .then(codes => {
+          if (codes.length > 0) {
+            detected = true;
+            handleResult(codes[0].rawValue);
+          } else {
+            statusDiv.textContent = "No QR detected (native)";
+          }
+        })
+        .catch(err => {
+          console.error("BarcodeDetector error:", err);
+          statusDiv.textContent = "BarcodeDetector error, see console";
+        });
     } 
-    // Fallback for everything else
-    else {
+    // Fallback to jsQR
+    else if (typeof jsQR !== "undefined") {
       const code = jsQR(imageData.data, canvas.width, canvas.height);
-      if (code) handleResult(code.data);
+      if (code) {
+        detected = true;
+        handleResult(code.data);
+      } else {
+        statusDiv.textContent = "No QR detected (jsQR)";
+      }
+    } 
+    else {
+      statusDiv.textContent = "No QR library available";
     }
+
+    console.log("Frame processed, detected:", detected);
   }
 
   requestAnimationFrame(scanFrame);
 }
 
-
-// Handle detected QR
 function handleResult(text) {
+  // Show result in UI
   resultDiv.innerHTML = makeClickable(text);
 
+  // Log for debugging
+  console.log("QR detected:", text);
+  statusDiv.textContent = "QR detected!";
+
+  // Save to history
   history.unshift(text);
   history = history.slice(0, 20); // limit size
   localStorage.setItem("qr-history", JSON.stringify(history));
   renderHistory();
 }
+
 
 // Render offline history
 function renderHistory() {
