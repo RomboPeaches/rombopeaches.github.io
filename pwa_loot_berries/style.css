@@ -1,0 +1,41 @@
+*{
+box-sizing:border-box;
+margin:0;
+padding:0;
+}
+
+body{
+font-family:"Futura", "Futura PT", Arial, sans-serif;
+background:#ffffff;
+color:#000;
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+}
+
+.container{
+text-align:center;
+}
+
+h1{
+font-size:3rem;
+letter-spacing:4px;
+margin-bottom:40px;
+}
+
+.install{
+font-family:inherit;
+font-size:1rem;
+padding:18px 40px;
+background:#000;
+color:#fff;
+border:3px solid #000;
+cursor:pointer;
+transition:all .2s ease;
+}
+
+.install:hover{
+background:#fff;
+color:#000;
+}

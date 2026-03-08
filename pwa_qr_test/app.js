@@ -13,6 +13,15 @@ resultDiv.style.display = "none";
 
 // Load history from localStorage
 let history = JSON.parse(localStorage.getItem("qr-history") || "[]");
+
+// Migration for old string entries
+history = history.map(item => {
+  if (typeof item === "string") {
+    return { value: item, time: null };
+  }
+  return item;
+});
+
 renderHistory();
 
 // Register service worker for offline
@@ -28,10 +37,10 @@ let stream = null;
 startBtn.onclick = async () => {
   if (scanning) return;
 
-  overlay.style.opacity = 0;                       // hide overlay
+  overlay.style.opacity = 0;
   const lastResultContainer = document.getElementById("lastResultContainer");
-  lastResultContainer.style.display = "none";     // hide heading + previous result
-  resultDiv.innerHTML = "";                        // clear previous content
+  lastResultContainer.style.display = "none";
+  resultDiv.innerHTML = "";
   statusDiv.textContent = "Scanning...";
 
   if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
@@ -40,7 +49,6 @@ startBtn.onclick = async () => {
   }
 
   try {
-    // Start camera
     stream = await navigator.mediaDevices.getUserMedia({
       video: { facingMode: "environment" }
     });
@@ -54,10 +62,9 @@ startBtn.onclick = async () => {
   }
 };
 
-
 // Scan loop
 function scanFrame() {
-  if (!scanning) return; // stop if not scanning
+  if (!scanning) return;
 
   if (video.readyState === video.HAVE_ENOUGH_DATA) {
     canvas.width = video.videoWidth;
@@ -95,8 +102,6 @@ function scanFrame() {
     } else {
       statusDiv.textContent = "No QR library available";
     }
-
-    console.log("Frame processed, detected:", detected);
   }
 
   if (scanning) requestAnimationFrame(scanFrame);
@@ -120,45 +125,65 @@ function drawRect(location) {
 function handleResult(text) {
   scanning = false;
 
-  // Stop camera
   if (stream) {
     stream.getTracks().forEach(track => track.stop());
     stream = null;
   }
 
-  // Show overlay
   overlay.style.opacity = 1;
 
   const lastResultContainer = document.getElementById("lastResultContainer");
 
-  // Display result only if text is not empty
   if (text && text.trim() !== "") {
     resultDiv.innerHTML = makeClickable(text);
-    lastResultContainer.style.display = "block"; // show heading + result
+    lastResultContainer.style.display = "block";
   } else {
     resultDiv.innerHTML = "";
-    lastResultContainer.style.display = "none"; // hide container if empty
+    lastResultContainer.style.display = "none";
   }
 
   statusDiv.textContent = "QR detected! Press Start Scan to scan again.";
-  console.log("QR detected:", text);
 
-  // Save history only if text is not empty
   if (text && text.trim() !== "") {
-    history.unshift(text);
+    history.unshift({
+      value: text,
+      time: new Date().toISOString()
+    });
+
     history = history.slice(0, 20);
     localStorage.setItem("qr-history", JSON.stringify(history));
     renderHistory();
   }
 }
 
-
-// Render history
+// Render history with timestamp
 function renderHistory() {
   historyList.innerHTML = "";
+
   history.forEach(item => {
     const li = document.createElement("li");
-    li.innerHTML = makeClickable(item);
+
+    const time = item.time
+      ? new Date(item.time).toLocaleString(undefined, {
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+        hour12: false
+      })
+      : "";
+
+    li.innerHTML = `
+      <div style="font-size:0.75rem; color:#9aa0b3; margin-bottom:2px;">
+        ${time}
+      </div>
+      <div>
+        ${makeClickable(item.value)}
+      </div>
+    `;
+
     historyList.appendChild(li);
   });
 }
