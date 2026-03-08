@@ -5,13 +5,13 @@ padding:0;
 }
 
 body{
-font-family:"Futura", "Futura PT", Arial, sans-serif;
-background:#ffffff;
+font-family:"Futura","Futura PT",Arial,sans-serif;
+background:#fff;
 color:#000;
 height:100vh;
 display:flex;
-justify-content:center;
 align-items:center;
+justify-content:center;
 }
 
 .container{
@@ -24,18 +24,24 @@ letter-spacing:4px;
 margin-bottom:40px;
 }
 
-.install{
-font-family:inherit;
-font-size:1rem;
-padding:18px 40px;
-background:#000;
-color:#fff;
-border:3px solid #000;
-cursor:pointer;
-transition:all .2s ease;
+.buttons{
+display:flex;
+gap:20px;
+justify-content:center;
 }
 
-.install:hover{
+.btn{
+font-family:inherit;
+font-size:1rem;
+padding:16px 36px;
+border:3px solid #000;
+background:#000;
+color:#fff;
+cursor:pointer;
+transition:.2s;
+}
+
+.btn:hover{
 background:#fff;
 color:#000;
 }
