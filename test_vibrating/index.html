@@ -1,0 +1,9 @@
+<button onclick="buzz()">Vibrate</button>
+
+<script>
+function buzz() {
+  if ("vibrate" in navigator) {
+    navigator.vibrate([200, 100, 200]);
+  }
+}
+</script>
