@@ -8,7 +8,7 @@
 
 body {
     margin: 100px;
-    height: 100vh;
+    height: 100%;
     font-family: 'Ostrich-Sans', sans-serif;
     background: linear-gradient(0deg, rgba(13, 79, 75, 1) 0%, rgb(6, 20, 49) 100%);
 }
