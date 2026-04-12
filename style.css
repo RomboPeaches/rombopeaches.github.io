@@ -1,9 +1,12 @@
 @font-face {
     font-family: 'Ostrich-Sans';
-    src: url('/ostrich-sans/ostrich-Bold.ttf') format('opentype');
+    src: url('/ostrich-sans/ostrich-Bold.ttf') format('truetype');
     font-weight: 400;
-    /* normal weight */
     font-style: normal;
+}
+
+* {
+    transition: all 800ms;
 }
 
 body {
@@ -33,7 +36,6 @@ justify-content: center;
 
 .select-app {
     transition-duration: 800ms;
-    height: fit-content;
     width: 160px;
     height: 160px;
     border-radius: 6px;
