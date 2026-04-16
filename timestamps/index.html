@@ -5,7 +5,26 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Zeitstempel Manager</title>
 
-  <link rel="manifest" href="manifest.json" />
+  <!-- Manifest via Blob (Single-file workaround) -->
+  <script>
+    const manifest = {
+      name: "Zeitstempel Manager",
+      short_name: "Zeit",
+      start_url: ".",
+      display: "standalone",
+      background_color: "#121216",
+      theme_color: "#121216",
+      icons: []
+    };
+
+    const blob = new Blob([JSON.stringify(manifest)], { type: 'application/json' });
+    const manifestURL = URL.createObjectURL(blob);
+
+    const link = document.createElement('link');
+    link.rel = 'manifest';
+    link.href = manifestURL;
+    document.head.appendChild(link);
+  </script>
 
   <style>
     :root {
@@ -24,10 +43,7 @@
       padding:1rem;
     }
 
-    h1 {
-      text-align:center;
-      margin-bottom:1rem;
-    }
+    h1 { text-align:center; }
 
     .card {
       background: var(--card);
@@ -51,15 +67,10 @@
     button {
       border:none;
       border-radius:10px;
-      padding:0.5rem 0.7rem;
+      padding:0.5rem;
       cursor:pointer;
       background: linear-gradient(135deg, var(--accent), var(--accent2));
       color:white;
-      transition: transform 0.1s;
-    }
-
-    button:active {
-      transform: scale(0.95);
     }
 
     .row {
@@ -67,7 +78,6 @@
       justify-content:space-between;
       align-items:center;
       margin:0.4rem 0;
-      font-size:0.9rem;
     }
 
     .fab {
@@ -78,10 +88,6 @@
       height:60px;
       border-radius:50%;
       font-size:1.5rem;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      box-shadow:0 10px 20px rgba(0,0,0,0.4);
     }
 
     @keyframes fadeIn {
@@ -95,7 +101,6 @@
   <h1>⏱ Zeitstempel</h1>
 
   <input id="nameInput" placeholder="Neuer Eintrag..." />
-
   <div id="list"></div>
 
   <button class="fab" onclick="addEntry()">＋</button>
@@ -105,7 +110,6 @@
 
     const load = () => JSON.parse(localStorage.getItem("entries") || "[]");
     const save = d => localStorage.setItem("entries", JSON.stringify(d));
-
     const now = () => new Date().toLocaleString();
 
     function addEntry() {
@@ -145,6 +149,7 @@
 
         const title = document.createElement("h3");
         title.textContent = entry.name;
+
         card.appendChild(title);
 
         fields.forEach(f => {
@@ -169,29 +174,22 @@
 
     render();
 
+    // Service Worker via Blob (Single-file workaround)
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('service-worker.js');
+      const swCode = `
+        self.addEventListener('install', e => {
+          e.waitUntil(caches.open('app').then(c => c.addAll(['./'])));
+        });
+        self.addEventListener('fetch', e => {
+          e.respondWith(caches.match(e.request).then(r => r || fetch(e.request)));
+        });
+      `;
+
+      const swBlob = new Blob([swCode], { type: 'text/javascript' });
+      const swURL = URL.createObjectURL(swBlob);
+
+      navigator.serviceWorker.register(swURL);
     }
   </script>
 </body>
 </html>
-
-<!-- manifest.json -->
-{
-  "name": "Zeitstempel Manager",
-  "short_name": "Zeit",
-  "start_url": ".",
-  "display": "standalone",
-  "background_color": "#121216",
-  "theme_color": "#121216",
-  "icons": []
-}
-
-<!-- service-worker.js -->
-self.addEventListener('install', e => {
-  e.waitUntil(caches.open('app').then(c => c.addAll(['./'])));
-});
-
-self.addEventListener('fetch', e => {
-  e.respondWith(caches.match(e.request).then(r => r || fetch(e.request)));
-});
