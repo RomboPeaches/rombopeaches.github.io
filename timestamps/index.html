@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Zeitstempel Manager</title>
+
+  <link rel="manifest" href="manifest.json" />
+
+  <style>
+    :root {
+      --bg:#121216;
+      --card:#1e1f26;
+      --accent:#a78bfa;
+      --accent2:#f9a8d4;
+      --text:#e5e7eb;
+    }
+
+    body {
+      margin:0;
+      font-family: system-ui;
+      background: var(--bg);
+      color: var(--text);
+      padding:1rem;
+    }
+
+    h1 {
+      text-align:center;
+      margin-bottom:1rem;
+    }
+
+    .card {
+      background: var(--card);
+      border-radius:16px;
+      padding:1rem;
+      margin-bottom:1rem;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+      animation: fadeIn 0.3s ease;
+    }
+
+    input {
+      width:100%;
+      padding:0.6rem;
+      border-radius:10px;
+      border:none;
+      margin-bottom:0.5rem;
+      background:#2a2b33;
+      color:white;
+    }
+
+    button {
+      border:none;
+      border-radius:10px;
+      padding:0.5rem 0.7rem;
+      cursor:pointer;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      color:white;
+      transition: transform 0.1s;
+    }
+
+    button:active {
+      transform: scale(0.95);
+    }
+
+    .row {
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin:0.4rem 0;
+      font-size:0.9rem;
+    }
+
+    .fab {
+      position:fixed;
+      bottom:20px;
+      right:20px;
+      width:60px;
+      height:60px;
+      border-radius:50%;
+      font-size:1.5rem;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      box-shadow:0 10px 20px rgba(0,0,0,0.4);
+    }
+
+    @keyframes fadeIn {
+      from {opacity:0; transform:translateY(10px)}
+      to {opacity:1; transform:translateY(0)}
+    }
+  </style>
+</head>
+
+<body>
+  <h1>⏱ Zeitstempel</h1>
+
+  <input id="nameInput" placeholder="Neuer Eintrag..." />
+
+  <div id="list"></div>
+
+  <button class="fab" onclick="addEntry()">＋</button>
+
+  <script>
+    const fields = ["Abfahrt","Ankunft","Fertigstellung","Einsatz-Ende"];
+
+    const load = () => JSON.parse(localStorage.getItem("entries") || "[]");
+    const save = d => localStorage.setItem("entries", JSON.stringify(d));
+
+    const now = () => new Date().toLocaleString();
+
+    function addEntry() {
+      const name = nameInput.value.trim();
+      if (!name) return;
+
+      const data = load();
+      const entry = { name, times:{} };
+      fields.forEach(f => entry.times[f] = null);
+      data.push(entry);
+
+      save(data);
+      nameInput.value="";
+      render();
+    }
+
+    function setTime(i, field) {
+      const data = load();
+
+      if (!data[i].times[field]) {
+        data[i].times[field] = now();
+      } else {
+        const val = prompt("Bearbeiten:", data[i].times[field]);
+        if (val !== null) data[i].times[field] = val;
+      }
+
+      save(data);
+      render();
+    }
+
+    function render() {
+      list.innerHTML = "";
+
+      load().forEach((entry, i) => {
+        const card = document.createElement("div");
+        card.className = "card";
+
+        const title = document.createElement("h3");
+        title.textContent = entry.name;
+        card.appendChild(title);
+
+        fields.forEach(f => {
+          const row = document.createElement("div");
+          row.className = "row";
+
+          const text = document.createElement("span");
+          text.textContent = `${f}: ${entry.times[f] || "-"}`;
+
+          const btn = document.createElement("button");
+          btn.textContent = entry.times[f] ? "✏️" : "⏱";
+          btn.onclick = () => setTime(i,f);
+
+          row.appendChild(text);
+          row.appendChild(btn);
+          card.appendChild(row);
+        });
+
+        list.appendChild(card);
+      });
+    }
+
+    render();
+
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('service-worker.js');
+    }
+  </script>
+</body>
+</html>
+
+<!-- manifest.json -->
+{
+  "name": "Zeitstempel Manager",
+  "short_name": "Zeit",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#121216",
+  "theme_color": "#121216",
+  "icons": []
+}
+
+<!-- service-worker.js -->
+self.addEventListener('install', e => {
+  e.waitUntil(caches.open('app').then(c => c.addAll(['./'])));
+});
+
+self.addEventListener('fetch', e => {
+  e.respondWith(caches.match(e.request).then(r => r || fetch(e.request)));
+});
