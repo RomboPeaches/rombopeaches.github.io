@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Zeitstempel Manager</title>
 
-  <!-- Manifest via Blob (Single-file workaround) -->
   <script>
     const manifest = {
       name: "Zeitstempel Manager",
@@ -18,11 +17,9 @@
     };
 
     const blob = new Blob([JSON.stringify(manifest)], { type: 'application/json' });
-    const manifestURL = URL.createObjectURL(blob);
-
     const link = document.createElement('link');
     link.rel = 'manifest';
-    link.href = manifestURL;
+    link.href = URL.createObjectURL(blob);
     document.head.appendChild(link);
   </script>
 
@@ -33,6 +30,7 @@
       --accent:#a78bfa;
       --accent2:#f9a8d4;
       --text:#e5e7eb;
+      --danger:#fb7185;
     }
 
     body {
@@ -45,6 +43,36 @@
 
     h1 { text-align:center; }
 
+    .input-row {
+      display:flex;
+      gap:0.5rem;
+      margin-bottom:1rem;
+    }
+
+    input {
+      flex:1;
+      padding:0.6rem;
+      border-radius:10px;
+      border:none;
+      background:#2a2b33;
+      color:white;
+    }
+
+    button {
+      border:none;
+      border-radius:10px;
+      padding:0.5rem 0.7rem;
+      cursor:pointer;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      color:white;
+    }
+
+    .delete-btn {
+      background: var(--danger);
+      margin-top:0.5rem;
+      width:100%;
+    }
+
     .card {
       background: var(--card);
       border-radius:16px;
@@ -54,40 +82,11 @@
       animation: fadeIn 0.3s ease;
     }
 
-    input {
-      width:100%;
-      padding:0.6rem;
-      border-radius:10px;
-      border:none;
-      margin-bottom:0.5rem;
-      background:#2a2b33;
-      color:white;
-    }
-
-    button {
-      border:none;
-      border-radius:10px;
-      padding:0.5rem;
-      cursor:pointer;
-      background: linear-gradient(135deg, var(--accent), var(--accent2));
-      color:white;
-    }
-
     .row {
       display:flex;
       justify-content:space-between;
       align-items:center;
       margin:0.4rem 0;
-    }
-
-    .fab {
-      position:fixed;
-      bottom:20px;
-      right:20px;
-      width:60px;
-      height:60px;
-      border-radius:50%;
-      font-size:1.5rem;
     }
 
     @keyframes fadeIn {
@@ -100,10 +99,12 @@
 <body>
   <h1>⏱ Zeitstempel</h1>
 
-  <input id="nameInput" placeholder="Neuer Eintrag..." />
-  <div id="list"></div>
+  <div class="input-row">
+    <input id="nameInput" placeholder="Neuer Eintrag..." />
+    <button onclick="addEntry()">＋</button>
+  </div>
 
-  <button class="fab" onclick="addEntry()">＋</button>
+  <div id="list"></div>
 
   <script>
     const fields = ["Abfahrt","Ankunft","Fertigstellung","Einsatz-Ende"];
@@ -123,6 +124,14 @@
 
       save(data);
       nameInput.value="";
+      render();
+    }
+
+    function deleteEntry(i) {
+      const data = load();
+      if (!confirm("Eintrag löschen?")) return;
+      data.splice(i,1);
+      save(data);
       render();
     }
 
@@ -149,7 +158,6 @@
 
         const title = document.createElement("h3");
         title.textContent = entry.name;
-
         card.appendChild(title);
 
         fields.forEach(f => {
@@ -168,13 +176,18 @@
           card.appendChild(row);
         });
 
+        const del = document.createElement("button");
+        del.textContent = "🗑 Löschen";
+        del.className = "delete-btn";
+        del.onclick = () => deleteEntry(i);
+
+        card.appendChild(del);
         list.appendChild(card);
       });
     }
 
     render();
 
-    // Service Worker via Blob (Single-file workaround)
     if ('serviceWorker' in navigator) {
       const swCode = `
         self.addEventListener('install', e => {
@@ -186,9 +199,7 @@
       `;
 
       const swBlob = new Blob([swCode], { type: 'text/javascript' });
-      const swURL = URL.createObjectURL(swBlob);
-
-      navigator.serviceWorker.register(swURL);
+      navigator.serviceWorker.register(URL.createObjectURL(swBlob));
     }
   </script>
 </body>
