@@ -5,39 +5,25 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Zeitstempel Manager</title>
 
-  <script>
-    const manifest = {
-      name: "Zeitstempel Manager",
-      short_name: "Zeit",
-      start_url: ".",
-      display: "standalone",
-      background_color: "#121216",
-      theme_color: "#121216",
-      icons: []
-    };
-
-    const blob = new Blob([JSON.stringify(manifest)], { type: 'application/json' });
-    const link = document.createElement('link');
-    link.rel = 'manifest';
-    link.href = URL.createObjectURL(blob);
-    document.head.appendChild(link);
-  </script>
-
   <style>
     :root {
-      --bg:#121216;
-      --card:#1e1f26;
-      --accent:#a78bfa;
-      --accent2:#f9a8d4;
-      --text:#e5e7eb;
-      --danger:#fb7185;
+      --color-bg-main:#121216;
+      --color-bg-card:#1e1f26;
+      --color-bg-input:#2a2b33;
+
+      --color-text-primary:#e5e7eb;
+
+      --color-accent-primary:#a78bfa;
+      --color-accent-secondary:#f9a8d4;
+
+      --color-danger:#fb7185;
     }
 
     body {
       margin:0;
       font-family: system-ui;
-      background: var(--bg);
-      color: var(--text);
+      background: var(--color-bg-main);
+      color: var(--color-text-primary);
       padding:1rem;
     }
 
@@ -54,8 +40,9 @@
       padding:0.6rem;
       border-radius:10px;
       border:none;
-      background:#2a2b33;
+      background:var(--color-bg-input);
       color:white;
+      font-size:16px;
     }
 
     button {
@@ -63,18 +50,19 @@
       border-radius:10px;
       padding:0.5rem 0.7rem;
       cursor:pointer;
-      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      background: linear-gradient(135deg, var(--color-accent-primary), var(--color-accent-secondary));
       color:white;
     }
 
     .delete-btn {
-      background: var(--danger);
-      margin-top:0.5rem;
-      width:100%;
+      background: var(--color-danger);
+      width:50%;
+      margin: 1rem auto 0;
+      display:block;
     }
 
     .card {
-      background: var(--card);
+      background: var(--color-bg-card);
       border-radius:16px;
       padding:1rem;
       margin-bottom:1rem;
@@ -82,11 +70,53 @@
       animation: fadeIn 0.3s ease;
     }
 
-    .row {
+    .grid {
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:0.6rem;
+      margin-top:0.5rem;
+    }
+
+    .grid-item {
+      background: rgba(255,255,255,0.03);
+      border-radius:12px;
+      padding:0.6rem;
       display:flex;
-      justify-content:space-between;
-      align-items:center;
-      margin:0.4rem 0;
+      flex-direction:column;
+      gap:4px;
+    }
+
+    .label {
+      font-size:0.7rem;
+      opacity:0.7;
+    }
+
+    .value {
+      font-size:0.9rem;
+    }
+
+    .grid button {
+      align-self:flex-end;
+      margin-top:4px;
+    }
+
+    textarea {
+      width:100%;
+      margin:1rem 0;
+      border-radius:12px;
+      border:none;
+      padding:0.6rem;
+      background: var(--color-bg-input);
+      color: var(--color-text-primary);
+      box-sizing: border-box;
+      resize:none;
+      overflow:hidden;
+      font-size:16px;
+      line-height: 1.8;
+    }
+
+    textarea:focus {
+      outline: 2px solid var(--color-accent-primary);
     }
 
     @keyframes fadeIn {
@@ -111,14 +141,19 @@
 
     const load = () => JSON.parse(localStorage.getItem("entries") || "[]");
     const save = d => localStorage.setItem("entries", JSON.stringify(d));
-    const now = () => new Date().toLocaleString();
+    const now = () => new Date().toLocaleString('de-DE', { dateStyle: 'short', timeStyle: 'medium' });
+
+    function autoResize(el) {
+      el.style.height = "auto";
+      el.style.height = el.scrollHeight + "px";
+    }
 
     function addEntry() {
       const name = nameInput.value.trim();
       if (!name) return;
 
       const data = load();
-      const entry = { name, times:{} };
+      const entry = { name, times:{}, notes:"" };
       fields.forEach(f => entry.times[f] = null);
       data.push(entry);
 
@@ -160,21 +195,47 @@
         title.textContent = entry.name;
         card.appendChild(title);
 
-        fields.forEach(f => {
-          const row = document.createElement("div");
-          row.className = "row";
+        const grid = document.createElement("div");
+        grid.className = "grid";
 
-          const text = document.createElement("span");
-          text.textContent = `${f}: ${entry.times[f] || "-"}`;
+        fields.forEach(f => {
+          const item = document.createElement("div");
+          item.className = "grid-item";
+
+          const label = document.createElement("span");
+          label.className = "label";
+          label.textContent = f;
+
+          const value = document.createElement("span");
+          value.className = "value";
+          value.textContent = entry.times[f] || "-";
 
           const btn = document.createElement("button");
           btn.textContent = entry.times[f] ? "✏️" : "⏱";
           btn.onclick = () => setTime(i,f);
 
-          row.appendChild(text);
-          row.appendChild(btn);
-          card.appendChild(row);
+          item.appendChild(label);
+          item.appendChild(value);
+          item.appendChild(btn);
+          grid.appendChild(item);
         });
+
+        card.appendChild(grid);
+
+        const notesInput = document.createElement("textarea");
+        notesInput.placeholder = "Arbeiten / Notizen...";
+        notesInput.value = entry.notes || "";
+
+        notesInput.addEventListener("input", (e) => {
+          autoResize(e.target);
+          const data = load();
+          data[i].notes = e.target.value;
+          save(data);
+        });
+
+        setTimeout(() => autoResize(notesInput), 0);
+
+        card.appendChild(notesInput);
 
         const del = document.createElement("button");
         del.textContent = "🗑 Löschen";
@@ -187,20 +248,6 @@
     }
 
     render();
-
-    if ('serviceWorker' in navigator) {
-      const swCode = `
-        self.addEventListener('install', e => {
-          e.waitUntil(caches.open('app').then(c => c.addAll(['./'])));
-        });
-        self.addEventListener('fetch', e => {
-          e.respondWith(caches.match(e.request).then(r => r || fetch(e.request)));
-        });
-      `;
-
-      const swBlob = new Blob([swCode], { type: 'text/javascript' });
-      navigator.serviceWorker.register(URL.createObjectURL(swBlob));
-    }
   </script>
 </body>
 </html>
