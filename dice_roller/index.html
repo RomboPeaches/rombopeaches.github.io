@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Dice Roller - Warm Sunset</title>
+<style>
+  :root {
+    --bg: #2a1f2e; /* dark warm purple */
+    --card: #3d3348;
+    --text: #fde9d9; /* warm cream */
+    --pink: #ff8fab;
+    --pink-glow: rgba(255, 139, 171, 0.3);
+    --green: #d4a574;
+
+    /* warm sunset dice colors */
+    --text-d100: #ffb6c1; /* light pink */
+    --text-d20: #ffb366; /* light orange */
+    --text-d12: #ffd580; /* light gold */
+    --text-d10: #fff5a0; /* light yellow */
+    --text-d8:  #c89f94; /* warm brown */
+    --text-d6:  #f8a68a; /* coral */
+    --text-d4:  #d4a574; /* gold */
+    --text-mod: #e8c5a0; /* light tan */
+  }
+
+  * { box-sizing: border-box; }
+  html, body { height: 100%; }
+
+  body {
+    margin: 0;
+    height: 100%;
+    font-family: system-ui, -apple-system, Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    display: flex;
+    justify-content: center;
+    padding: 12px;
+    overflow: hidden;
+    background-image: linear-gradient(135deg, rgba(255, 180, 120, 0.1) 0%, rgba(138, 43, 226, 0.05) 100%);
+  }
+
+  .app {
+    width: 100%;
+    max-width: 420px;
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .page {
+    display: none;
+    flex: 1 1 auto;
+    flex-direction: column;
+    min-height: 0;
+  }
+
+  .page.active {
+    display: flex;
+  }
+
+  .dice-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    padding-bottom: 12px;
+  }
+
+  .dice-row {
+    background: var(--card);
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-left: 6px solid;
+    border-radius: 8px;
+    transition: transform 80ms, background 120ms;
+  }
+
+  .dice-row:nth-child(1) { border-color: var(--text-d100); }
+  .dice-row:nth-child(1) .dice-label,
+  .dice-row:nth-child(1) .count { color: var(--text-d100); }
+
+  .dice-row:nth-child(2) { border-color: var(--text-d20); }
+  .dice-row:nth-child(2) .dice-label,
+  .dice-row:nth-child(2) .count { color: var(--text-d20); }
+
+  .dice-row:nth-child(3) { border-color: var(--text-d12); }
+  .dice-row:nth-child(3) .dice-label,
+  .dice-row:nth-child(3) .count { color: var(--text-d12); }
+
+  .dice-row:nth-child(4) { border-color: var(--text-d10); }
+  .dice-row:nth-child(4) .dice-label,
+  .dice-row:nth-child(4) .count { color: var(--text-d10); }
+
+  .dice-row:nth-child(5) { border-color: var(--text-d8); }
+  .dice-row:nth-child(5) .dice-label,
+  .dice-row:nth-child(5) .count { color: var(--text-d8); }
+
+  .dice-row:nth-child(6) { border-color: var(--text-d6); }
+  .dice-row:nth-child(6) .dice-label,
+  .dice-row:nth-child(6) .count { color: var(--text-d6); }
+
+  .dice-row:nth-child(7) { border-color: var(--text-d4); }
+  .dice-row:nth-child(7) .dice-label,
+  .dice-row:nth-child(7) .count { color: var(--text-d4); }
+
+  .dice-row:nth-child(8) { border-color: var(--text-mod); }
+  .dice-row:nth-child(8) .dice-label,
+  .dice-row:nth-child(8) .count { color: var(--text-mod); }
+
+  .dice-row.active {
+    background: #4a4350;
+  }
+
+  .dice-label {
+    font-size: 1.1rem;
+    font-weight: 600;
+  }
+
+  .controls {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    align-items: center;
+  }
+
+  .count {
+    font-size: 1.1rem;
+  }
+
+  .btn {
+    width: 42px;
+    height: 34px;
+    border: none;
+    border-radius: 8px;
+    background: #5a5060;
+    color: var(--text);
+    font-size: 1rem;
+    font-weight: 600;
+  }
+
+  .btn:active {
+    transform: scale(0.96);
+    background: #6a6070;
+  }
+
+  .roll {
+    width: 100%;
+    height: 52px;
+    font-size: 1.1rem;
+    border: none;
+    background: linear-gradient(135deg, #ff9477, #ff7e6b);
+    color: white;
+    font-weight: 700;
+    border-radius: 12px;
+    flex-shrink: 0;
+    box-shadow: 0 6px 20px rgba(255, 139, 171, 0.25);
+  }
+
+  .page-dice .roll {
+    margin-top: auto;
+  }
+
+  .roll.back {
+    margin-top: 10px;
+    background: linear-gradient(135deg, #5a5060, #4a4350);
+    color: #fde9d9;
+  }
+
+  .results {
+    flex: 1 1 auto;
+    min-height: 0;
+    margin-top: 12px;
+    background: var(--card);
+    padding: 10px;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+  }
+
+  .total-label {
+    font-size: 0.8rem;
+    opacity: 0.7;
+  }
+
+  .total {
+    font-size: 2.2rem;
+    margin-bottom: 8px;
+    color: #ffb366;
+  }
+
+  .details {
+    font-family: monospace;
+    font-size: 0.85rem;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .history {
+    margin-top: 10px;
+    font-family: monospace;
+    font-size: 0.8rem;
+    opacity: 0.8;
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="page page-dice active">
+    <div class="dice-grid" id="diceGrid"></div>
+    <button class="roll" onclick="rollDice()">ROLL</button>
+  </div>
+
+  <div class="page page-results">
+    <div class="results">
+      <div class="total-label">TOTAL</div>
+      <div class="total" id="total">0</div>
+      <div class="details" id="details"></div>
+      <div class="history" id="history"></div>
+    </div>
+    <button class="roll back" onclick="showDicePage()">BACK</button>
+  </div>
+</div>
+
+<script>
+const diceTypes = [100, 20, 12, 10, 8, 6, 4];
+const grid = document.getElementById('diceGrid');
+const historyEl = document.getElementById('history');
+
+const colors = {
+  100: '#ffb6c1',
+  20: '#ffb366',
+  12: '#ffd580',
+  10: '#fff5a0',
+  8: '#c89f94',
+  6: '#f8a68a',
+  4: '#d4a574',
+  mod: '#e8c5a0'
+};
+
+const state = { mod: 0 };
+let history = [];
+const pageDice = document.querySelector('.page-dice');
+const pageResults = document.querySelector('.page-results');
+
+function showDicePage() {
+  pageDice.classList.add('active');
+  pageResults.classList.remove('active');
+  window.scrollTo(0, 0);
+}
+
+function showResultsPage() {
+  pageDice.classList.remove('active');
+  pageResults.classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+ diceTypes.forEach(sides => {
+  state[sides] = 0;
+
+  const row = document.createElement('div');
+  row.className = 'dice-row';
+  row.id = `row-${sides}`;
+  row.style.borderColor = colors[sides];
+
+  row.innerHTML = `
+    <div class="dice-label">D${sides}</div>
+    <div class="controls">
+      <button class="btn" onclick="change(${sides}, 1)">+</button>
+      <div class="count" id="count-${sides}">0</div>
+      <button class="btn" onclick="change(${sides}, -1)">−</button>
+    </div>
+  `;
+
+  grid.appendChild(row);
+});
+
+const modRow = document.createElement('div');
+modRow.className = 'dice-row';
+modRow.id = 'row-mod';
+modRow.style.borderColor = colors.mod;
+modRow.innerHTML = `
+  <div class="dice-label">MOD</div>
+  <div class="controls">
+    <button class="btn" onclick="change('mod', 1)">+</button>
+    <div class="count" id="count-mod">0</div>
+    <button class="btn" onclick="change('mod', -1)">−</button>
+  </div>
+`;
+grid.appendChild(modRow);
+
+function change(sides, delta) {
+  if (sides === 'mod') {
+    state.mod += delta;
+  } else {
+    state[sides] = Math.max(0, state[sides] + delta);
+  }
+
+  document.getElementById(`count-${sides}`).textContent = state[sides];
+  const row = document.getElementById(`row-${sides}`);
+  const isActive = sides === 'mod' ? state.mod !== 0 : state[sides] > 0;
+  row.classList.toggle('active', isActive);
+}
+
+function rollDie(sides) {
+  return Math.floor(Math.random() * sides) + 1;
+}
+
+function rollDice() {
+  let total = 0;
+  let detailHTML = '';
+
+  diceTypes.forEach(sides => {
+    const count = state[sides];
+    if (count > 0) {
+      let rolls = [];
+      let subtotal = 0;
+
+      for (let i = 0; i < count; i++) {
+        const roll = rollDie(sides);
+        rolls.push(roll);
+        subtotal += roll;
+      }
+
+      total += subtotal;
+
+      detailHTML += '<div style="border-left:4px solid ' + colors[sides] + '; padding-left:6px;">'
+        + '<strong style="color:' + colors[sides] + '">D' + sides + ' ×' + count + '</strong> → ' + subtotal + '<br>'
+        + '<span style="opacity:0.7">[' + rolls.join(', ') + ']</span>'
+        + '</div>';
+    }
+  });
+
+  const mod = state.mod;
+  if (mod !== 0) {
+    detailHTML += '<div style="border-left:4px solid #ffd580; padding-left:6px;">'
+      + '<strong style="color:#ffd580">MOD</strong> → ' + (mod > 0 ? '+' + mod : mod) + '</div>';
+  }
+
+  total += mod;
+
+  document.getElementById('total').textContent = total;
+  document.getElementById('details').innerHTML = detailHTML || 'NO DICE';
+
+  history.unshift(String(total));
+  history = history.slice(0, 2);
+  historyEl.innerHTML = history.map(h => '<div>= ' + h + '</div>').join('');
+
+  document.querySelectorAll('.dice-row').forEach(el => {
+    el.style.transform = 'scale(0.97)';
+    setTimeout(() => { el.style.transform = 'scale(1)'; }, 80);
+  });
+
+  showResultsPage();
+}
+</script>
+</body>
+</html>
