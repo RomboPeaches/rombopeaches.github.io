@@ -51,17 +51,26 @@
       border-bottom: 1px solid rgba(255,255,255,0.1);
     }
 
-    input {
-      flex: 1;
-      padding: 0.6rem;
-      border-radius: 10px;
-      border: none;
-      background: var(--color-bg-input);
-      color: white;
-      font-size: 16px;  
+    input,
+    textarea {
+      background: #2f3138;
+      border: 1px solid rgba(255,255,255,0.08);
+      color: #f5f5f5;
+      font-size: 16px;
+      caret-color: #f5f5f5;
+      outline: none;
+      transition: outline 0.2s ease, border-color 0.2s ease;
     }
 
-    input::placeholder {
+    input {
+      flex: 1;
+      padding: 0.8rem;
+      border-radius: 12px;
+      outline: 2px solid transparent;
+    }
+
+    input::placeholder,
+    textarea::placeholder {
       font-size: 0.8rem;
       opacity: 0.7;
     }
@@ -214,19 +223,28 @@
       width: 100%;
       margin: 1rem 0;
       border-radius: 12px;
-      border: none;
-      padding: 0.6rem;
-      background: var(--color-bg-input);
-      color: var(--color-text-primary);
+      padding: 0.8rem;
       box-sizing: border-box;
       resize: none;
       overflow: hidden;
       font-size: 16px;
       line-height: 1.8;
+      outline: 2px solid transparent;
     }
 
+    input:focus,
     textarea:focus {
-      outline: 2px solid var(--color-accent-primary);
+      outline: 2px solid rgb(170, 170, 170);
+      outline-offset: 2px;
+      animation: wobble 0.35s ease;
+    }
+
+    @keyframes wobble {
+      0% { transform: translateY(0); }
+      25% { transform: translateY(-4px); }
+      50% { transform: translateY(4px); }
+      75% { transform: translateY(-2px); }
+      100% { transform: translateY(0); }
     }
 
     @keyframes fadeIn {
@@ -247,15 +265,26 @@
       right: 20px;
       width: 50px;
       height: 50px;
-      border-radius: 50%;
+      border-radius: 12px;
       background: rgb(53, 163, 214);
       color: white;
-      font-size: 20px;
+      font-size: 18px;
       border: none;
       cursor: pointer;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
       z-index: 1000;
-      display: none;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(10px);
+      transition: opacity 0.8s ease, transform 0.8s ease, visibility 0.8s ease;
+      pointer-events: none;
+    }
+
+    #home-btn.visible {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+      pointer-events: auto;
     }
   </style>
 </head>
@@ -295,6 +324,14 @@
       colorIndex++;
       return color;
     }
+
+    const nameInput = document.getElementById('nameInput');
+    nameInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        addEntry();
+      }
+    });
 
     function autoResize(el) {
       el.style.height = "auto";
@@ -429,14 +466,6 @@
         notesInput.placeholder = "Arbeiten / Notizen...";
         notesInput.value = entry.notes || "";
 
-        notesInput.addEventListener("focus", () => {
-          notesInput.style.borderColor = entry.color;
-        });
-
-        notesInput.addEventListener("blur", () => {
-          notesInput.style.borderColor = "";
-        });
-
         notesInput.addEventListener("input", (e) => {
           autoResize(e.target);
           const d = load();
@@ -479,16 +508,16 @@
     window.addEventListener('scroll', () => {
       const homeBtn = document.getElementById('home-btn');
       if (window.scrollY > 100) {
-        homeBtn.style.display = 'block';
+        homeBtn.classList.add('visible');
       } else {
-        homeBtn.style.display = 'none';
+        homeBtn.classList.remove('visible');
       }
     });
 
     render();
   </script>
 
-  <button id="home-btn" onclick="scrollToTop()">^^</button>
+  <button id="home-btn" onclick="scrollToTop()">TOP</button>
 
 </body>
 
