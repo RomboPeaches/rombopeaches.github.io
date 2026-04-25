@@ -1,5 +1,7 @@
+<!-- ...existing code... -->
 <!DOCTYPE html>
 <html lang="de">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -7,111 +9,219 @@
 
   <style>
     :root {
-      --color-bg-main:#121216;
-      --color-bg-card:#1e1f26;
-      --color-bg-input:#2a2b33;
+      --color-bg-main: #121216;
+      --color-bg-card: #1e1f26;
+      --color-bg-input: #2a2b33;
 
-      --color-text-primary:#e5e7eb;
+      --color-text-primary: #ffffff;
+      --color-accent-primary: #a3a3a3;
+      --color-accent-secondary: #f9a8d4;
 
-      --color-accent-primary:#a78bfa;
-      --color-accent-secondary:#f9a8d4;
+      --color-danger: #b43752;
 
-      --color-danger:#fb7185;
+      --color-grid-btn: #bbbbbb00;
+
+      --ticket_color-1: #e57373;
+      --ticket_color-2: #4db6ac;
+      --ticket_color-3: #ba68c8;
+      --ticket_color-4: #9575cd;
+      --ticket_color-5: #7986cb;
+      --ticket_color-6: #64b5f6;
+      --ticket_color-7: #f06292;
+      --ticket_color-8: #81c784;
     }
 
     body {
-      margin:0;
+      margin: 0;
       font-family: system-ui;
       background: var(--color-bg-main);
       color: var(--color-text-primary);
-      padding:1rem;
+      padding: 1rem;
     }
 
-    h1 { text-align:center; }
+    h1 {
+      text-align: center;
+    }
 
     .input-row {
-      display:flex;
-      gap:0.5rem;
-      margin-bottom:1rem;
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 2rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
     }
 
     input {
-      flex:1;
-      padding:0.6rem;
-      border-radius:10px;
-      border:none;
-      background:var(--color-bg-input);
-      color:white;
-      font-size:16px;
+      flex: 1;
+      padding: 0.6rem;
+      border-radius: 10px;
+      border: none;
+      background: var(--color-bg-input);
+      color: white;
+      font-size: 16px;  
+    }
+
+    input::placeholder {
+      font-size: 0.8rem;
+      opacity: 0.7;
     }
 
     button {
-      border:none;
-      border-radius:10px;
-      padding:0.5rem 0.7rem;
-      cursor:pointer;
-      background: linear-gradient(135deg, var(--color-accent-primary), var(--color-accent-secondary));
-      color:white;
+      border: none;
+      border-radius: 10px;
+      padding: 0.5rem 0.7rem;
+      cursor: pointer;
+      /*background: linear-gradient(135deg, var(--color-accent-primary), var(--color-accent-secondary));*/
+      background: var(--color-grid-btn);
+      color: rgb(255, 255, 255);
     }
 
     .delete-btn {
       background: var(--color-danger);
-      width:30%;
-      margin: 0 auto 0;
-      display:block;
+      margin: 0;
+      display: inline-flex;
+      width: fit-content;
+      height: 50px;
+      align-items: center;
+      justify-content: center;
+      padding: 0 0.8rem;
+    }
+
+    .archive-btn {
+      background: #49a849;
+      color: white;
+      margin: 0 0.5rem 0 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 10px;
+      padding: 0 0.8rem;
+      height: 50px;
     }
 
     .card {
       background: var(--color-bg-card);
-      border-radius:16px;
-      padding:1rem;
-      margin-bottom:1rem;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+      border-radius: 16px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
       animation: fadeIn 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      border-left: 6px solid transparent;
     }
 
+    /* gestapelte (vertikale) Zeitstempel */
     .grid {
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap:0.6rem;
-      margin-top:0.5rem;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0.6rem;
+      margin-top: 0.5rem;
     }
 
     .grid-item {
-      background: rgba(255,255,255,0.03);
-      border-radius:12px;
-      padding:0.6rem;
-      display:flex;
-      flex-direction:column;
-      gap:4px;
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: 12px;
+      padding: 0.6rem;
+      display: flex;
+      flex-direction: row;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 0.6rem;
+      min-width: 0;
+      overflow: hidden;
+    }
+
+    .field-info {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      min-width: 0;
+      gap: 0.3rem;
+      align-items: flex-start;
     }
 
     .label {
-      font-size:0.7rem;
-      opacity:0.7;
+      font-size: 0.8rem;
+      opacity: 0.8;
+      max-width: 120px;
+      white-space: nowrap;
+      flex-shrink: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .value {
-      font-size:0.9rem;
+      font-size: 0.9rem;
+      opacity: 0.95;
+      flex: 1;
+      text-align: left;
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 0.3rem;
+      flex-shrink: 0;
     }
 
     .grid button {
-      align-self:flex-end;
-      margin-top:4px;
+      margin: 0;
+      padding: 0.4rem 0.5rem;
+      white-space: nowrap;
+      flex-shrink: 0;
+      min-width: auto;
+      height: 40px;
+      width: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--entry-color, rgba(255, 255, 255, 0.08));
+      color: rgb(255, 255, 255);
+      font-weight: 900;
+      border: #3d3d3d solid 1px;
+    }
+
+    .timestamp-btn .btn-inner {
+      translate: 0 2px;
+    }
+
+    .edit-btn .btn-inner {
+      translate: 0 -4px;
+    }
+
+    .add-entry-btn .btn-inner {
+      translate: 0 -1px;
+    }
+
+    .edit-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .add-entry-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #2d2f35;
     }
 
     textarea {
-      width:100%;
-      margin:1rem 0;
-      border-radius:12px;
-      border:none;
-      padding:0.6rem;
+      width: 100%;
+      margin: 1rem 0;
+      border-radius: 12px;
+      border: none;
+      padding: 0.6rem;
       background: var(--color-bg-input);
       color: var(--color-text-primary);
       box-sizing: border-box;
-      resize:none;
-      overflow:hidden;
-      font-size:16px;
+      resize: none;
+      overflow: hidden;
+      font-size: 16px;
       line-height: 1.8;
     }
 
@@ -120,28 +230,71 @@
     }
 
     @keyframes fadeIn {
-      from {opacity:0; transform:translateY(10px)}
-      to {opacity:1; transform:translateY(0)}
+      from {
+        opacity: 0;
+        transform: translateY(10px)
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0)
+      }
+    }
+
+    #home-btn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: rgb(53, 163, 214);
+      color: white;
+      font-size: 20px;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0);
+      z-index: 1000;
+      display: none;
     }
   </style>
 </head>
 
 <body>
-  <h1>⏱ Zeitstempel</h1>
+  <h1>⏱<br>Ticket<br>Zeiterfassung<br>Notizen</h1>
 
   <div class="input-row">
-    <input id="nameInput" placeholder="Neuer Eintrag..." />
-    <button onclick="addEntry()">＋</button>
+    <input id="nameInput" placeholder="Ticket-Notiz anlegen..." autofocus />
+    <button class="add-entry-btn" onclick="addEntry()"><span class="btn-inner">+</span></button>
   </div>
 
   <div id="list"></div>
 
   <script>
-    const fields = ["Abfahrt","Ankunft","Fertigstellung","Einsatz-Ende"];
+    const fields = ["Abfahrt Zentrale", "Ankunft Kunde", "Fertigstellung", "Ankunft Zentrale"];
 
     const load = () => JSON.parse(localStorage.getItem("entries") || "[]");
     const save = d => localStorage.setItem("entries", JSON.stringify(d));
     const now = () => new Date().toLocaleString('de-DE', { dateStyle: 'short', timeStyle: 'medium' });
+
+    const colorVars = [
+      '--ticket_color-1',
+      '--ticket_color-2',
+      '--ticket_color-3',
+      '--ticket_color-4',
+      '--ticket_color-5',
+      '--ticket_color-6',
+      '--ticket_color-7',
+      '--ticket_color-8',
+    ];
+    const colors = colorVars.map(v => getComputedStyle(document.documentElement).getPropertyValue(v).trim());
+    let colorIndex = 0;
+
+    function randColor() {
+      const color = colors[colorIndex % colors.length];
+      colorIndex++;
+      return color;
+    }
 
     function autoResize(el) {
       el.style.height = "auto";
@@ -153,43 +306,66 @@
       if (!name) return;
 
       const data = load();
-      const entry = { name, times:{}, notes:"" };
+      const entry = { name, times: {}, notes: "", color: randColor() };
       fields.forEach(f => entry.times[f] = null);
       data.push(entry);
 
       save(data);
-      nameInput.value="";
+      nameInput.value = "";
       render();
     }
 
     function deleteEntry(i) {
       const data = load();
       if (!confirm("Eintrag löschen?")) return;
-      data.splice(i,1);
+      data.splice(i, 1);
+      save(data);
+      render();
+    }
+
+    function archiveEntry(i) {
+      const data = load();
+      if (!confirm("Eintrag archivieren?")) return;
+      data[i].archived = true;
       save(data);
       render();
     }
 
     function setTime(i, field) {
       const data = load();
-
-      if (!data[i].times[field]) {
-        data[i].times[field] = now();
-      } else {
-        const val = prompt("Bearbeiten:", data[i].times[field]);
-        if (val !== null) data[i].times[field] = val;
-      }
-
+      data[i].times[field] = now();
       save(data);
       render();
+    }
+
+    function editTime(i, field) {
+      const data = load();
+      const current = data[i].times[field] || "";
+      const val = prompt("Bearbeiten:", current);
+      if (val !== null) {
+        data[i].times[field] = val;
+        save(data);
+        render();
+      }
     }
 
     function render() {
       list.innerHTML = "";
 
-      load().forEach((entry, i) => {
+      const data = load();
+      let changed = false;
+
+      data.forEach((entry, i) => {
+        if (entry.archived) return;
+        if (!entry.color) {
+          entry.color = randColor();
+          changed = true;
+        }
+
         const card = document.createElement("div");
         card.className = "card";
+        card.style.borderLeft = `6px solid ${entry.color}`;
+        card.style.setProperty('--entry-color', entry.color);
 
         const title = document.createElement("h3");
         title.textContent = entry.name;
@@ -202,6 +378,9 @@
           const item = document.createElement("div");
           item.className = "grid-item";
 
+          const info = document.createElement("div");
+          info.className = "field-info";
+
           const label = document.createElement("span");
           label.className = "label";
           label.textContent = f;
@@ -210,13 +389,37 @@
           value.className = "value";
           value.textContent = entry.times[f] || "-";
 
-          const btn = document.createElement("button");
-          btn.textContent = entry.times[f] ? "✏️" : "⏱";
-          btn.onclick = () => setTime(i,f);
+          info.appendChild(label);
+          info.appendChild(value);
 
-          item.appendChild(label);
-          item.appendChild(value);
-          item.appendChild(btn);
+          const actions = document.createElement("div");
+          actions.className = "action-buttons";
+
+          const timeBtn = document.createElement("button");
+          timeBtn.className = "timestamp-btn";
+          timeBtn.title = "Zeit eintragen";
+          timeBtn.onclick = () => setTime(i, f);
+          //timeBtn.style.background = entry.color;
+          const timeInner = document.createElement("span");
+          timeInner.className = "btn-inner";
+          timeInner.textContent = "⏱";
+          timeBtn.appendChild(timeInner);
+
+          const editBtn = document.createElement("button");
+          editBtn.className = "edit-btn";
+          editBtn.title = "Zeit bearbeiten";
+          editBtn.onclick = () => editTime(i, f);
+          //editBtn.style.background = entry.color;
+          const editInner = document.createElement("span");
+          editInner.className = "btn-inner";
+          editInner.textContent = "...";
+          editBtn.appendChild(editInner);
+
+          actions.appendChild(timeBtn);
+          actions.appendChild(editBtn);
+
+          item.appendChild(info);
+          item.appendChild(actions);
           grid.appendChild(item);
         });
 
@@ -226,28 +429,68 @@
         notesInput.placeholder = "Arbeiten / Notizen...";
         notesInput.value = entry.notes || "";
 
+        notesInput.addEventListener("focus", () => {
+          notesInput.style.borderColor = entry.color;
+        });
+
+        notesInput.addEventListener("blur", () => {
+          notesInput.style.borderColor = "";
+        });
+
         notesInput.addEventListener("input", (e) => {
           autoResize(e.target);
-          const data = load();
-          data[i].notes = e.target.value;
-          save(data);
+          const d = load();
+          d[i].notes = e.target.value;
+          save(d);
         });
 
         setTimeout(() => autoResize(notesInput), 0);
 
         card.appendChild(notesInput);
 
+        const archive = document.createElement("button");
+        archive.className = "archive-btn";
+        archive.onclick = () => archiveEntry(i);
+        const archiveInner = document.createElement("span");
+        archiveInner.className = "btn-inner";
+        archiveInner.textContent = "Archivieren";
+        archive.appendChild(archiveInner);
+
         const del = document.createElement("button");
-        del.textContent = "🗑 Löschen";
         del.className = "delete-btn";
         del.onclick = () => deleteEntry(i);
+        const delInner = document.createElement("span");
+        delInner.className = "btn-inner";
+        delInner.textContent = "Verwerfen";
+        del.appendChild(delInner);
 
+        card.appendChild(archive);
         card.appendChild(del);
         list.appendChild(card);
       });
+
+      if (changed) save(data);
     }
+
+    function scrollToTop() {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    window.addEventListener('scroll', () => {
+      const homeBtn = document.getElementById('home-btn');
+      if (window.scrollY > 100) {
+        homeBtn.style.display = 'block';
+      } else {
+        homeBtn.style.display = 'none';
+      }
+    });
 
     render();
   </script>
+
+  <button id="home-btn" onclick="scrollToTop()">^^</button>
+
 </body>
+
 </html>
+<!-- ...existing code... -->
