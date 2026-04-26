@@ -2,11 +2,21 @@
 
 <!-- TODOS:
 
+add icon!?
+
+set collapse btn color to entry-color
+
 scroll to card center when "un"-collapsed 
+
+nice icons instead of ugy unicde different on device ios etc
+
+diable delte edits timestamp in archive view
 
 parse h2 to get kontakt AEG SPohn etc -> Carsten Stefan
 auto insert te:-Link
+
 add multiple images indexDB?!
+
 image viewer swiping / exit
 -->
 
@@ -34,14 +44,16 @@ image viewer swiping / exit
 
       --bg-text-area: #4d4b4b;
 
-      --ticket_color-1: #e57373;
-      --ticket_color-2: #4db6ac;
-      --ticket_color-3: #ba68c8;
-      --ticket_color-4: #9575cd;
-      --ticket_color-5: #7986cb;
-      --ticket_color-6: #64b5f6;
-      --ticket_color-7: #f06292;
-      --ticket_color-8: #81c784;
+
+
+      --ticket_color-1: #e89ec2;
+      --ticket_color-2: #e04438;
+      --ticket_color-3: #f5c977;
+      --ticket_color-4: #50b180;
+      --ticket_color-5: #d7e4e9;
+      --ticket_color-6: #4499b8;
+      --ticket_color-7: #b86c4d;
+      --ticket_color-8: #7b6ebd;
     }
 
     body {
@@ -73,6 +85,8 @@ image viewer swiping / exit
       display: flex;
       flex-direction: column;
       align-items: flex-start;
+      height: 50px;
+      margin-bottom: 20px;
       gap: 0.25rem;
       color: rgba(255, 255, 255, 0.8);
       font-size: 0.9rem;
@@ -103,7 +117,9 @@ image viewer swiping / exit
       font-size: 16px;
       caret-color: #f5f5f5;
       outline: none;
-      transition: outline 0.2s ease, border-color 0.2s ease;;;
+      transition: outline 0.2s ease, border-color 0.2s ease;
+      ;
+      ;
     }
 
     input {
@@ -152,6 +168,7 @@ image viewer swiping / exit
       position: relative;
       overflow: hidden;
       border-left: 20px solid transparent;
+      box-shadow: 8px 8px 50px rgba(255, 255, 255, 0.5);
     }
 
     .card.new-entry {
@@ -765,6 +782,7 @@ image viewer swiping / exit
           card.classList.add('new-entry');
         }
         card.style.borderLeft = `5px solid ${entry.color}`;
+        card.style.boxShadow = `10px 0px 10px ${entry.color}`; //rob
         card.style.setProperty('--entry-color', entry.color);
 
         const header = document.createElement("div");
