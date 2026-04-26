@@ -9,17 +9,19 @@
 
   <style>
     :root {
-      --color-bg-main: #121216;
-      --color-bg-card: #1e1f26;
+      --color-bg-main: #292929;
+      --color-bg-card: #201d22;
       --color-bg-input: #2a2b33;
 
       --color-text-primary: #ffffff;
       --color-accent-primary: #a3a3a3;
       --color-accent-secondary: #f9a8d4;
 
-      --color-danger: #b43752;
+      --color-danger: #db1843;
 
-      --color-grid-btn: #bbbbbb00;
+      --color-grid-btn: #8f8f8fd0;
+
+      --bg-text-area: #616157;
 
       --ticket_color-1: #e57373;
       --ticket_color-2: #4db6ac;
@@ -43,18 +45,49 @@
       text-align: center;
     }
 
+    .top-bar {
+      display: flex;
+
+      display: block;
+      /*temp pre view change implemented*/
+
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .view-select {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.25rem;
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 0.9rem;
+    }
+
+    .view-select select {
+      padding: 0.6rem 0.8rem;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: var(--bg-text-area);
+      color: #f5f5f5;
+      min-width: 180px;
+    }
+
     .input-row {
       display: flex;
       gap: 0.5rem;
       margin-bottom: 2rem;
       padding-bottom: 1rem;
-      border-bottom: 1px solid rgba(255,255,255,0.1);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     }
 
     input,
     textarea {
-      background: #2f3138;
-      border: 1px solid rgba(255,255,255,0.08);
+      background: var(--bg-text-area);
+      border: 1px solid rgba(255, 255, 255, 0.08);
       color: #f5f5f5;
       font-size: 16px;
       caret-color: #f5f5f5;
@@ -87,37 +120,71 @@
 
     .delete-btn {
       background: var(--color-danger);
-      margin: 0;
-      display: inline-flex;
-      width: fit-content;
-      height: 50px;
-      align-items: center;
-      justify-content: center;
-      padding: 0 0.8rem;
+      height: 3rem;
     }
 
     .archive-btn {
-      background: #49a849;
+      background: #4f854b;
       color: white;
-      margin: 0 0.5rem 0 0;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 10px;
-      padding: 0 0.8rem;
       height: 50px;
     }
 
     .card {
       background: var(--color-bg-card);
       border-radius: 16px;
-      padding: 1rem;
+      padding: 0 1rem 1rem 1rem;
       margin-bottom: 1rem;
       box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-      animation: fadeIn 0.3s ease;
       position: relative;
       overflow: hidden;
-      border-left: 6px solid transparent;
+      border-left: 16px solid transparent;
+    }
+
+    .card.new-entry {
+      animation: fadeIn 0.3s ease;
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 1rem 0 0.25rem;
+    }
+
+    .card-header h2 {
+      margin: 0;
+      font-size: 1.1rem;
+      line-height: 1.2;
+      word-break: break-word;
+    }
+
+    .collapse-btn {
+      /*border: 1px solid rgba(255,255,255,0.12);*/
+      background: rgba(255, 255, 255, 0.05);
+      color: #ffffff3a;
+      border-radius: 999px;
+      width: 36px;
+      font-size: 30px;
+      height: 36px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: transform 0.2s ease, background 0.2s ease;
+    }
+
+    .collapse-btn:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .card-body {
+      transition: max-height 0.25s ease, opacity 0.25s ease;
+      overflow: hidden;
+    }
+
+    .card.collapsed .card-body {
+      display: none;
     }
 
     /* gestapelte (vertikale) Zeitstempel */
@@ -199,11 +266,13 @@
     }
 
     .edit-btn .btn-inner {
-      translate: 0 -4px;
+      translate: 0 -3px;
     }
 
     .add-entry-btn .btn-inner {
       translate: 0 -1px;
+      scale: 3;
+      font-weight: 1;
     }
 
     .edit-btn {
@@ -214,9 +283,12 @@
 
     .add-entry-btn {
       display: flex;
+      width: 50px;
+      height: 50px;
+      border-radius: 10px;
       align-items: center;
       justify-content: center;
-      background-color: #2d2f35;
+      background-color: #201d22;
     }
 
     textarea {
@@ -234,17 +306,49 @@
 
     input:focus,
     textarea:focus {
-      outline: 2px solid rgb(170, 170, 170);
       outline-offset: 2px;
       animation: wobble 0.35s ease;
     }
 
+    .value.typing {
+      display: inline-block;
+      overflow: hidden;
+      white-space: nowrap;
+      max-width: 0;
+      border-right: 2px solid rgb(255, 255, 255);
+      animation: typewriter 0.8s steps(30, end) forwards;
+    }
+
+    @keyframes typewriter {
+      from {
+        max-width: 0;
+      }
+
+      to {
+        max-width: 100%;
+      }
+    }
+
     @keyframes wobble {
-      0% { transform: translateY(0); }
-      25% { transform: translateY(-4px); }
-      50% { transform: translateY(4px); }
-      75% { transform: translateY(-2px); }
-      100% { transform: translateY(0); }
+      0% {
+        transform: translateY(0);
+      }
+
+      25% {
+        transform: translateY(-4px);
+      }
+
+      50% {
+        transform: translateY(4px);
+      }
+
+      75% {
+        transform: translateY(-2px);
+      }
+
+      100% {
+        transform: translateY(0);
+      }
     }
 
     @keyframes fadeIn {
@@ -261,23 +365,23 @@
 
     #home-btn {
       position: fixed;
-      bottom: 20px;
-      right: 20px;
+      bottom: 10px;
+      right: 40px;
       width: 50px;
       height: 50px;
-      border-radius: 12px;
-      background: rgb(53, 163, 214);
-      color: white;
-      font-size: 18px;
-      border: none;
+      border-radius: 30px;
+      background: rgb(190, 112, 21);
+      color: rgba(255, 255, 255, 0.356);
+      font-size: 32px;
       cursor: pointer;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+      border: none;
       z-index: 1000;
       opacity: 0;
       visibility: hidden;
       transform: translateY(10px);
       transition: opacity 0.8s ease, transform 0.8s ease, visibility 0.8s ease;
       pointer-events: none;
+      line-height: -100.00px;
     }
 
     #home-btn.visible {
@@ -286,18 +390,116 @@
       transform: translateY(0);
       pointer-events: auto;
     }
+
+    #icon-scaler {
+      display: inline-block;
+      transform: scale(1.0);
+      translate: 0 -7px;
+    }
+
+    .dialog-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.65);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.2s ease;
+      z-index: 2000;
+    }
+
+    .dialog-backdrop.visible {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .dialog-box {
+      background: #222;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 18px;
+      padding: 1.25rem;
+      margin: 2rem;
+      width: min(420px, calc(100% - 2rem));
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
+    }
+
+    .dialog-title {
+      font-size: 1rem;
+      margin-bottom: 0.75rem;
+      color: #f5f5f5;
+    }
+
+    .dialog-message {
+      font-size: 0.95rem;
+      color: rgba(255, 255, 255, 0.85);
+      margin-bottom: 1rem;
+      min-height: 1.2rem;
+    }
+
+    .dialog-input {
+      width: 80%;
+      margin-bottom: 1rem;
+      padding: 0.75rem 0.85rem;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: var(--bg-text-area);
+      color: #f5f5f5;
+      display: none;
+    }
+
+    .dialog-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.75rem;
+    }
+
+    .dialog-actions button {
+      min-width: 96px;
+      border-radius: 12px;
+      padding: 0.7rem 0.9rem;
+      background: rgba(255, 255, 255, 0.08);
+      color: #f5f5f5;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .dialog-actions button:hover {
+      background: rgba(255, 255, 255, 0.12);
+    }
   </style>
 </head>
 
 <body>
-  <h1>⏱<br>Ticket<br>Zeiterfassung<br>Notizen</h1>
+  <div class="top-bar">
+    <h1>⏱<br>Service:<br>Zeiten & Umfang<br><br></h1>
+    <div class="view-select">
+      <label for="viewMode">Ansicht</label>
+      <select id="viewMode">
+        <option value="active">Tickets in Bearbeitung</option>
+        <option value="archive">Ticket Archiv</option>
+      </select>
+    </div>
+  </div>
 
   <div class="input-row">
-    <input id="nameInput" placeholder="Ticket-Notiz anlegen..." autofocus />
-    <button class="add-entry-btn" onclick="addEntry()"><span class="btn-inner">+</span></button>
+    <input id="nameInput" placeholder="Neue Ticket-Notiz anlegen..." autofocus />
+    <button type="button" class="add-entry-btn" onclick="addEntry()"><span class="btn-inner">+</span></button>
   </div>
 
   <div id="list"></div>
+
+  <div id="dialog" class="dialog-backdrop hidden">
+    <div class="dialog-box">
+      <div class="dialog-title"></div>
+      <div class="dialog-message"></div>
+      <input class="dialog-input" type="text" />
+      <div class="dialog-actions">
+        <button type="button" class="dialog-cancel">Abbrechen</button>
+        <button type="button" class="dialog-confirm">OK</button>
+      </div>
+    </div>
+  </div>
 
   <script>
     const fields = ["Abfahrt Zentrale", "Ankunft Kunde", "Fertigstellung", "Ankunft Zentrale"];
@@ -305,6 +507,9 @@
     const load = () => JSON.parse(localStorage.getItem("entries") || "[]");
     const save = d => localStorage.setItem("entries", JSON.stringify(d));
     const now = () => new Date().toLocaleString('de-DE', { dateStyle: 'short', timeStyle: 'medium' });
+
+    const loadNextColor = () => localStorage.getItem("nextColor");
+    const saveNextColor = color => localStorage.setItem("nextColor", color);
 
     const colorVars = [
       '--ticket_color-1',
@@ -318,11 +523,36 @@
     ];
     const colors = colorVars.map(v => getComputedStyle(document.documentElement).getPropertyValue(v).trim());
     let colorIndex = 0;
+    let lastWritten = null;
+    let lastCreated = null;
+
+    function getUsedEntryColors() {
+      return new Set(load().map(entry => entry.color).filter(Boolean));
+    }
 
     function randColor() {
       const color = colors[colorIndex % colors.length];
       colorIndex++;
       return color;
+    }
+
+    function getNextColor() {
+      const used = getUsedEntryColors();
+      for (let i = 0; i < colors.length; i++) {
+        const color = colors[(colorIndex + i) % colors.length];
+        if (!used.has(color)) {
+          colorIndex = (colorIndex + i + 1) % colors.length;
+          return color;
+        }
+      }
+      return randColor();
+    }
+
+    let nextColor = loadNextColor();
+    let viewMode = localStorage.getItem("viewMode") || "active";
+    if (!nextColor || getUsedEntryColors().has(nextColor)) {
+      nextColor = getNextColor();
+      saveNextColor(nextColor);
     }
 
     const nameInput = document.getElementById('nameInput');
@@ -332,6 +562,93 @@
         addEntry();
       }
     });
+
+    nameInput.addEventListener('focus', () => {
+      nameInput.style.outline = `2px solid ${nextColor}`;
+    });
+
+    nameInput.addEventListener('blur', () => {
+      nameInput.style.outline = '2px solid transparent';
+    });
+
+    const viewModeSelect = document.getElementById('viewMode');
+    viewModeSelect.value = viewMode;
+    viewModeSelect.addEventListener('change', (e) => {
+      viewMode = e.target.value;
+      localStorage.setItem('viewMode', viewMode);
+      render();
+    });
+
+    const dialogBackdrop = document.getElementById('dialog');
+    const dialogTitle = dialogBackdrop.querySelector('.dialog-title');
+    const dialogMessage = dialogBackdrop.querySelector('.dialog-message');
+    const dialogInput = dialogBackdrop.querySelector('.dialog-input');
+    const dialogConfirm = dialogBackdrop.querySelector('.dialog-confirm');
+    const dialogCancel = dialogBackdrop.querySelector('.dialog-cancel');
+
+    function openDialog({ title = '', message = '', defaultValue = '', placeholder = '', confirmText = 'OK', cancelText = 'Abbrechen', withInput = false }) {
+      dialogTitle.textContent = title;
+      dialogMessage.textContent = message;
+      dialogInput.value = defaultValue;
+      dialogInput.placeholder = placeholder;
+      dialogInput.style.display = withInput ? 'block' : 'none';
+      dialogConfirm.textContent = confirmText;
+      dialogCancel.textContent = cancelText;
+      dialogBackdrop.classList.remove('hidden');
+      dialogBackdrop.classList.add('visible');
+
+      return new Promise((resolve) => {
+        const handleKeydown = (e) => {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+            dialogConfirm.click();
+          }
+          if (e.key === 'Escape') {
+            e.preventDefault();
+            dialogCancel.click();
+          }
+        };
+
+        const cleanup = () => {
+          dialogBackdrop.classList.add('hidden');
+          dialogBackdrop.classList.remove('visible');
+          dialogConfirm.onclick = null;
+          dialogCancel.onclick = null;
+          dialogBackdrop.onclick = null;
+          dialogInput.removeEventListener('keydown', handleKeydown);
+        };
+
+        dialogConfirm.onclick = () => {
+          cleanup();
+          resolve(withInput ? dialogInput.value : true);
+        };
+
+        dialogCancel.onclick = () => {
+          cleanup();
+          resolve(withInput ? null : false);
+        };
+
+        dialogBackdrop.onclick = (e) => {
+          if (e.target === dialogBackdrop) {
+            cleanup();
+            resolve(withInput ? null : false);
+          }
+        };
+
+        if (withInput) {
+          dialogInput.addEventListener('keydown', handleKeydown);
+          setTimeout(() => dialogInput.focus(), 0);
+        }
+      });
+    }
+
+    function showConfirm(message, confirmText = 'OK', cancelText = 'Abbrechen') {
+      return openDialog({ title: '', message, confirmText, cancelText, withInput: false });
+    }
+
+    function showPrompt(title, defaultValue = '', placeholder = '', confirmText = 'Speichern', cancelText = 'Abbrechen') {
+      return openDialog({ title, message: '', defaultValue, placeholder, confirmText, cancelText, withInput: true });
+    }
 
     function autoResize(el) {
       el.style.height = "auto";
@@ -343,27 +660,37 @@
       if (!name) return;
 
       const data = load();
-      const entry = { name, times: {}, notes: "", color: randColor() };
+      const entry = { name, times: {}, notes: "", color: nextColor };
       fields.forEach(f => entry.times[f] = null);
       data.push(entry);
 
+      lastCreated = data.length - 1;
+      nextColor = getNextColor();
+      saveNextColor(nextColor);
       save(data);
       nameInput.value = "";
       render();
     }
 
-    function deleteEntry(i) {
+    async function deleteEntry(i) {
+      const confirmed = await showConfirm("Eintrag entgültig löschen?", "Löschen", "Abbrechen");
+      if (!confirmed) return;
       const data = load();
-      if (!confirm("Eintrag löschen?")) return;
       data.splice(i, 1);
       save(data);
       render();
     }
 
-    function archiveEntry(i) {
+    async function archiveEntry(i) {
       const data = load();
-      if (!confirm("Eintrag archivieren?")) return;
-      data[i].archived = true;
+      const isArchived = data[i].archived;
+      const confirmed = await showConfirm(
+        isArchived ? "Eintrag wiederherstellen?" : "Eintrag archivieren?",
+        isArchived ? "Wiederherstellen" : "Archivieren",
+        "Abbrechen"
+      );
+      if (!confirmed) return;
+      data[i].archived = !isArchived;
       save(data);
       render();
     }
@@ -372,13 +699,14 @@
       const data = load();
       data[i].times[field] = now();
       save(data);
+      lastWritten = { index: i, field };
       render();
     }
 
-    function editTime(i, field) {
+    async function editTime(i, field) {
       const data = load();
       const current = data[i].times[field] || "";
-      const val = prompt("Bearbeiten:", current);
+      const val = await showPrompt("Zeiteintrag bearbeiten:", current, "Zeit eintragen");
       if (val !== null) {
         data[i].times[field] = val;
         save(data);
@@ -387,26 +715,55 @@
     }
 
     function render() {
+      const previousScroll = window.scrollY;
       list.innerHTML = "";
 
       const data = load();
       let changed = false;
 
       data.forEach((entry, i) => {
-        if (entry.archived) return;
+        if (viewMode === 'archive' ? !entry.archived : entry.archived) return;
         if (!entry.color) {
           entry.color = randColor();
+          changed = true;
+        }
+        if (entry.collapsed === undefined) {
+          entry.collapsed = false;
           changed = true;
         }
 
         const card = document.createElement("div");
         card.className = "card";
-        card.style.borderLeft = `6px solid ${entry.color}`;
+        if (entry.collapsed) card.classList.add('collapsed');
+        if (lastCreated === i) {
+          card.classList.add('new-entry');
+        }
+        card.style.borderLeft = `8px solid ${entry.color}`;
         card.style.setProperty('--entry-color', entry.color);
 
-        const title = document.createElement("h3");
+        const header = document.createElement("div");
+        header.className = "card-header";
+
+        const title = document.createElement("h2");
         title.textContent = entry.name;
-        card.appendChild(title);
+        header.appendChild(title);
+
+        const collapseBtn = document.createElement("button");
+        collapseBtn.type = 'button';
+        collapseBtn.className = 'collapse-btn';
+        collapseBtn.title = entry.collapsed ? 'Expandieren' : 'Reduzieren';
+        collapseBtn.textContent = entry.collapsed ? '▸' : '▾';
+        collapseBtn.onclick = () => {
+          const d = load();
+          d[i].collapsed = !d[i].collapsed;
+          save(d);
+          render();
+        };
+        header.appendChild(collapseBtn);
+        card.appendChild(header);
+
+        const body = document.createElement("div");
+        body.className = "card-body";
 
         const grid = document.createElement("div");
         grid.className = "grid";
@@ -426,6 +783,11 @@
           value.className = "value";
           value.textContent = entry.times[f] || "-";
 
+          if (lastWritten && lastWritten.index === i && lastWritten.field === f && entry.times[f]) {
+            value.classList.add('typing');
+            value.addEventListener('animationend', () => value.classList.remove('typing'), { once: true });
+          }
+
           info.appendChild(label);
           info.appendChild(value);
 
@@ -433,20 +795,20 @@
           actions.className = "action-buttons";
 
           const timeBtn = document.createElement("button");
+          timeBtn.type = 'button';
           timeBtn.className = "timestamp-btn";
           timeBtn.title = "Zeit eintragen";
           timeBtn.onclick = () => setTime(i, f);
-          //timeBtn.style.background = entry.color;
           const timeInner = document.createElement("span");
           timeInner.className = "btn-inner";
           timeInner.textContent = "⏱";
           timeBtn.appendChild(timeInner);
 
           const editBtn = document.createElement("button");
+          editBtn.type = 'button';
           editBtn.className = "edit-btn";
           editBtn.title = "Zeit bearbeiten";
           editBtn.onclick = () => editTime(i, f);
-          //editBtn.style.background = entry.color;
           const editInner = document.createElement("span");
           editInner.className = "btn-inner";
           editInner.textContent = "...";
@@ -460,11 +822,19 @@
           grid.appendChild(item);
         });
 
-        card.appendChild(grid);
+        body.appendChild(grid);
 
         const notesInput = document.createElement("textarea");
         notesInput.placeholder = "Arbeiten / Notizen...";
         notesInput.value = entry.notes || "";
+
+        notesInput.addEventListener("focus", () => {
+          notesInput.style.outline = `2px solid ${entry.color}`;
+        });
+
+        notesInput.addEventListener("blur", () => {
+          notesInput.style.outline = '2px solid transparent';
+        });
 
         notesInput.addEventListener("input", (e) => {
           autoResize(e.target);
@@ -474,31 +844,47 @@
         });
 
         setTimeout(() => autoResize(notesInput), 0);
-
-        card.appendChild(notesInput);
+        body.appendChild(notesInput);
 
         const archive = document.createElement("button");
+        archive.type = 'button';
         archive.className = "archive-btn";
         archive.onclick = () => archiveEntry(i);
         const archiveInner = document.createElement("span");
         archiveInner.className = "btn-inner";
-        archiveInner.textContent = "Archivieren";
+        archiveInner.textContent = entry.archived ? "Wiederherstellen" : "Archivieren";
         archive.appendChild(archiveInner);
 
         const del = document.createElement("button");
+        del.type = 'button';
         del.className = "delete-btn";
         del.onclick = () => deleteEntry(i);
         const delInner = document.createElement("span");
         delInner.className = "btn-inner";
-        delInner.textContent = "Verwerfen";
+        delInner.textContent = "🗑";
         del.appendChild(delInner);
 
-        card.appendChild(archive);
-        card.appendChild(del);
+        body.appendChild(archive);
+        body.appendChild(del);
+
+        card.appendChild(body);
         list.appendChild(card);
       });
 
       if (changed) save(data);
+
+      if (lastCreated !== null) {
+        const newCard = list.querySelector('.card.new-entry');
+        if (newCard) {
+          newCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          nameInput.style.outline = `2px solid ${nextColor}`;
+        }
+        lastCreated = null;
+      } else {
+        window.scrollTo({ top: previousScroll });
+      }
+
+      lastWritten = null;
     }
 
     function scrollToTop() {
@@ -517,7 +903,9 @@
     render();
   </script>
 
-  <button id="home-btn" onclick="scrollToTop()">TOP</button>
+  <button id="home-btn" onclick="scrollToTop()">
+    <div id=icon-scaler>▲</div>
+  </button>
 
 </body>
 
