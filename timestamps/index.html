@@ -1,4 +1,12 @@
 <!-- ...existing code... -->
+
+<!-- TODOS:
+parse h2 to get kontakt AEG SPohn etc -> Carsten Stefan
+auto insert te:-Link
+add multiple images indexDB?!
+image viewer swiping / exit
+-->
+
 <!DOCTYPE html>
 <html lang="de">
 
@@ -21,7 +29,7 @@
 
       --color-grid-btn: #8f8f8fd0;
 
-      --bg-text-area: #616157;
+      --bg-text-area: #4d4b4b;
 
       --ticket_color-1: #e57373;
       --ticket_color-2: #4db6ac;
@@ -92,7 +100,7 @@
       font-size: 16px;
       caret-color: #f5f5f5;
       outline: none;
-      transition: outline 0.2s ease, border-color 0.2s ease;
+      transition: outline 0.2s ease, border-color 0.2s ease;;;
     }
 
     input {
@@ -121,12 +129,15 @@
     .delete-btn {
       background: var(--color-danger);
       height: 3rem;
+      width: 50px;
+      height: 50px;
     }
 
     .archive-btn {
       background: #4f854b;
       color: white;
       height: 50px;
+      width: 130px;
     }
 
     .card {
@@ -137,7 +148,7 @@
       box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
       position: relative;
       overflow: hidden;
-      border-left: 16px solid transparent;
+      border-left: 20px solid transparent;
     }
 
     .card.new-entry {
@@ -165,13 +176,15 @@
       color: #ffffff3a;
       border-radius: 999px;
       width: 36px;
-      font-size: 30px;
+      font-size: 20px;
       height: 36px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
       transition: transform 0.2s ease, background 0.2s ease;
+      padding-left: 10px;
+      line-height: 0;
     }
 
     .collapse-btn:hover {
@@ -242,6 +255,14 @@
       display: flex;
       gap: 0.3rem;
       flex-shrink: 0;
+    }
+
+    .bottom-actions {
+      display: flex;
+      gap: 10px;
+      justify-content: flex-start;
+      align-items: center;
+      margin-top: 10px;
     }
 
     .grid button {
@@ -738,7 +759,7 @@
         if (lastCreated === i) {
           card.classList.add('new-entry');
         }
-        card.style.borderLeft = `8px solid ${entry.color}`;
+        card.style.borderLeft = `5px solid ${entry.color}`;
         card.style.setProperty('--entry-color', entry.color);
 
         const header = document.createElement("div");
@@ -752,7 +773,7 @@
         collapseBtn.type = 'button';
         collapseBtn.className = 'collapse-btn';
         collapseBtn.title = entry.collapsed ? 'Expandieren' : 'Reduzieren';
-        collapseBtn.textContent = entry.collapsed ? '▸' : '▾';
+        collapseBtn.textContent = entry.collapsed ? '🠋' : '🠊';
         collapseBtn.onclick = () => {
           const d = load();
           d[i].collapsed = !d[i].collapsed;
@@ -864,8 +885,13 @@
         delInner.textContent = "🗑";
         del.appendChild(delInner);
 
-        body.appendChild(archive);
-        body.appendChild(del);
+        const bottomActions = document.createElement("div");
+        bottomActions.className = "bottom-actions";
+
+        bottomActions.appendChild(archive);
+        bottomActions.appendChild(del);
+
+        body.appendChild(bottomActions);
 
         card.appendChild(body);
         list.appendChild(card);
