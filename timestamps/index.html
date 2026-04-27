@@ -2,9 +2,15 @@
 
 <!-- TODOS:
 
+textarea spelling check red underline german or remove spellcheck attribute 
+
 add icon!?
 
-set collapse btn color to entry-color
+make viewMode select icons in a row (Todo, Archiv, 
+
+beispiel tocket if localstorage no entries in berarbeitung oder im archiv!
+
+set collapse btn bg to entry-color
 
 scroll to card center when "un"-collapsed 
 
@@ -18,6 +24,9 @@ auto insert te:-Link
 add multiple images indexDB?!
 
 image viewer swiping / exit
+
+
+
 -->
 
 <!DOCTYPE html>
@@ -30,8 +39,8 @@ image viewer swiping / exit
 
   <style>
     :root {
-      --color-bg-main: #292929;
-      --color-bg-card: #201d22;
+      --color-bg-main: #230227;
+      --color-bg-card: #37244d33;
       --color-bg-input: #2a2b33;
 
       --color-text-primary: #ffffff;
@@ -42,18 +51,22 @@ image viewer swiping / exit
 
       --color-grid-btn: #8f8f8fd0;
 
-      --bg-text-area: #4d4b4b;
+      --bg-text-area: #220b1e;
+      
+      --text-text-area: #ffffff;
 
+      --grid-item-bg: #ffffff1a;
 
+      --shadow-glow: #155adbaa;
 
-      --ticket_color-1: #e89ec2;
-      --ticket_color-2: #e04438;
-      --ticket_color-3: #f5c977;
-      --ticket_color-4: #50b180;
-      --ticket_color-5: #d7e4e9;
-      --ticket_color-6: #4499b8;
-      --ticket_color-7: #b86c4d;
-      --ticket_color-8: #7b6ebd;
+      --ticket_color-1: #5a78b8;
+      --ticket_color-2: #ffbc02;
+      --ticket_color-3: #f0540b;
+      --ticket_color-4: #35c219;
+      --ticket_color-5: #9168b3;
+      --ticket_color-6: #ffc13b;
+      --ticket_color-7: #6b78af;
+      --ticket_color-8: #91887c;
     }
 
     body {
@@ -96,9 +109,15 @@ image viewer swiping / exit
       padding: 0.6rem 0.8rem;
       border-radius: 12px;
       border: 1px solid rgba(255, 255, 255, 0.12);
-      background: var(--bg-text-area);
-      color: #f5f5f5;
+      background: var(--ticket_color-8);
+      color: var(--color-bg-input);
       min-width: 180px;
+    }
+
+    #viewMode option {
+      color: rgb(42, 32, 185);
+      background: rgb(204, 159, 13);
+
     }
 
     .input-row {
@@ -111,15 +130,14 @@ image viewer swiping / exit
 
     input,
     textarea {
-      background: var(--bg-text-area);
+      background: var(--grid-item-bg);
       border: 1px solid rgba(255, 255, 255, 0.08);
-      color: #f5f5f5;
+      color: var(--text-text-area);
       font-size: 16px;
       caret-color: #f5f5f5;
       outline: none;
+      height: fit-content;
       transition: outline 0.2s ease, border-color 0.2s ease;
-      ;
-      ;
     }
 
     input {
@@ -163,12 +181,12 @@ image viewer swiping / exit
       background: var(--color-bg-card);
       border-radius: 16px;
       padding: 0 1rem 1rem 1rem;
-      margin-bottom: 1rem;
+      margin-bottom: 20px;
       box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
       position: relative;
       overflow: hidden;
       border-left: 20px solid transparent;
-      box-shadow: 8px 8px 50px rgba(255, 255, 255, 0.5);
+      /*box-shadow: 8px 8px 1000px rgba(255, 255, 255, 0.5);*/
     }
 
     .card.new-entry {
@@ -229,7 +247,7 @@ image viewer swiping / exit
     }
 
     .grid-item {
-      background: rgba(255, 255, 255, 0.03);
+      background: var(--grid-item-bg);
       border-radius: 12px;
       padding: 0.6rem;
       display: flex;
@@ -513,9 +531,7 @@ image viewer swiping / exit
 
 <body>
   <div class="top-bar">
-    <h1 style="font-size: 30px;">⏱<br>
-      Ticket<span style="color:rgb(87, 231, 231)">
-        Plus</span></h1>
+    <h1 style="font-size: 30px;">⏱<br>Time<span style="color:rgb(87, 231, 231)">Tick</span></h1>
     <div class="view-select">
       <label for="viewMode">Ansicht</label>
       <select id="viewMode">
@@ -766,6 +782,7 @@ image viewer swiping / exit
 
       data.forEach((entry, i) => {
         if (viewMode === 'archive' ? !entry.archived : entry.archived) return;
+
         if (!entry.color) {
           entry.color = randColor();
           changed = true;
@@ -782,7 +799,7 @@ image viewer swiping / exit
           card.classList.add('new-entry');
         }
         card.style.borderLeft = `5px solid ${entry.color}`;
-        card.style.boxShadow = `10px 0px 10px ${entry.color}`; //rob
+        //card.style.boxShadow = `30px 20px 20px 0px${entry.color}`; //rob
         card.style.setProperty('--entry-color', entry.color);
 
         const header = document.createElement("div");
@@ -790,11 +807,13 @@ image viewer swiping / exit
 
         const title = document.createElement("h2");
         title.textContent = entry.name;
+        title.style.color = entry.color;
         header.appendChild(title);
 
         const collapseBtn = document.createElement("button");
         collapseBtn.type = 'button';
         collapseBtn.className = 'collapse-btn';
+        collapseBtn.style.color = entry.color;
         collapseBtn.title = entry.collapsed ? 'Expandieren' : 'Reduzieren';
         collapseBtn.textContent = entry.collapsed ? '🠋' : '🠊';
         collapseBtn.onclick = () => {
@@ -869,11 +888,13 @@ image viewer swiping / exit
         body.appendChild(grid);
 
         const notesInput = document.createElement("textarea");
-        notesInput.placeholder = "Arbeiten / Notizen...";
+        notesInput.placeholder = "Arbeiten, Material,\nSN, INV, Anmerkungen, ...";
+        color: entry.color;
         notesInput.value = entry.notes || "";
 
         notesInput.addEventListener("focus", () => {
-          notesInput.style.outline = `2px solid ${entry.color}`;
+          //notesInput.style.background = `rgb(150, 150, 130)`;
+          notesInput.style.color = `${entry.color}`;
         });
 
         notesInput.addEventListener("blur", () => {
