@@ -183,12 +183,27 @@ image viewer swiping / exit
       height: 50px;
     }
 
+    .location-btn {
+      background: #8d8d8d;
+      color: white;
+      height: 50px;
+      width: 50px;
+    }
+
+    .contact-btn {
+      background: #8d8d8d;
+      color: white;
+      height: 50px;
+      width: 50px;
+    }
+
     .archive-btn {
       background: #4f854b;
       color: white;
       height: 50px;
       width: 130px;
     }
+
 
     .card {
       background: var(--color-bg-card);
@@ -876,7 +891,7 @@ image viewer swiping / exit
 
           const value = document.createElement("span");
           value.className = "value";
-          value.textContent = entry.times[f] || "-";
+          value.textContent = (entry.times && entry.times[f]) || "-";
 
           if (lastWritten && lastWritten.index === i && lastWritten.field === f && entry.times[f]) {
             value.classList.add('typing');
@@ -953,6 +968,24 @@ image viewer swiping / exit
         archiveInner.textContent = entry.archived ? "Wiederherstellen" : "Archivieren";
         archive.appendChild(archiveInner);
 
+        const location = document.createElement("button");
+        location.type = 'button';
+        location.className = "location-btn";
+        //location.onclick = () => getLocation(i);
+        const locationInner = document.createElement("span");
+        locationInner.className = "btn-inner";
+        locationInner.textContent = "🚘";
+        location.appendChild(locationInner);
+
+        const contact = document.createElement("button");
+        contact.type = 'button';
+        contact.className = "contact-btn";
+        //contact.onclick = () => getLocation(i);
+        const contactInner = document.createElement("span");
+        contactInner.className = "btn-inner";
+        contactInner.textContent = "📞";
+        contact.appendChild(contactInner);
+
         const del = document.createElement("button");
         del.type = 'button';
         del.className = "delete-btn";
@@ -966,6 +999,8 @@ image viewer swiping / exit
         bottomActions.className = "bottom-actions";
 
         bottomActions.appendChild(archive);
+        bottomActions.appendChild(location);
+        bottomActions.appendChild(contact);
         bottomActions.appendChild(del);
 
         body.appendChild(bottomActions);
