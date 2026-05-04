@@ -15,56 +15,111 @@
     <link rel="icon" href="icons/icon-192.png" />
     <link rel="apple-touch-icon" href="icons/icon-192.png" />
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
 
     <!-- Styles -->
     <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
-    <header>
-        header
-    </header>
+    <header></header>
 
     <main>
         <section id="todo-app">
-            <h1 style="color: rgb(154, 190, 231);">Todo<span
-                    style="color: rgb(29, 38, 168); font-weight: 900;"></span>Plus
-            </h1>
 
-            <div class="add-entry-row">
-                <input type=" text" id="todo-input" placeholder="Todo hinzufügen..." />
-                <button id="add-btn">
-                    <?xml version="1.0" ?>
+            <!--h1 class="logo" style="color: rgb(154, 190, 231);">
+                todo<span style="color: rgb(255, 174, 0); font-weight: 900;">X</span>
+            </h1-->
 
-                    <!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
-                    <svg class="icon" width="800px" height="800px" viewBox="0 0 24 24"
+            <div class="menu">
+
+
+                <div class="toggle-mode">
+
+                    <button class="view-mode-btn">
+                        <svg class="icon" width="800px" height="800px" viewBox="0 0 24 24" fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                            <g id="SVGRepo_iconCarrier">
+                                <path
+                                    d="M5.06152 12C5.55362 8.05369 8.92001 5 12.9996 5C17.4179 5 20.9996 8.58172 20.9996 13C20.9996 17.4183 17.4179 21 12.9996 21H8M13 13V9M11 3H15M3 15H8M5 18H10"
+                                    stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                </path>
+                            </g>
+                        </svg>
+                    </button>
+
+                    <div class="mode-nav">
+                        <span class="change-mode-left">
+                            <?xml version="1.0" encoding="utf-8"?><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+                            <svg class="icon" width="800px" height="800px" viewBox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path d="M6 12H18M18 12L13 7M18 12L13 17" stroke="#ffffff" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                        </span>Ticket(s) in Bearbeitung
+
+                        <span class="change-mode-right">
+                            <?xml version="1.0" encoding="utf-8"?><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+                            <svg class="icon" width="800px" height="800px" viewBox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path d="M6 12H18M18 12L13 7M18 12L13 17" stroke="#ffffff" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                        </span>
+                    </div>
+
+                    <!--button class="archive-mode-btn">
+                        <svg class="icon" width="800px" height="800px" viewBox="0 0 24 24"
                         xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                d="M2.54497 8.73005C2 9.79961 2 11.1997 2 14C2 16.8003 2 18.2004 2.54497 19.27C3.02433 20.2108 3.78924 20.9757 4.73005 21.455C5.79961 22 7.19974 22 10 22H14C16.8003 22 18.2004 22 19.27 21.455C20.2108 20.9757 20.9757 20.2108 21.455 19.27C22 18.2004 22 16.8003 22 14C22 11.1997 22 9.79961 21.455 8.73005C20.9757 7.78924 20.2108 7.02433 19.27 6.54497C18.2004 6 16.8003 6 14 6H10C7.19974 6 5.79961 6 4.73005 6.54497C3.78924 7.02433 3.02433 7.78924 2.54497 8.73005ZM15.0595 12.4995C15.3353 12.1905 15.3085 11.7164 14.9995 11.4406C14.6905 11.1647 14.2164 11.1915 13.9406 11.5005L10.9286 14.8739L10.0595 13.9005C9.78359 13.5915 9.30947 13.5647 9.0005 13.8406C8.69152 14.1164 8.66468 14.5905 8.94055 14.8995L10.3691 16.4995C10.5114 16.6589 10.7149 16.75 10.9286 16.75C11.1422 16.75 11.3457 16.6589 11.488 16.4995L15.0595 12.4995Z" />
+                                <path
+                                d="M20.5348 3.46447C19.0704 2 16.7133 2 11.9993 2C7.28525 2 4.92823 2 3.46377 3.46447C2.70628 4.22195 2.3406 5.21824 2.16406 6.65598C2.69473 6.06532 3.33236 5.57328 4.04836 5.20846C4.82984 4.81027 5.66664 4.6488 6.59316 4.5731C7.48829 4.49997 8.58971 4.49998 9.93646 4.5H14.0621C15.4089 4.49998 16.5103 4.49997 17.4054 4.5731C18.332 4.6488 19.1688 4.81027 19.9502 5.20846C20.6662 5.57328 21.3039 6.06532 21.8345 6.65598C21.658 5.21824 21.2923 4.22195 20.5348 3.46447Z" />
+                        </svg>
+                        </button-->
 
-                        <title />
 
-                        <g id="Complete">
+                </div>
 
-                            <g data-name="add" id="add-2">
+                <div class="add-entry-row">
 
-                                <g>
+                    <input type=" text" id="todo-input" placeholder="Todo hinzufügen..." />
+                    <button class="add-btn">
+                        <?xml version="1.0" ?>
 
-                                    <line fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round"
-                                        stroke-width="2" x1="12" x2="12" y1="19" y2="5" />
+                        <!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+                        <svg class="icon" width="800px" height="800px" viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg">
 
-                                    <line fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round"
-                                        stroke-width="2" x1="5" x2="19" y1="12" y2="12" />
+                            <title />
+
+                            <g id="Complete">
+
+                                <g data-name="add" id="add-2">
+
+                                    <g>
+
+                                        <line fill="none" stroke="var(--color-secondary);" stroke-linecap="round"
+                                            stroke-linejoin="round" stroke-width="2" x1="12" x2="12" y1="19" y2="5" />
+
+                                        <line fill="none" stroke="var(--color-secondary);" stroke-linecap="round"
+                                            stroke-linejoin="round" stroke-width="2" x1="5" x2="19" y1="12" y2="12" />
+
+                                    </g>
 
                                 </g>
 
                             </g>
 
-                        </g>
-
-                    </svg>
-                </button>
+                        </svg>
+                    </button>
+                </div>
             </div>
 
-            <div class="divider"></div>
+
+            <!--div class="divider"></div-->
 
             <ul id="todo-list">
 
@@ -72,7 +127,7 @@
 
                     <div class="card-header-row">
                         <h3>AEG 3.17 - Beamer defekt?!</h2>
-                            <button class="dropdown-btn">
+                            <button class="dropdown-btn-card">
 
                                 <svg width="800px" height="800px" viewBox="0 0 1024 1024" class="icon" version="1.1"
                                     xmlns="http://www.w3.org/2000/svg">
@@ -301,6 +356,9 @@
                     </div>
 
                 </div>
+
+                <!--div style="width: 399px; height: 300px; background: red;">bjhbhbhj</div-->
+
             </ul>
 
         </section>
@@ -308,6 +366,26 @@
 
     <!-- Script -->
     <script src="main.js"></script>
+
+    <!-- Dropdown -->
+    <script>
+        function toggleDropdown() {
+            const list = document.getElementById("dropdownList");
+            list.style.display = list.style.display === "block" ? "none" : "block";
+        }
+
+        function selectItem(el) {
+            document.querySelector(".dropdown-btn").innerText = el.innerText;
+            document.getElementById("dropdownList").style.display = "none";
+        }
+
+        // close when clicking outside
+        document.addEventListener("click", function (e) {
+            if (!e.target.closest(".dropdown")) {
+                document.getElementById("dropdownList").style.display = "none";
+            }
+        });
+    </script>
 
     <!-- Auto Resize Textarea   -->
     <script>
