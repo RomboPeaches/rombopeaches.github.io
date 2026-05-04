@@ -1,0 +1,228 @@
+:root {
+    /* Colors */
+    --color-primary: #232323;
+    --color-primary-hover: #00ff26;
+
+
+
+
+    --color-text: #3356a0;
+    --color-text-muted: #000000;
+
+    --color-background: #4381d3;
+    --card-bg: #252525;
+    --color-border: #000000;
+
+    --color-surface: #833b3b;
+    --color-secondary: #181818;
+
+    --color-danger: #ef4444;
+
+    --light-text: #ffffff;
+
+    --card-boxshadow: #000000;
+
+    /* Typography */
+    --font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --font-size-base: 16px;
+    --font-size-lg: 1.25rem;
+    --font-size-sm: 0.875rem;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    color: var(--light-text);
+}
+
+body {
+    font-family: var(--font-family);
+    font-size: var(--font-size-base);
+    background: var(--color-background);
+    color: var(--color-text);
+    line-height: 1.5;
+}
+
+header {
+    display: none;
+}
+
+#todo-app {
+    padding: 1rem 1rem;
+    background: var(--color-background);
+}
+
+.add-entry-row {
+    background: var(--card-bg);
+    border-radius: 0.8rem;
+    padding: 1rem 1.5rem;
+    margin: 1rem 0;
+    border: solid 1px var(--color-border);
+    border-left: solid 0.4rem var(--color-border);
+    box-shadow: 10px 10px 20px 1px var(--card-boxshadow);
+    margin-right: 10px;
+}
+
+.divider {
+    border-top: solid 0.4rem var(--color-border);
+    border-radius: 10px;
+    margin: 0.5rem;
+
+}
+
+#todo-list {
+    height: fit-content;
+}
+
+.todo-card {
+    background: var(--card-bg);
+    border-radius: 0.8rem;
+    padding: 1rem 1.5rem;
+    margin: 1rem 0;
+    border: solid 1px var(--color-border);
+    border-left: solid 0.4rem var(--color-border);
+    box-shadow: 10px 10px 20px 1px var(--card-boxshadow);
+    margin-right: 10px;
+}
+
+.card-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.7rem;
+}
+
+.dropdown-btn {
+    background: none;
+    border: solid transparent 2px;
+    border-radius: 50%;
+    cursor: pointer;
+    rotate: 180deg;
+    scale: 0.6;
+}
+
+.todo-card h3 {
+    color: var(--light-text);
+}
+
+.todo-time-entries {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 0 0px;
+}
+
+.time-entry-row {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--color-secondary);
+    padding: 10px 10px 10px 10px;
+    border-radius: 10px;
+    border: solid 1px var(--color-border);
+}
+
+.time-entry-row .icon {
+    width: 30px;
+    height: 30px;
+}
+
+.time-entry-row .icon:hover {
+    transform: scale(0.8);
+}
+
+.time-entry-row button {
+    border: none;
+    border-radius: 50px;
+}
+
+.card-btn-row {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    justify-content: center;
+    margin: 1rem 0 0 0;
+}
+
+.card-btn-row .icon:hover {
+    transform: scale(1.2);
+}
+
+.timestamp {
+    flex: 1;
+    font-size: 16px;
+    font-weight: 400;
+}
+
+.icon {
+    width: 40px;
+    height: 40px;
+}
+
+.location-btn {
+    background: none;
+    border: solid transparent 1px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.contact-btn {
+    background: none;
+    border: solid transparent 2px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.archive-btn {
+    background: none;
+    border: solid transparent 2px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.delete-btn {
+    background: none;
+    border: solid transparent 2px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.timestamp-btn {
+    background: none;
+    border: solid white 1px;
+    border-radius: 10px;
+    cursor: pointer;
+    padding: 3px;
+}
+
+.edit-btn {
+    background: none;
+    border: solid white 1px;
+    border-radius: 10px;
+    cursor: pointer;
+    padding: 3px;
+    transform: scale(0.9);
+}
+
+svg {
+    fill: transparent;
+    stroke: rgb(255, 255, 255);
+}
+
+.card-textarea {
+    resize: none;
+    /* optional: prevents manual resize */
+    overflow: hidden;
+    background: var(--color-secondary);
+    border: solid 1px var(--color-border);
+    border-radius: 10px;
+    padding: 10px 10px 16px 10px;
+    font-size: 16px;
+    font-weight: 100;
+    color: var(--light-text);
+    width: 100%;
+    font-family: "Inter", sans-serif;
+    outline: none;
+}

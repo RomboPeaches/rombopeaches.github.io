@@ -103,7 +103,7 @@ image viewer swiping / exit
     .view-select {
       display: flex;
       flex-direction: column;
-      align-items: flex-end;
+      align-items: flex-start;
       height: fit-content;
       margin-bottom: 0px;
       color: rgba(255, 255, 255, 0.8);
@@ -128,7 +128,7 @@ image viewer swiping / exit
 
     .input-row {
       display: flex;
-      gap: 0.9rem;
+      gap: 1rem;
       align-items: center;
       height: 50px;
     }
@@ -194,7 +194,7 @@ image viewer swiping / exit
       background: var(--color-bg-card);
       border-radius: 16px;
       padding: 0 1rem 1rem 1rem;
-      margin-bottom: 20px;
+      margin-bottom: 1rem;
       box-shadow: 0 10px 25px rgba(20, 1, 26, 0.3);
       position: relative;
       overflow: hidden;
@@ -547,26 +547,34 @@ image viewer swiping / exit
     .dialog-actions button:hover {
       background: rgba(255, 255, 255, 0.12);
     }
+
+    .divider {
+      margin: 1rem;
+      border-top: 2px solid var(--color-bg-card);
+    }
+
   </style>
 </head>
 
 <body>
   <div class="top-bar">
-    <h1 style="font-size: 30px; color:rgb(207, 204, 187); filter: blur(0px);">⏱<br>
-      <span style="color:rgb(177, 31, 177)">Service</span> App<br></h1> <!--⏱-->
+    <h1 style="font-size: 30px; color:rgb(207, 204, 187); filter: blur(0px);">Tick
+      <span>X</span> Todo<br></h1> <!--⏱-->
     <div class="view-select">
       <!-- <label for="viewMode">Ansicht</label-->
       <select id="viewMode">
-        <option value="active">Tickets in Bearbeitung</option>
+        <option value="active">Ticket in Bearbeitung</option>
         <option value="archive">Ticket Archiv</option>
       </select>
     </div>
   </div>
 
   <div class="input-row">
-    <input id="nameInput" placeholder="Neue Ticket-Notiz anlegen..." autofocus />
+    <input id="nameInput" placeholder="AEG 3.17 Defekter Beamer" autofocus />
     <button type="button" class="add-entry-btn" onclick="addEntry()"><span class="btn-inner">+</span></button>
   </div>
+
+  <div class="divider"></div>
 
   <div id="list"></div>
 
@@ -641,6 +649,8 @@ image viewer swiping / exit
       if (e.key === 'Enter') {
         e.preventDefault();
         addEntry();
+      } else {
+        scrollToTop()
       }
     });
 
