@@ -796,14 +796,24 @@ image viewer swiping / exit
     }
 
     function findCustomer(entry) {
-      console.log(entry);
+      if (!entry?.location) return;
 
-      if (!entry?.location) return null;
+      const encoded = encodeURIComponent(entry.location);
+      const ua = navigator.userAgent || "";
 
-      const url = `https://maps.google.com/?q=${encodeURIComponent(entry.location)}`;
-      window.open(url, "_blank");
+      const isIOS = /iPhone|iPad|iPod/i.test(ua);
 
-      console.log("map opened");
+      const url = isIOS
+        ? `https://maps.apple.com/?q=${encoded}`
+        : `https://maps.google.com/?q=${encoded}`;
+
+      // Versuch: neuer Tab (besser für PWA)
+      const newWindow = window.open(url, "_blank", "noopener,noreferrer");
+
+      // Fallback: falls Popup geblockt wurde
+      if (!newWindow || newWindow.closed || typeof newWindow.closed === "undefined") {
+        window.location.href = url;
+      }
     }
 
     const colorVars = [

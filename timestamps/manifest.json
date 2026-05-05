@@ -1,6 +1,6 @@
 {
     "name": "tickXtodo",
-    "short_name": "todoX",
+    "short_name": "tickXtodo",
     "start_url": "/timestamps/index.html",
     "scope": "/timestamps/",
     "display": "standalone",
