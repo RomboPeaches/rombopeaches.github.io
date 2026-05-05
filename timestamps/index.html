@@ -675,8 +675,7 @@ image viewer swiping / exit
     function callCustomer(customer) {
       if (!customer?.phone) return null;
       window.location.href = `tel:${customer.phone.replace(/\s+/g, "")}`;
-
-      alert("call?!");
+      //alert("call?!");
     }
 
     function getCustomerLocation(str) {
@@ -685,7 +684,10 @@ image viewer swiping / exit
     }
 
     function findCustomer(entry) {
-      if (!entry?.address) return null;
+
+      console.log(entry);
+
+      if (!entry?.location) return null;
 
       const encodedAddress = encodeURIComponent(entry.address);
       const url = `https://www.google.com/maps/dir/?api=1&destination=${encodedAddress}`;
