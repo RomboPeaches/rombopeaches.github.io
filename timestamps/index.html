@@ -690,9 +690,11 @@ image viewer swiping / exit
       const encodedAddress = encodeURIComponent(entry.address);
       const url = `https://www.google.com/maps/dir/?api=1&destination=${encodedAddress}`;
 
-      window.open(url, "_blank");
+      window.location.href = url;
 
-      alert("find?!")
+      alert("find?!");
+
+      console.log("bjkbebfjkebkary");
     }
 
     const colorVars = [
@@ -1129,7 +1131,7 @@ image viewer swiping / exit
     render();
 
     if ("serviceWorker" in navigator) {
-      navigator.serviceWorker.register("/sw.js");
+      navigator.serviceWorker.register("./servie_worker.js");
     }
 
   </script>
