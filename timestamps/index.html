@@ -666,6 +666,8 @@ image viewer swiping / exit
     function callCustomer(customer) {
       if (!customer?.phone) return null;
       window.location.href = `tel:${customer.phone.replace(/\s+/g, "")}`;
+
+      alert("call?!");
     }
 
     function getCustomerLocation(str) {
@@ -680,6 +682,8 @@ image viewer swiping / exit
       const url = `https://www.google.com/maps/dir/?api=1&destination=${encodedAddress}`;
 
       window.open(url, "_blank");
+
+      alert("find?!")
     }
 
     const colorVars = [
