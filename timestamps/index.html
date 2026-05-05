@@ -799,17 +799,17 @@ image viewer swiping / exit
       if (!entry?.location) return;
 
       const encoded = encodeURIComponent(entry.location);
-      const ua = navigator.userAgent;
-
+      const ua = navigator.userAgent || "";
       const isIOS = /iPhone|iPad|iPod/i.test(ua);
 
       let url;
 
       if (isIOS) {
+        // Start = aktueller Standort automatisch
         url = `https://maps.apple.com/?daddr=${encoded}&dirflg=d`;
       } else {
-        // PWA-friendly (kein App-Zwang)
-        url = `https://www.openstreetmap.org/directions?to=${encoded}`;
+        // Start = aktueller Standort automatisch
+        url = `https://www.google.com/maps/dir/?api=1&destination=${encoded}&travelmode=driving`;
       }
 
       window.open(url, "_blank", "noopener,noreferrer");
