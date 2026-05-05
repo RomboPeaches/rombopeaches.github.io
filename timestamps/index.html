@@ -662,7 +662,7 @@ image viewer swiping / exit
       return customer ? customer.phone : null;
     }
 
-    function callCustomerPhoneNumber(customer) {
+    function callCustomer(customer) {
       if (!customer?.phone) return null;
       window.location.href = `tel:${customer.phone.replace(/\s+/g, "")}`;
     }
@@ -672,7 +672,7 @@ image viewer swiping / exit
       return customer ? customer.address : null;
     }
 
-    function findCustomerLocation(entry) {
+    function findCustomer(entry) {
       if (!entry?.address) return null;
 
       const encodedAddress = encodeURIComponent(entry.address);
@@ -1045,7 +1045,7 @@ image viewer swiping / exit
         const location = document.createElement("button");
         location.type = 'button';
         location.className = "location-btn";
-        location.onclick = () => findCustomerLocation(entry);
+        location.onclick = () => findCustomer(entry);
         const locationInner = document.createElement("span");
         locationInner.className = "btn-inner";
         locationInner.textContent = "🚘";
@@ -1054,7 +1054,7 @@ image viewer swiping / exit
         const contact = document.createElement("button");
         contact.type = 'button';
         contact.className = "contact-btn";
-        contact.onclick = () => callCustomerPhoneNumber(entry);
+        contact.onclick = () => callCustomer(entry);
         const contactInner = document.createElement("span");
         contactInner.className = "btn-inner";
         contactInner.textContent = "📞";
