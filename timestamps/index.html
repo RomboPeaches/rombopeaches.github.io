@@ -800,9 +800,8 @@ image viewer swiping / exit
 
       if (!entry?.location) return null;
 
-      const url = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(entry.location)}`;
-
-      window.location.href = url;
+      const url = `https://maps.google.com/?q=${encodeURIComponent(entry.location)}`;
+      window.open(url, "_blank");
 
       console.log("map opened");
     }
