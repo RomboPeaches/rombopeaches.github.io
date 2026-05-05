@@ -668,8 +668,8 @@ image viewer swiping / exit
       return null;
     }
 
-    function getCustomerPhoneNumber(str) {
-      const customer = getCustomer(str);
+    function getCustomerPhoneNumber(name) {
+      const customer = getCustomer(name);
       return customer ? customer.phone : null;
     }
 
