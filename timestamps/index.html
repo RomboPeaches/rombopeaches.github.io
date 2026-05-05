@@ -184,14 +184,14 @@ image viewer swiping / exit
     }
 
     .location-btn {
-      background: #8d8d8d;
+      background: #8eaf7e;
       color: white;
       height: 50px;
       width: 50px;
     }
 
     .contact-btn {
-      background: #8d8d8d;
+      background: #e2c574;
       color: white;
       height: 50px;
       width: 50px;
@@ -460,8 +460,8 @@ image viewer swiping / exit
 
     #home-btn {
       position: fixed;
-      bottom: 10px;
-      right: 40px;
+      bottom: 20px;
+      right: 20px;
       width: 50px;
       height: 50px;
       border-radius: 30px;
@@ -615,6 +615,77 @@ image viewer swiping / exit
     const loadNextColor = () => localStorage.getItem("nextColor");
     const saveNextColor = color => localStorage.setItem("nextColor", color);
 
+    const customers = [
+      {
+        keys: ["AEG"],
+        phone: "+49123456701",
+        address: "Hauptstraße 1, 88339 Bad Waldsee"
+      },
+      {
+        keys: ["Spohn"],
+        phone: "+49123456702",
+        address: "Spohnstraße 10, 88212 Ravensburg"
+      },
+      {
+        keys: ["Welfen"],
+        phone: "+49123456703",
+        address: "Welfenstraße 5, 88250 Weingarten"
+      },
+      {
+        keys: ["Don Bosco", "DBS"],
+        phone: "+49123456704",
+        address: "Don-Bosco-Straße 2, 88045 Friedrichshafen"
+      },
+      {
+        keys: ["ROB", "robinson", "Robinson"],
+        phone: "+4975457849940",
+        address: "Paulingstraße 4, 88045 Friedrichshafen"
+      },
+    ];
+
+    function getCustomer(str) {
+      for (const c of customers) {
+        for (const key of c.keys) {
+          const escaped = key.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+          const regex = new RegExp(`\\b${escaped}\\b`, "i");
+
+          if (regex.test(str)) {
+            return c;
+          }
+        }
+      }
+      return null;
+    }
+
+    function getCustomerPhoneNumber(str) {
+      const customer = getCustomer(str);
+      return customer ? customer.phone : null;
+    }
+
+    function callCustomerPhoneNumber(str) {
+      const customer = getCustomer(str);
+      if (!customer) return null;
+
+      const phone = customer.phone.replace(/\s+/g, "");
+      window.location.href = `tel:${phone}`;
+    }
+
+    function getCustomerLocation(str) {
+      const customer = getCustomer(str);
+      return customer ? customer.address : null;
+    }
+
+    function findCustomerLocation(str) {
+      const customer = getCustomer(str);
+      if (!customer) return null;
+
+      const encodedAddress = encodeURIComponent(customer.address);
+
+      // Opens navigation (Google Maps or default maps app)
+      const url = `https://www.google.com/maps/dir/?api=1&destination=${encodedAddress}`;
+      window.open(url, "_blank");
+    }
+
     const colorVars = [
       '--ticket_color-1',
       '--ticket_color-2',
@@ -766,7 +837,15 @@ image viewer swiping / exit
       if (!name) return;
 
       const data = load();
-      const entry = { name, times: {}, notes: "", color: nextColor };
+      const entry = {
+        name,
+        times: {},
+        notes: "",
+        color: nextColor,
+        phone: getCustomerPhoneNumber(name),
+        location: getCustomerLocation(name),
+      };
+
       fields.forEach(f => entry.times[f] = null);
       data.push(entry);
 
@@ -971,7 +1050,7 @@ image viewer swiping / exit
         const location = document.createElement("button");
         location.type = 'button';
         location.className = "location-btn";
-        //location.onclick = () => getLocation(i);
+        location.onclick = () => findCustomerLocation(entry.address);
         const locationInner = document.createElement("span");
         locationInner.className = "btn-inner";
         locationInner.textContent = "🚘";
@@ -980,7 +1059,7 @@ image viewer swiping / exit
         const contact = document.createElement("button");
         contact.type = 'button';
         contact.className = "contact-btn";
-        //contact.onclick = () => getLocation(i);
+        contact.onclick = () => callCustomerPhoneNumber(entry.phone);
         const contactInner = document.createElement("span");
         contactInner.className = "btn-inner";
         contactInner.textContent = "📞";
