@@ -679,9 +679,9 @@ image viewer swiping / exit
       //alert("call?!");
     }
 
-    function getCustomerLocation(str) {
-      const customer = getCustomer(str);
-      return customer ? customer.address : null;
+    function getCustomerLocation(name) {
+      const customer = getCustomer(name);
+      return customer ? customer.location : null;
     }
 
     function findCustomer(entry) {
