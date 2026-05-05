@@ -1,4 +1,4 @@
-// sw.js
+// service_worker.js<
 self.addEventListener("install", (event) => {
     console.log("Service Worker installiert");
 });
