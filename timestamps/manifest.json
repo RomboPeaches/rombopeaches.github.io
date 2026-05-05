@@ -4,8 +4,8 @@
     "start_url": "/timestamps/index.html",
     "scope": "/timestamps/",
     "display": "standalone",
-    "background_color": "#000000",
-    "theme_color": "#000000",
+    "background_color": "#c300ff",
+    "theme_color": "#0#bbff00",
     "icons": [
         {
             "src": "/timestamps/icons/icon-192.png",
