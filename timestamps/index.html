@@ -572,8 +572,8 @@ image viewer swiping / exit
 
 <body>
   <div class="top-bar">
-    <h1 style="font-size: 30px; color:rgb(207, 204, 187); filter: blur(0px);">Tick
-      <span>X</span> Todo<br>
+    <h1 style="font-size: 30px; color:rgb(119, 54, 114); filter: blur(1px);">
+      tick<span style="color: rgb(247, 0, 255);">X</span>todo<br>
     </h1> <!--⏱-->
     <div class="view-select">
       <!-- <label for="viewMode">Ansicht</label-->
@@ -662,12 +662,9 @@ image viewer swiping / exit
       return customer ? customer.phone : null;
     }
 
-    function callCustomerPhoneNumber(str) {
-      const customer = getCustomer(str);
-      if (!customer) return null;
-
-      const phone = customer.phone.replace(/\s+/g, "");
-      window.location.href = `tel:${phone}`;
+    function callCustomerPhoneNumber(customer) {
+      if (!customer?.phone) return null;
+      window.location.href = `tel:${customer.phone.replace(/\s+/g, "")}`;
     }
 
     function getCustomerLocation(str) {
@@ -675,14 +672,12 @@ image viewer swiping / exit
       return customer ? customer.address : null;
     }
 
-    function findCustomerLocation(str) {
-      const customer = getCustomer(str);
-      if (!customer) return null;
+    function findCustomerLocation(entry) {
+      if (!entry?.address) return null;
 
-      const encodedAddress = encodeURIComponent(customer.address);
-
-      // Opens navigation (Google Maps or default maps app)
+      const encodedAddress = encodeURIComponent(entry.address);
       const url = `https://www.google.com/maps/dir/?api=1&destination=${encodedAddress}`;
+
       window.open(url, "_blank");
     }
 
@@ -1050,7 +1045,7 @@ image viewer swiping / exit
         const location = document.createElement("button");
         location.type = 'button';
         location.className = "location-btn";
-        location.onclick = () => findCustomerLocation(entry.address);
+        location.onclick = () => findCustomerLocation(entry);
         const locationInner = document.createElement("span");
         locationInner.className = "btn-inner";
         locationInner.textContent = "🚘";
@@ -1059,7 +1054,7 @@ image viewer swiping / exit
         const contact = document.createElement("button");
         contact.type = 'button';
         contact.className = "contact-btn";
-        contact.onclick = () => callCustomerPhoneNumber(entry.phone);
+        contact.onclick = () => callCustomerPhoneNumber(entry);
         const contactInner = document.createElement("span");
         contactInner.className = "btn-inner";
         contactInner.textContent = "📞";
