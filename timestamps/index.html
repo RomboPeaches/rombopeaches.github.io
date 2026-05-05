@@ -684,17 +684,15 @@ image viewer swiping / exit
     }
 
     function findCustomer(entry) {
-
       console.log(entry);
 
       if (!entry?.location) return null;
 
-      const encodedAddress = encodeURIComponent(entry.address);
-      const url = `https://www.google.com/maps/dir/?api=1&destination=${encodedAddress}`;
+      const url = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(entry.location)}`;
 
       window.location.href = url;
 
-      console.log("bjkbebfjkebkary");
+      console.log("map opened");
     }
 
     const colorVars = [
