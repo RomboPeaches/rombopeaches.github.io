@@ -1,18 +1,19 @@
 {
     "name": "tickXtodo",
     "short_name": "todoX",
-    "start_url": "./index.html",
-    "display": "fullscreen",
+    "start_url": "/timestamps/index.html",
+    "scope": "/timestamps/",
+    "display": "standalone",
     "background_color": "#ffffff",
     "theme_color": "#000000",
     "icons": [
         {
-            "src": "./icons/icon-192.png",
+            "src": "/timestamps/icons/icon-192.png",
             "sizes": "192x192",
             "type": "image/png"
         },
         {
-            "src": "./icons/icon-512.png",
+            "src": "/timestamps/icons/icon-512.png",
             "sizes": "512x512",
             "type": "image/png"
         }
