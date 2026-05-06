@@ -2,27 +2,12 @@
 
 <!-- TODOS:
 
-textarea spelling check red underline german or remove spellcheck attribute 
+add a findHome btn for quick access
 
-add icon!?
-
-make input text color the same as card border color for better association
-
-make viewMode select icons in a row (Todo, Archiv, 
-
-beispiel ticket if localstorage no entries in berarbeitung oder im archiv!
-
-scroll to card center when "un"-collapsed 
-
-nice icons instead of ugy unicde different on device ios etc
-
-diable delte edits timestamp in archive view
-
-parse h2 to get kontakt AEG SPohn etc -> Carsten Stefan
-auto insert te:-Link
+nice icons instead of ugly unicode different on device ios etc
 
 add multiple images indexDB?!
-
++
 image viewer swiping / exit
 
 
@@ -49,9 +34,9 @@ image viewer swiping / exit
 
   <style>
     :root {
-      --color-bg-main: #31062f;
-      --color-bg-card: #41083d;
-      --color-bg-input: #ffffff;
+      --color-bg-main: #302d27;
+      --color-bg-card: #443f36;
+      --color-bg-input: #2abe3d;
 
       --color-text-primary: #ffffff;
       --color-accent-primary: #a31690;
@@ -77,6 +62,18 @@ image viewer swiping / exit
       --ticket_color-6: #C77DFF;
       --ticket_color-7: #F9C74F;
       --ticket_color-8: #F8961E;
+
+
+      --bg-body: #302d27;
+      --bg-card: #443f36;
+      --border-card: #302d27;
+      --bg-input: #443f36;
+      --text: #cfcba3;
+      --btn-archive: #69a53f;
+      --btn-route: #dd9219;
+      --btn-call: #e7c314;
+      --btn-delete: #a04b31;
+      --btn-back: rgb(107, 176, 207);
     }
 
     body {
@@ -117,7 +114,7 @@ image viewer swiping / exit
       align-items: flex-start;
       height: fit-content;
       margin-bottom: 0px;
-      color: rgba(255, 255, 255, 0.8);
+      color: rgba(var(--text), 0.8);
       font-size: 0.8Silorem;
     }
 
@@ -125,14 +122,14 @@ image viewer swiping / exit
       padding: 0.6rem 0.8rem;
       border-radius: 12px;
       border: 1px solid rgba(255, 255, 255, 0.12);
-      background: rgb(83, 50, 94);
+      background: #443f36;
       color: var(--color-bg-input);
       min-width: 180px;
       box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
     }
 
     #viewMode {
-      color: rgb(255, 255, 255);
+      color: var(--text);
       background: var(--color-bg-card);
       font-size: 1rem;
     }
@@ -151,13 +148,13 @@ image viewer swiping / exit
       border: 1px solid rgba(255, 255, 255, 0.08);
       color: var(--text-text-area);
       font-size: 16px;
-      caret-color: #f5f5f5;
+      caret-color: var(--text);
       outline: none;
       transition: outline 0.2s ease, border-color 0.2s ease;
     }
 
     textarea::placeholder {
-      color: rgb(255, 255, 255);
+      color: var(--text);
       opacity: 1;
       font-size: 16px;
     }
@@ -167,7 +164,7 @@ image viewer swiping / exit
       padding: 0 0.8rem;
       border-radius: 12px;
       outline: 2px solid transparent;
-      background: #41083d;
+      background: var(--bg-input);
       min-height: 50px;
     }
 
@@ -184,37 +181,43 @@ image viewer swiping / exit
       cursor: pointer;
       /*background: linear-gradient(135deg, var(--color-accent-primary), var(--color-accent-secondary));*/
       background: var(--color-grid-btn);
-      color: rgb(255, 255, 255);
+      color: var(--text);
     }
 
     .delete-btn {
-      background: var(--color-danger);
+      background: var(--btn-delete);
+      height: 3rem;
+      width: 50px;
+      height: 50px;
+    }
+
+    .back-btn {
+      background: var(--btn-back);
       height: 3rem;
       width: 50px;
       height: 50px;
     }
 
     .location-btn {
-      background: #8eaf7e;
-      color: white;
+      background: var(--btn-route);
+      color: var(--text);
       height: 50px;
       width: 50px;
     }
 
     .contact-btn {
       background: #e2c574;
-      color: white;
+      color: var(--text);
       height: 50px;
       width: 50px;
     }
 
     .archive-btn {
-      background: #4f854b;
-      color: white;
+      background: var(--btn-archive);
+      color: var(--text);
       height: 50px;
-      width: 130px;
+      width: 50px;
     }
-
 
     .card {
       background: var(--color-bg-card);
@@ -225,7 +228,7 @@ image viewer swiping / exit
       position: relative;
       overflow: hidden;
       border-left: 20px solid transparent;
-      border: solid #542150 1px;
+      border: solid var(--border) 1px;
     }
 
     .card.new-entry {
@@ -339,7 +342,7 @@ image viewer swiping / exit
     .bottom-actions {
       display: flex;
       gap: 10px;
-      justify-content: flex-start;
+      justify-content: center;
       align-items: center;
       margin-top: 10px;
     }
@@ -356,7 +359,7 @@ image viewer swiping / exit
       align-items: center;
       justify-content: center;
       background: var(--entry-color, rgba(255, 255, 255, 0.08));
-      color: rgb(255, 255, 255);
+      color: var(--text);
       font-weight: 900;
       border: #3d3d3d solid 1px;
     }
@@ -373,7 +376,7 @@ image viewer swiping / exit
       translate: 0 -1px;
       scale: 3;
       font-weight: 1;
-      color: rgb(255, 255, 255);
+      color: var(--text);
     }
 
     .edit-btn {
@@ -421,7 +424,7 @@ image viewer swiping / exit
       overflow: hidden;
       white-space: nowrap;
       max-width: 0;
-      border-right: 2px solid rgb(255, 255, 255);
+      border-right: 2px solid var(--text);
       animation: typewriter 0.8s steps(30, end) forwards;
     }
 
@@ -467,10 +470,6 @@ image viewer swiping / exit
         opacity: 1;
         transform: translateY(0)
       }
-    }
-
-    brr {
-      color: #bbff00;
     }
 
     #home-btn {
@@ -538,12 +537,12 @@ image viewer swiping / exit
     .dialog-title {
       font-size: 1rem;
       margin-bottom: 0.75rem;
-      color: #f5f5f5;
+      color: var(--text);
     }
 
     .dialog-message {
       font-size: 0.95rem;
-      color: rgba(255, 255, 255, 0.85);
+      color: rgba(var(--text), 0.85);
       margin-bottom: 1rem;
       min-height: 1.2rem;
     }
@@ -555,7 +554,7 @@ image viewer swiping / exit
       border-radius: 12px;
       border: 1px solid rgba(255, 255, 255, 0.12);
       background: var(--bg-text-area);
-      color: #f5f5f5;
+      color: var(--text);
       display: none;
     }
 
@@ -570,7 +569,7 @@ image viewer swiping / exit
       border-radius: 12px;
       padding: 0.7rem 0.9rem;
       background: rgba(255, 255, 255, 0.08);
-      color: #f5f5f5;
+      color: var(--text);
       border: 1px solid rgba(255, 255, 255, 0.12);
     }
 
@@ -587,8 +586,8 @@ image viewer swiping / exit
 
 <body>
   <div class="top-bar">
-    <h1 style="font-size: 30px; color:rgb(119, 54, 114); filter: blur(1px);">
-      tick<span style="color: rgb(247, 0, 255);">X</span>todo<br>
+    <h1 style="font-size: 30px; color: var(--text); filter: blur(1px);">
+      tick<span style="color: var(--btn-route)">X</span>todo<br>
     </h1> <!--⏱-->
     <div class="view-select">
       <!-- <label for="viewMode">Ansicht</label-->
@@ -809,6 +808,25 @@ image viewer swiping / exit
         url = `https://maps.apple.com/?daddr=${encoded}&dirflg=d`;
       } else {
         // Start = aktueller Standort automatisch
+        url = `https://www.google.com/maps/dir/?api=1&destination=${encoded}&travelmode=driving`;
+      }
+
+      window.open(url, "_self");
+    }
+
+    function findHome() {
+      const homeAddress = "Kreuzäcker 2, Unit 1, 88214 Ravensburg, Germany"; // e.g. "Main Street 1, 12345 City"
+      if (!homeAddress) return;
+
+      const encoded = encodeURIComponent(homeAddress);
+      const ua = navigator.userAgent || "";
+      const isIOS = /iPhone|iPad|iPod/i.test(ua);
+
+      let url;
+
+      if (isIOS) {
+        url = `https://maps.apple.com/?daddr=${encoded}&dirflg=d`;
+      } else {
         url = `https://www.google.com/maps/dir/?api=1&destination=${encoded}&travelmode=driving`;
       }
 
@@ -1173,7 +1191,7 @@ image viewer swiping / exit
         archive.onclick = () => archiveEntry(i);
         const archiveInner = document.createElement("span");
         archiveInner.className = "btn-inner";
-        archiveInner.textContent = entry.archived ? "Wiederherstellen" : "Archivieren";
+        archiveInner.textContent = entry.archived ? "Wiederherstellen" : "🖿";
         archive.appendChild(archiveInner);
 
         const location = document.createElement("button");
@@ -1203,12 +1221,22 @@ image viewer swiping / exit
         delInner.textContent = "🗑";
         del.appendChild(delInner);
 
+        const back = document.createElement("button");
+        back.type = 'button';
+        back.className = "back-btn";
+        back.onclick = () => findHome(i);
+        const backInner = document.createElement("span");
+        backInner.className = "back-inner";
+        backInner.textContent = "🏠";
+        back.appendChild(backInner);
+
         const bottomActions = document.createElement("div");
         bottomActions.className = "bottom-actions";
 
-        bottomActions.appendChild(archive);
         bottomActions.appendChild(location);
         bottomActions.appendChild(contact);
+        bottomActions.appendChild(back);
+        bottomActions.appendChild(archive);
         bottomActions.appendChild(del);
 
         body.appendChild(bottomActions);
