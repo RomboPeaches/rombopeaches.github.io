@@ -92,7 +92,8 @@ image viewer swiping / exit
       align-items: center;
       width: 600px;
       height: 600px;
-      background: linear-gradient(90deg, rgb(68, 63, 54) 0%, rgb(105, 165, 63) 100%);
+      box-shadow: inset 0px 0px 200px 1px rgb(0, 0, 0);
+      background: linear-gradient(45deg, rgb(189, 150, 79) 0%, rgb(85, 136, 49) 100%);
     }
 
     #list {
@@ -595,11 +596,11 @@ image viewer swiping / exit
 
 <body>
 
-  <!--div class="brr">
-    <h1 style="font-size: 100px; color: var(--text); filter: blur(1px);">
-      tick<span style="color: var(--btn-route)">X</span>todo<br>
+  <div class="brr">
+    <h1 style="font-size: 300px; color: var(--text); filter: blur(1px);">
+      t<span style="color: var(--btn-route)">X</span>t<br>
     </h1>
-  </div-->
+  </div>
 
 
   <div class="top-bar">
@@ -1208,7 +1209,7 @@ image viewer swiping / exit
         archive.onclick = () => archiveEntry(i);
         const archiveInner = document.createElement("span");
         archiveInner.className = "btn-inner";
-        archiveInner.textContent = entry.archived ? "Wiederherstellen" : "🖿";
+        archiveInner.textContent = entry.archived ? "➦" : "🖿";
         archive.appendChild(archiveInner);
 
         const location = document.createElement("button");
