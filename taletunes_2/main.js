@@ -2059,3 +2059,19 @@ window.onload = function () {
 /*
 --------------------------------------------------------------------------------------------------------------------------------------------------
 */
+
+const input = document.getElementById("searchInput");
+
+input.addEventListener("input", function () {
+  const search = this.value.toLowerCase().trim();
+
+  document.querySelectorAll(".group-toggle-btn").forEach(el => {
+    const text = el.innerText.toLowerCase();
+
+    if (search === "" || text.includes(search)) {
+      el.style.display = "";
+    } else {
+      el.style.display = "none";
+    }
+  });
+});
