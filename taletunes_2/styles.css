@@ -1,8 +1,9 @@
 @font-face {
-  font-family: 'Ostrich-Sans';
-  src: url('/ostrich-sans/ostrich-Bold.ttf') format('opentype');
-  font-weight: 400; /* normal weight */
-  font-style: normal;
+    font-family: 'Ostrich-Sans';
+    src: url('/ostrich-sans/ostrich-Bold.ttf') format('opentype');
+    font-weight: 400;
+    /* normal weight */
+    font-style: normal;
 }
 
 :root {
@@ -17,9 +18,12 @@
     --leaf: rgba(69, 105, 96, 0.3);
     --leaf-2: var(--lighter);
 
+    --bg-1: rgb(27, 6, 66);
+    --bg-2: rgb(14, 0, 26);
+
     --box-shadow: var(--clear);
 
-    --titles: #00a2ff;
+    --titles: #d9bddf;
     --semi-clear: rgb(74, 129, 62);
     --very-dark: rgb(6, 20, 49);
     --taletunes: var(--titles);
@@ -44,8 +48,13 @@
 }
 
 @keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 /*electron scrollbar styling*/
@@ -130,7 +139,7 @@ body {
     transition: filter 0.1s ease;
     /*background-color: var(--very-dark);*/
     /*background: linear-gradient(0deg,rgba(13, 79, 75, 1) 0%, var(--very-dark) 100%);*/
-    background: linear-gradient(0deg, rgba(13, 79, 75, 1) 0%, rgb(6, 20, 49) 100%);
+    background: linear-gradient(-90deg, var(--bg-2) 0%, var(--bg-1) 100%);
 }
 
 #vetical-align-container-outer {
@@ -193,7 +202,7 @@ body {
     padding: 0 0 23px 20px;
     font-size: 86px;
     border-left: solid 1px var(--taletunes);
- }
+}
 
 #empty-msg {
     color: var(--titles);
@@ -249,6 +258,7 @@ body {
     font-size: 50px;
     /*box-shadow: var(--box-shadow) 0px 19px 38px, 0px 15px 12px;*/
 }
+
 .group-menu-btn:hover {
     background-color: var(--light-opaque);
     color: var(--very-dark);
@@ -285,7 +295,7 @@ body {
     display: none;
 }
 
-#download-json-label{
+#download-json-label {
     padding-bottom: 8px;
     font-size: 40px;
     padding-right: 1px;
@@ -336,8 +346,8 @@ body {
 
 .group-toggle-btn.active:hover,
 .group-name:hover {
-    
-    background-color: var(--light-opaque)!important;
+
+    background-color: var(--light-opaque) !important;
     color: var(--very-dark) !important;
     /*background-color: var(--light-opaque) !important;*/
     /*background-color: var(--clear) !important;*/

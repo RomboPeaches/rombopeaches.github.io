@@ -1546,8 +1546,8 @@ function stringToHash(str) {
 
 // Convert hash to a pastel HSL color
 function hashToPastelColor(hash) {
-  const hue = Math.abs(hash) % 360; // Ensure hue is within 0-360
-  const saturation = 40; // Keep colors vibrant
+  const hue = Math.abs(hash) % 90 + 200; // Ensure hue is within 0-360
+  const saturation = 30; // Keep colors vibrant
   const lightness = 50; // Pastel effect
 
   return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
@@ -1556,8 +1556,8 @@ function hashToPastelColor(hash) {
 // Convert hash to a pastel HSL color
 function hashToPastelColorLight(hash) {
   const hue = Math.abs(hash) % 360; // Ensure hue is within 0-360
-  const saturation = 40; // Keep colors vibrant
-  const lightness = 80; // Pastel effect
+  const saturation = 100; // Keep colors vibrant
+  const lightness = 100; // Pastel effect
 
   return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
 }
