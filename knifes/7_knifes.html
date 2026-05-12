@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<title>DM Hook Generator</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:'Inter',sans-serif;
+    background:
+        radial-gradient(circle at top left,#312e81 0%,transparent 30%),
+        radial-gradient(circle at bottom right,#7c3aed 0%,transparent 35%),
+        linear-gradient(135deg,#0f172a,#111827);
+    min-height:100vh;
+    color:white;
+    padding:40px 20px;
+}
+
+.container{
+    max-width:1400px;
+    margin:auto;
+}
+
+.header{
+    text-align:center;
+    margin-bottom:40px;
+}
+
+.header h1{
+    font-size:clamp(2.5rem,6vw,5rem);
+    font-weight:800;
+    margin-bottom:12px;
+    background:linear-gradient(to right,#c084fc,#60a5fa);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+}
+
+.header p{
+    color:#cbd5e1;
+    font-size:1.1rem;
+}
+
+.controls{
+    display:flex;
+    justify-content:center;
+    margin-bottom:40px;
+}
+
+button{
+    border:none;
+    outline:none;
+    cursor:pointer;
+    padding:18px 34px;
+    border-radius:18px;
+    font-size:1rem;
+    font-weight:700;
+    color:white;
+
+    background:linear-gradient(
+        135deg,
+        #7c3aed,
+        #2563eb
+    );
+
+    box-shadow:
+        0 10px 30px rgba(37,99,235,0.35),
+        inset 0 1px 1px rgba(255,255,255,0.15);
+
+    transition:0.25s ease;
+}
+
+button:hover{
+    transform:translateY(-3px) scale(1.02);
+}
+
+button:active{
+    transform:scale(0.98);
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+    gap:24px;
+}
+
+.card{
+    position:relative;
+    overflow:hidden;
+
+    background:rgba(255,255,255,0.07);
+
+    border:1px solid rgba(255,255,255,0.08);
+
+    backdrop-filter:blur(14px);
+
+    border-radius:24px;
+
+    padding:24px;
+
+    min-height:220px;
+
+    transition:0.25s ease;
+
+    animation:fadeUp 0.45s ease;
+}
+
+.card:hover{
+    transform:translateY(-5px);
+    border-color:rgba(255,255,255,0.18);
+}
+
+.card::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:linear-gradient(
+        135deg,
+        rgba(255,255,255,0.06),
+        transparent
+    );
+    pointer-events:none;
+}
+
+.category{
+    display:inline-block;
+
+    padding:8px 14px;
+
+    border-radius:999px;
+
+    font-size:0.78rem;
+    font-weight:700;
+    letter-spacing:0.5px;
+
+    margin-bottom:18px;
+
+    background:rgba(96,165,250,0.15);
+
+    color:#93c5fd;
+}
+
+.hook{
+    font-size:1.35rem;
+    line-height:1.5;
+    font-weight:700;
+    color:white;
+}
+
+.number{
+    position:absolute;
+    top:18px;
+    right:18px;
+
+    width:42px;
+    height:42px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    border-radius:50%;
+
+    background:rgba(255,255,255,0.08);
+
+    font-weight:800;
+
+    color:#dbeafe;
+}
+
+.footer{
+    margin-top:40px;
+    text-align:center;
+    color:#94a3b8;
+    font-size:0.95rem;
+}
+
+@keyframes fadeUp{
+    from{
+        opacity:0;
+        transform:translateY(15px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+</style>
+</head>
+<body>
+
+<div class="container">
+
+    <div class="header">
+        <h1>DM Hook Generator</h1>
+        <p>
+            Generiert zufällig 7 Charakter-Hooks für deine Kampagne.
+        </p>
+    </div>
+
+    <div class="controls">
+        <button onclick="generateHooks()">
+            Neue Hooks generieren
+        </button>
+    </div>
+
+    <div class="grid" id="grid"></div>
+
+    <div class="footer">
+        Zufällige Konflikte, Geheimnisse, Ängste und Story-Hooks.
+    </div>
+
+</div>
+
+<script>
+
+const hooks = [
+
+{
+category:"Familie & Beziehungen",
+text:"Ein Familienmitglied ist verschwunden."
+},
+
+{
+category:"Familie & Beziehungen",
+text:"Ein Familienmitglied schuldet gefährlichen Leuten Geld."
+},
+
+{
+category:"Familie & Beziehungen",
+text:"Die Eltern haben etwas Wichtiges verheimlicht."
+},
+
+{
+category:"Familie & Beziehungen",
+text:"Eine frühere Liebe ist plötzlich wieder aufgetaucht."
+},
+
+{
+category:"Schuld & Vergangenheit",
+text:"Der PC war für einen Unfall verantwortlich."
+},
+
+{
+category:"Schuld & Vergangenheit",
+text:"Der PC hat jemanden im Stich gelassen."
+},
+
+{
+category:"Schuld & Vergangenheit",
+text:"Der PC lebt unter falschem Namen."
+},
+
+{
+category:"Schuld & Vergangenheit",
+text:"Der PC kennt ein gefährliches Geheimnis."
+},
+
+{
+category:"Wünsche & Sehnsüchte",
+text:"Der PC will unbedingt Anerkennung."
+},
+
+{
+category:"Wünsche & Sehnsüchte",
+text:"Der PC sucht die Wahrheit über seine Herkunft."
+},
+
+{
+category:"Wünsche & Sehnsüchte",
+text:"Der PC will beweisen, dass alle falsch lagen."
+},
+
+{
+category:"Wünsche & Sehnsüchte",
+text:"Der PC sucht etwas Legendäres."
+},
+
+{
+category:"Ängste & Schwächen",
+text:"Der PC hat Angst vor Kontrollverlust."
+},
+
+{
+category:"Ängste & Schwächen",
+text:"Der PC kann schlecht vertrauen."
+},
+
+{
+category:"Ängste & Schwächen",
+text:"Der PC trifft impulsive Entscheidungen."
+},
+
+{
+category:"Ängste & Schwächen",
+text:"Der PC hat einen zerstörerischen Ehrgeiz."
+},
+
+{
+category:"Verpflichtungen & Abhängigkeiten",
+text:"Der PC wird erpresst."
+},
+
+{
+category:"Verpflichtungen & Abhängigkeiten",
+text:"Der PC arbeitet heimlich für zwei Seiten."
+},
+
+{
+category:"Verpflichtungen & Abhängigkeiten",
+text:"Der PC steht unter Eid."
+},
+
+{
+category:"Verpflichtungen & Abhängigkeiten",
+text:"Der PC schützt jemanden um jeden Preis."
+},
+
+{
+category:"Feinde & Konkurrenz",
+text:"Ein Rivale will den PC ruinieren."
+},
+
+{
+category:"Feinde & Konkurrenz",
+text:"Eine Organisation jagt den PC."
+},
+
+{
+category:"Feinde & Konkurrenz",
+text:"Ein alter Freund ist jetzt ein Feind."
+},
+
+{
+category:"Feinde & Konkurrenz",
+text:"Eine mächtige Person hasst den PC."
+},
+
+{
+category:"Geheimnisse",
+text:"Der PC ist nicht die Person, für die ihn alle halten."
+},
+
+{
+category:"Geheimnisse",
+text:"Der PC besitzt etwas Verbotenes."
+},
+
+{
+category:"Geheimnisse",
+text:"Der PC hat verbotene Kräfte."
+},
+
+{
+category:"Geheimnisse",
+text:"Der PC hat eine zweite Loyalität."
+},
+
+{
+category:"Moralische Konflikte",
+text:"Der PC glaubt, dass das Ziel die Mittel heiligt."
+},
+
+{
+category:"Moralische Konflikte",
+text:"Der PC schützt jemanden, der schuldig ist."
+},
+
+{
+category:"Moralische Konflikte",
+text:"Der PC will Gutes tun, richtet aber Schaden an."
+},
+
+{
+category:"Moralische Konflikte",
+text:"Der PC kann schwer vergeben."
+},
+
+{
+category:"Fantasy / Sci-Fi",
+text:"Eine fremde Macht beobachtet den PC."
+},
+
+{
+category:"Fantasy / Sci-Fi",
+text:"Der PC trägt ein gefährliches Artefakt."
+},
+
+{
+category:"Fantasy / Sci-Fi",
+text:"Der PC verliert langsam seine Erinnerungen."
+},
+
+{
+category:"Fantasy / Sci-Fi",
+text:"Etwas lebt im Kopf des PCs."
+},
+
+{
+category:"Fantasy / Sci-Fi",
+text:"Der PC wurde versehentlich wiederbelebt."
+}
+
+];
+
+function shuffle(array){
+
+    for(let i = array.length - 1; i > 0; i--){
+
+        const j = Math.floor(Math.random() * (i + 1));
+
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+
+    return array;
+}
+
+function generateHooks(){
+
+    const grid = document.getElementById("grid");
+
+    grid.innerHTML = "";
+
+    const selected = shuffle([...hooks]).slice(0,7);
+
+    selected.forEach((hook,index)=>{
+
+        const card = document.createElement("div");
+
+        card.className = "card";
+
+        card.innerHTML = `
+            <div class="number">${index + 1}</div>
+
+            <div class="category">
+                ${hook.category}
+            </div>
+
+            <div class="hook">
+                ${hook.text}
+            </div>
+        `;
+
+        grid.appendChild(card);
+    });
+}
+
+generateHooks();
+
+</script>
+
+</body>
+</html>
