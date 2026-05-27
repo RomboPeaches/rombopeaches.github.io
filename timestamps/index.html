@@ -34,11 +34,12 @@ image viewer swiping / exit
 
   <style>
     :root {
-      --color-bg-main: #302d27;
+      --color-bg-main: #2b2925;
+
       --color-bg-card: #443f36;
       --color-bg-input: #2abe3d;
 
-      --color-text-primary: #ffffff;
+      --color-text-primary: #cfcba3;
       --color-accent-primary: #a31690;
       --color-accent-secondary: #f9a8d4;
 
@@ -50,18 +51,23 @@ image viewer swiping / exit
 
       --text-text-area: #ffffff;
 
-      --grid-item-bg: #ffffff1a;
+      --grid-item-bg: #3b3b3b1a;
 
       --shadow-glow: #155adbaa;
 
-      --ticket_color-1: #6BAED6;
-      --ticket_color-2: #5CC8A1;
-      --ticket_color-3: #A3B18A;
-      --ticket_color-4: #4CC9F0;
-      --ticket_color-5: #F28482;
-      --ticket_color-6: #C77DFF;
-      --ticket_color-7: #F9C74F;
-      --ticket_color-8: #F8961E;
+      --ticket_color-01: #9e472d;
+      --ticket_color-02: #22924d;
+      --ticket_color-03: #547eb4;
+      --ticket_color-04: #ddad2a;
+      --ticket_color-05: #bb68ad;
+      --ticket_color-06: #adb443;
+      --ticket_color-07: #2e8a85;
+      --ticket_color-08: #963c26;
+      --ticket_color-09: #789969;
+      --ticket_color-10: #927bb8;
+      --ticket_color-11: #765cb3;
+      --ticket_color-12: #636363;
+
 
 
       --bg-body: #302d27;
@@ -373,6 +379,11 @@ image viewer swiping / exit
       color: var(--text);
       font-weight: 900;
       border: #3d3d3d solid 1px;
+    }
+
+    .timestamp-btn,
+    .edit-btn {
+      background: var(--bg-body) !important;
     }
 
     .timestamp-btn .btn-inner {
@@ -853,15 +864,24 @@ image viewer swiping / exit
     }
 
     const colorVars = [
-      '--ticket_color-1',
-      '--ticket_color-2',
-      '--ticket_color-3',
-      '--ticket_color-4',
-      '--ticket_color-5',
-      '--ticket_color-6',
-      '--ticket_color-7',
-      '--ticket_color-8',
+      '--ticket_color-01',
+      '--ticket_color-02',
+      '--ticket_color-03',
+      '--ticket_color-04',
+      '--ticket_color-05',
+      '--ticket_color-06',
+      '--ticket_color-07',
+      '--ticket_color-08',
+      '--ticket_color-09',
+      '--ticket_color-10',
+      '--ticket_color-11',
+      '--ticket_color-12',
     ];
+
+    /*const colorVars = [
+      '--ticket_color-01',
+    ];*/
+
     const colors = colorVars.map(v => getComputedStyle(document.documentElement).getPropertyValue(v).trim());
     let colorIndex = 0;
     let lastWritten = null;
@@ -1017,6 +1037,7 @@ image viewer swiping / exit
 
       lastCreated = data.length - 1;
       nextColor = getNextColor();
+      nextColor = getNextColor(); //hacky!
       saveNextColor(nextColor);
       save(data);
       nameInput.value = "";
@@ -1029,6 +1050,13 @@ image viewer swiping / exit
       const data = load();
       data.splice(i, 1);
       save(data);
+      render();
+    }
+
+    async function deleteAll(i) {
+      const confirmed = await showConfirm("Alle Einträge entgültig löschen?", "Löschen", "Abbrechen");
+      if (!confirmed) return;
+      save([]);
       render();
     }
 

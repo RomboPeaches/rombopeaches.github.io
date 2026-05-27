@@ -2,17 +2,17 @@
 <html lang="de">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Flow to Grow Lebenszahlen</title>
 
     <style>
         body {
             margin: 20px;
-            font-family: system-ui, Arial;
+            font-family: system-ui, Arial, sans-serif;
             display: flex;
             justify-content: center;
-            align-content: center;
+            align-items: flex-start;
             min-height: 100vh;
             background: #fff;
         }
@@ -22,62 +22,94 @@
             flex-direction: column;
             background: linear-gradient(180deg, #AC352C, #235463);
             width: 100%;
-            padding: 0 20px;
-            border-radius: 10px;
-            box-shadow: 0 1px 10px rgba(165, 71, 71, 0.15);
-            max-width: 600px;
-        }
-
-        .teaser {
-            font-size: 17px;
-            color: #fff;
-            margin-bottom: 30px;
+            padding: 24px;
+            border-radius: 14px;
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.15);
+            max-width: 650px;
         }
 
         h1 {
             color: #fff;
+            margin-bottom: 10px;
+        }
+
+        .teaser {
+            color: #fff;
+            font-size: 17px;
+            margin-bottom: 30px;
+            line-height: 1.5;
         }
 
         label {
             display: block;
             color: #fff;
-            font-weight: 900;
-            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 8px;
         }
 
         input,
         button {
             width: 100%;
             padding: 14px;
-            font-size: 18px;
-            margin-bottom: 12px;
+            font-size: 17px;
+            margin-bottom: 14px;
             box-sizing: border-box;
-            border-radius: 6px;
+            border-radius: 8px;
+            border: none;
+        }
+
+        input {
+            background: #fff;
         }
 
         button {
             background: #56a8bd;
             color: #fff;
-            border: 0;
             font-weight: bold;
             cursor: pointer;
+            transition: 0.2s ease;
         }
 
-        button:disabled {
-            background: #888;
+        button:hover {
+            opacity: 0.9;
         }
 
-        .result {
+        .calc-text {
             color: #fff;
+            margin-bottom: 10px;
+        }
+
+        .progress-container {
+            background: rgba(255, 255, 255, 0.2);
+            height: 18px;
+            border-radius: 999px;
+            overflow: hidden;
+            margin-bottom: 24px;
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background: #fda155;
+            transition: width 0.1s linear;
+        }
+
+        .result-label {
+            color: #fff;
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 20px;
         }
 
         .row {
             display: flex;
             justify-content: space-between;
-            padding: 12px;
-            background: #eee;
-            border-radius: 6px;
-            margin-bottom: 10px;
+            align-items: center;
+            padding: 14px;
+            border-radius: 10px;
+            margin-bottom: 12px;
+            background: #f3f4f6;
+            font-size: 17px;
         }
 
         .row.life {
@@ -91,171 +123,293 @@
         }
 
         .description {
-            padding: 12px;
-            background: #fafafa;
-            border-radius: 6px;
+            background: #fff;
+            padding: 22px;
+            border-radius: 12px;
+            margin-top: 18px;
             margin-bottom: 20px;
+            line-height: 1.7;
         }
 
-        .progress-container {
-            background: #eee;
-            height: 18px;
-            border-radius: 6px;
-            overflow: hidden;
-            margin-bottom: 20px;
+        .description h2 {
+            margin-top: 0;
+            margin-bottom: 10px;
+            color: #1f2937;
         }
 
-        .progress-bar {
-            height: 100%;
-            width: 0%;
-            background: #fda155;
+        .kurztext {
+            font-weight: 700;
+            color: #AC352C;
+            margin-bottom: 14px;
         }
 
-        .calc-text {
-            color: #fff;
+        .description p {
+            margin: 0;
+            color: #374151;
         }
 
         .footer {
-            margin-top: 40px;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .footer h2 {
             color: #fff;
         }
     </style>
 </head>
 
 <body>
+
     <div class="container">
+
         <h1>Flow-to-Grow Lebenszahl</h1>
+
         <p class="teaser">
-            Gib dein Geburtsdatum ein.
+            Gib dein Geburtsdatum ein und entdecke deine Lebenszahl,
+            mögliche Meisterzahlen und ihre Bedeutung.
         </p>
 
-        <label>Input:</label>
-        <input id="birthdate" placeholder="12.12.2012">
+        <label for="birthdate">Geburtsdatum</label>
+
+        <input id="birthdate" placeholder="12.12.2012" />
+
         <button onclick="berechne()">Berechnen</button>
 
         <div id="output"></div>
+
         <div id="container-results"></div>
 
-        <script>
-            const daten = {
-                lebenszahlen: {
-                    "1": { titel: "Kreativität & Zuversicht", text: "Du bist hier, um anzufangen..." },
-                    "2": { titel: "Kooperation & Balance", text: "Du bist hier, um Verbindung zu meistern..." },
-                    "3": { titel: "Ausdruck & Sensibilität", text: "Du bist hier, um deine Stimme zu leben..." },
-                    "4": { titel: "Stabilität & Prozess", text: "Du bist hier, um Strukturen zu schaffen..." },
-                    "5": { titel: "Freiheit & Entwicklung", text: "Du bist hier, um Freiheit zu lernen..." },
-                    "6": { titel: "Fürsorge & Verantwortung", text: "Du bist hier, um Verantwortung zu leben..." },
-                    "7": { titel: "Wahrheit & Vertrauen", text: "Du bist hier, um Wahrheit zu erkennen..." },
-                    "8": { titel: "Macht & Fülle", text: "Du bist hier, um wirksam zu sein..." },
-                    "9": { titel: "Weisheit & Mitgefühl", text: "Du bist hier, um loszulassen..." }
+    </div>
+
+    <script>
+
+        const daten = {
+            lebenszahlen: {
+                1: {
+                    titel: "Kreativität & Zuversicht",
+                    kurztext: "Du bist hier, um zu starten und zu führen.",
+                    text: "Menschen mit der Lebenszahl 1 tragen einen starken inneren Impuls, Dinge in Bewegung zu bringen. Du spürst oft früh, was möglich ist, und hast den Mut, erste Schritte zu gehen, wo andere noch zögern. Deine größte Lernaufgabe liegt darin, Führung nicht als Druck, sondern als natürliche Ausstrahlung zu leben."
                 },
-                meisterzahlen: {
-                    "11": { titel: "Intuitive Führung", text: "Hohe Sensibilität..." },
-                    "22": { titel: "Meister-Baumeister", text: "Vision + Umsetzung..." },
-                    "33": { titel: "Meister-Herz", text: "Heilung & Liebe..." }
+                2: {
+                    titel: "Kooperation & Balance",
+                    kurztext: "Du bist hier, um Verbindung zu leben.",
+                    text: "Mit der Lebenszahl 2 hast du feine Antennen für Stimmungen, Menschen und unausgesprochene Bedürfnisse. Du kannst vermitteln, beruhigen und echte Nähe schaffen. Gleichzeitig besteht deine Entwicklung darin, dich nicht selbst zu verlieren, sondern deine eigenen Bedürfnisse genauso ernst zu nehmen wie die der anderen."
+                },
+                3: {
+                    titel: "Ausdruck & Sensibilität",
+                    kurztext: "Du bist hier, um sichtbar zu sein.",
+                    text: "Die Lebenszahl 3 steht für kreative Energie und den Wunsch, dich mitzuteilen. Du bringst Leichtigkeit, Humor und Inspiration in dein Umfeld. Oft spürst du viele Ideen gleichzeitig – deine Herausforderung ist es, nicht in Zerstreuung zu geraten, sondern deiner wichtigsten Botschaft treu zu bleiben."
+                },
+                4: {
+                    titel: "Stabilität & Prozess",
+                    kurztext: "Du bist hier, um tragfähige Strukturen zu bauen.",
+                    text: "Menschen mit der Lebenszahl 4 besitzen ein starkes Bedürfnis nach Ordnung, Sicherheit und Verlässlichkeit. Du kannst Dinge langfristig aufbauen und Verantwortung tragen. Deine Lernkurve liegt darin, Flexibilität zuzulassen und Struktur als Unterstützung zu nutzen – nicht als inneren Käfig."
+                },
+                5: {
+                    titel: "Freiheit & Entwicklung",
+                    kurztext: "Du bist hier, um dich durch Erfahrung zu entwickeln.",
+                    text: "Die Lebenszahl 5 bringt Beweglichkeit, Neugier und Lust auf Veränderung. Du lernst durch Erleben und brauchst Abwechslung, um dich lebendig zu fühlen. Gleichzeitig darfst du lernen, Freiheit nicht mit Flucht zu verwechseln, sondern dir bewusste Stabilität als inneres Zuhause zu schaffen."
+                },
+                6: {
+                    titel: "Fürsorge & Verantwortung",
+                    kurztext: "Du bist hier, um Verbindung zu halten.",
+                    text: "Mit der Lebenszahl 6 trägst du eine natürliche Fähigkeit, zu halten, zu begleiten und Harmonie zu schaffen. Du hast ein großes Herz und spürst Verantwortung für andere. Deine Entwicklung besteht darin, Fürsorge nicht mit Selbstaufgabe zu verwechseln und liebevolle Grenzen zu setzen."
+                },
+                7: {
+                    titel: "Wahrheit & Vertrauen",
+                    kurztext: "Du bist hier, um Erkenntnis zu leben.",
+                    text: "Die Lebenszahl 7 sucht Tiefe, Sinn und innere Wahrheit. Du hast einen starken analytischen und intuitiven Zugang zur Welt. Oft ziehst du dich zurück, um zu verstehen. Deine Aufgabe ist es, Erkenntnisse nicht nur zu denken, sondern sie mutig ins Leben zu bringen."
+                },
+                8: {
+                    titel: "Macht & Fülle",
+                    kurztext: "Du bist hier, um wirksam zu sein.",
+                    text: "Menschen mit der Lebenszahl 8 besitzen große Umsetzungskraft und das Potenzial für Einfluss und Erfolg. Du kannst Verantwortung tragen und Dinge groß machen. Deine Entwicklung liegt darin, Macht mit inneren Werten zu verbinden und deinen Selbstwert nicht nur über Leistung zu definieren."
+                },
+                9: {
+                    titel: "Weisheit & Mitgefühl",
+                    kurztext: "Du bist hier, um Sinn zu stiften.",
+                    text: "Die Lebenszahl 9 steht für Mitgefühl, Abschluss und innere Reife. Du hast ein weites Herz und oft ein tiefes Verständnis für menschliche Prozesse. Deine Lernaufgabe besteht darin, nicht alles zu tragen, sondern Grenzen zu setzen und Mitgefühl in konkrete, heilsame Schritte zu verwandeln."
                 }
-            };
+            },
 
-            function quersumme(z) {
-                return z.toString().split("").reduce((a, b) => a + Number(b), 0);
-            }
-
-            function sleep(ms) {
-                return new Promise(r => setTimeout(r, ms));
-            }
-
-            async function berechne() {
-                const out = document.getElementById("output");
-                const results = document.getElementById("container-results");
-
-                const input = document.getElementById("birthdate").value;
-
-                // NEU: alle Nicht-Ziffern entfernen
-                const digits = input.replace(/\D/g, "");
-
-                if (!digits.length) {
-                    out.innerHTML = "Bitte Zahlen eingeben";
-                    return;
+            meisterzahlen: {
+                11: {
+                    titel: "Intuitive Führung",
+                    kurztext: "Intuition erden und klar ausdrücken.",
+                    text: "Die Meisterzahl 11 ist hochsensibel und hoch kreativ. Du spürst Stimmungen und Wahrheiten oft früher als andere. Gleichzeitig brauchst du Erdung, damit dein Nervensystem stabil bleibt. Deine Stärke entfaltet sich, wenn du deiner Intuition vertraust und sie in klare Worte und Handlungen übersetzt."
+                },
+                22: {
+                    titel: "Meister-Baumeister",
+                    kurztext: "Vision mit Umsetzungskraft verbinden.",
+                    text: "Mit der Meisterzahl 22 trägst du das Potenzial, große Visionen real werden zu lassen. Du kannst Systeme, Projekte oder Lebenswerke aufbauen. Deine Herausforderung ist es, dich nicht zu überfordern, sondern Etappen zu gehen und Unterstützung zuzulassen, damit Größe nicht zur Last wird."
+                },
+                33: {
+                    titel: "Meister-Herz",
+                    kurztext: "Heilung durch Präsenz und Grenzen.",
+                    text: "Die Meisterzahl 33 steht für tiefe Herzkraft und Heilimpulse. Du wirkst oft still, aber sehr verbindend. Deine Lernaufgabe liegt weniger im Geben, sondern im Bleiben: im Kontakt bleiben, Bedürfnisse aussprechen und Grenzen setzen, damit deine Liebe stabil fließen kann."
                 }
+            }
+        };
 
+        function quersumme(zahl) {
+            return zahl
+                .toString()
+                .split("")
+                .reduce((summe, wert) => summe + Number(wert), 0);
+        }
+
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        async function berechne() {
+
+            const out = document.getElementById("output");
+            const results = document.getElementById("container-results");
+
+            const input = document.getElementById("birthdate").value;
+
+            const digits = input.replace(/\D/g, "");
+
+            if (!digits.length) {
                 out.innerHTML = `
-                    <div class="calc-text">Berechnung läuft...</div>
-                    <div class="progress-container"><div id="bar" class="progress-bar"></div></div>
+                    <div class="calc-text">
+                        Bitte ein gültiges Geburtsdatum eingeben.
+                    </div>
                 `;
+                return;
+            }
 
-                const bar = document.getElementById("bar");
-                for (let i = 0; i <= 100; i++) {
-                    bar.style.width = i + "%";
-                    await sleep(10);
+            out.innerHTML = `
+                <div class="calc-text">Berechnung läuft...</div>
+
+                <div class="progress-container">
+                    <div id="bar" class="progress-bar"></div>
+                </div>
+            `;
+
+            const bar = document.getElementById("bar");
+
+            for (let i = 0; i <= 100; i++) {
+                bar.style.width = i + "%";
+                await sleep(8);
+            }
+
+            out.innerHTML = "";
+            results.innerHTML = "";
+
+            let current = quersumme(digits);
+
+            let steps = [];
+            let master = null;
+
+            while (current >= 10) {
+
+                if ([11, 22, 33].includes(current)) {
+                    master = current;
                 }
 
-                out.innerHTML = "";
-                results.innerHTML = "";
+                steps.push(current);
 
-                let current = quersumme(digits);
-                let steps = [];
-                let master = null;
+                current = quersumme(current);
+            }
 
-                while (current >= 10) {
-                    if ([11, 22, 33].includes(current)) master = current;
-                    steps.push(current);
-                    current = quersumme(current);
-                }
+            const lebenszahl = current;
 
-                const lebenszahl = current;
+            results.innerHTML += `
+                <div class="result-label">
+                    Deine Auswertung
+                </div>
+            `;
 
-                results.innerHTML = "<label class='result'>Auswertung:</label>";
+            results.innerHTML += `
+                <div class="row life">
+                    <span>Lebenszahl</span>
+                    <span>${lebenszahl}</span>
+                </div>
+            `;
 
+            if (master) {
                 results.innerHTML += `
-                    <div class="row life"><span>Lebenszahl</span><span>${lebenszahl}</span></div>
-                `;
-
-                if (master) {
-                    results.innerHTML += `
-                        <div class="row master"><span>Meisterzahl</span><span>${master}</span></div>
-                    `;
-                }
-
-                steps.reverse().forEach(f => {
-                    if (f !== master) {
-                        results.innerHTML += `
-                            <div class="row"><span>Zwischenwert</span><span>${f}</span></div>
-                        `;
-                    }
-                });
-
-                const l = daten.lebenszahlen[lebenszahl];
-                if (l) {
-                    results.innerHTML += `
-                        <div class="description">
-                            <h3>${l.titel}</h3>
-                            <p>${l.text}</p>
-                        </div>
-                    `;
-                }
-
-                if (master && daten.meisterzahlen[master]) {
-                    const m = daten.meisterzahlen[master];
-                    results.innerHTML += `
-                        <div class="description">
-                            <h3>${m.titel}</h3>
-                            <p>${m.text}</p>
-                        </div>
-                    `;
-                }
-
-                results.innerHTML += `
-                    <div class="footer">
-                        <h2>Newsletter</h2>
-                        <input placeholder="E-Mail">
-                        <button>Anmelden</button>
+                    <div class="row master">
+                        <span>Meisterzahl</span>
+                        <span>${master}</span>
                     </div>
                 `;
             }
-        </script>
 
-    </div>
+            steps.reverse().forEach(step => {
+
+                if (step !== master) {
+                    results.innerHTML += `
+                        <div class="row">
+                            <span>Zwischenwert</span>
+                            <span>${step}</span>
+                        </div>
+                    `;
+                }
+
+            });
+
+            const lebensdaten = daten.lebenszahlen[lebenszahl];
+
+            if (lebensdaten) {
+
+                results.innerHTML += `
+                    <div class="description">
+
+                        <h2>${lebensdaten.titel}</h2>
+
+                        <div class="kurztext">
+                            ${lebensdaten.kurztext}
+                        </div>
+
+                        <p>
+                            ${lebensdaten.text}
+                        </p>
+
+                    </div>
+                `;
+            }
+
+            if (master && daten.meisterzahlen[master]) {
+
+                const meisterdaten = daten.meisterzahlen[master];
+
+                results.innerHTML += `
+                    <div class="description">
+
+                        <h2>${meisterdaten.titel}</h2>
+
+                        <div class="kurztext">
+                            ${meisterdaten.kurztext}
+                        </div>
+
+                        <p>
+                            ${meisterdaten.text}
+                        </p>
+
+                    </div>
+                `;
+            }
+
+            results.innerHTML += `
+                <div class="footer">
+
+                    <h2>Für mehr Informationen über deine Lebenszahl und weitere Angebote melde dich für meinen E-Mail-Newsletter an.</h2>
+
+                    <input placeholder="Deine E-Mail Adresse" />
+
+                    <button>Anmelden</button>
+
+                </div>
+            `;
+        }
+
+    </script>
+
 </body>
 
 </html>
-```
