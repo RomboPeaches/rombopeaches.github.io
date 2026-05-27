@@ -1037,7 +1037,6 @@ image viewer swiping / exit
 
       lastCreated = data.length - 1;
       nextColor = getNextColor();
-      nextColor = getNextColor(); //hacky!
       saveNextColor(nextColor);
       save(data);
       nameInput.value = "";
@@ -1094,17 +1093,26 @@ image viewer swiping / exit
     }
 
     function render() {
+
       const previousScroll = window.scrollY;
       list.innerHTML = "";
 
       const data = load();
       let changed = false;
 
+      for (const entry of data) {
+        if (!entry.color) {
+          entry.color = getNextColor();
+          changed = true;
+        }
+      }
+      if (changed) save(data);
+
       data.forEach((entry, i) => {
         if (viewMode === 'archive' ? !entry.archived : entry.archived) return;
 
         if (!entry.color) {
-          entry.color = randColor();
+          entry.color = getNextColor();
           changed = true;
         }
         if (entry.collapsed === undefined) {
