@@ -1,0 +1,171 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="theme-color" content="#222">
+
+    <title>Check-In PWA</title>
+
+    <style>
+        body {
+            font-family: sans-serif;
+            max-width: 500px;
+            margin: auto;
+            padding: 20px;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            box-sizing: border-box;
+        }
+
+        button {
+            width: 100%;
+            padding: 18px;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        #status {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Check-In</h1>
+
+    <label>Mastodon Instance</label>
+    <input id="instance" placeholder="https://mastodon.social">
+
+    <label>Access Token</label>
+    <input id="token" type="password" placeholder="Paste token here">
+
+    <button id="saveBtn">
+        Save Settings
+    </button>
+
+    <hr>
+
+    <button id="checkinBtn">
+        I'M OK
+    </button>
+
+    <div id="status"></div>
+
+    <script>
+
+        const instanceInput =
+            document.getElementById("instance");
+
+        const tokenInput =
+            document.getElementById("token");
+
+        const statusDiv =
+            document.getElementById("status");
+
+        instanceInput.value =
+            localStorage.getItem("instance") || "";
+
+        tokenInput.value =
+            localStorage.getItem("token") || "";
+
+        document
+            .getElementById("saveBtn")
+            .addEventListener("click", () => {
+
+                localStorage.setItem(
+                    "instance",
+                    instanceInput.value.trim()
+                );
+
+                localStorage.setItem(
+                    "token",
+                    tokenInput.value.trim()
+                );
+
+                alert("Saved");
+            });
+
+        document
+            .getElementById("checkinBtn")
+            .addEventListener("click", sendCheckin);
+
+        async function sendCheckin() {
+
+            const instance =
+                localStorage.getItem("instance");
+
+            const token =
+                localStorage.getItem("token");
+
+            if (!instance || !token) {
+                alert("Missing settings");
+                return;
+            }
+
+            const timestamp =
+                new Date().toISOString();
+
+            try {
+
+                const response =
+                    await fetch(
+                        `${instance}/api/v1/statuses`,
+                        {
+                            method: "POST",
+                            headers: {
+                                "Authorization":
+                                    `Bearer ${token}`,
+                                "Content-Type":
+                                    "application/x-www-form-urlencoded"
+                            },
+                            body: new URLSearchParams({
+                                status: `alive ${timestamp}`
+                            })
+                        }
+                    );
+
+                if (!response.ok) {
+                    throw new Error(
+                        await response.text()
+                    );
+                }
+
+                localStorage.setItem(
+                    "lastCheckin",
+                    timestamp
+                );
+
+                statusDiv.innerHTML =
+                    `Last check-in:<br>${timestamp}`;
+
+            } catch (error) {
+
+                statusDiv.textContent =
+                    "Failed: " + error.message;
+            }
+        }
+
+        const last =
+            localStorage.getItem(
+                "lastCheckin"
+            );
+
+        if (last) {
+            statusDiv.innerHTML =
+                `Last check-in:<br>${last}`;
+        }
+
+    </script>
+
+</body>
+
+</html>
+```

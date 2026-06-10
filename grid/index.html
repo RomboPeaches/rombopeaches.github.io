@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bild + Touch Grid Glow</title>
+
+    <style>
+        html,
+        body {
+            margin: 0;
+            height: 100%;
+            overflow: hidden;
+            background: #111;
+            touch-action: none;
+            font-family: sans-serif;
+
+            cursor: none;
+        }
+
+        /* Canvas füllt den Bildschirm */
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        /* Seitenpanel für Bildauswahl */
+        #panel {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 10;
+            background: rgba(0, 0, 0, 0.6);
+            padding: 10px;
+            border-radius: 8px;
+            color: rgb(255, 255, 255);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="panel">
+        <input type="file" id="file" accept="image/*">
+    </div>
+
+    <canvas id="c"></canvas>
+
+    <script>
+        /*
+        ====================================================
+        SETTINGS
+        ====================================================
+        */
+
+        const SPACING = 20;
+        const MAX_RADIUS = 50;
+        const EFFECT_RADIUS = 20;
+
+        const GROW = 0.25;
+        const SHRINK = 0.92;
+
+        /*
+        ====================================================
+        CANVAS
+        ====================================================
+        */
+
+        const canvas = document.getElementById("c");
+        const ctx = canvas.getContext("2d");
+
+        let points = [];
+
+        /*
+        ====================================================
+        IMAGE HANDLING
+        ====================================================
+        */
+
+        const img = new Image();
+        let imgCanvas = document.createElement("canvas");
+        let imgCtx = imgCanvas.getContext("2d");
+
+        let imageLoaded = false;
+
+        /*
+        Bild laden via File Input
+        */
+        document.getElementById("file").addEventListener("change", (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+
+            reader.onload = (event) => {
+                img.onload = () => {
+
+                    // Bild in internes Canvas zeichnen
+                    imgCanvas.width = img.width;
+                    imgCanvas.height = img.height;
+
+                    imgCtx.drawImage(img, 0, 0);
+
+                    imageLoaded = true;
+                };
+
+                img.src = event.target.result;
+            };
+
+            reader.readAsDataURL(file);
+        });
+
+        /*
+        ====================================================
+        RESIZE + GRID
+        ====================================================
+        */
+
+        function resize() {
+
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            points = [];
+
+            for (let y = SPACING / 2; y < canvas.height; y += SPACING) {
+                for (let x = SPACING / 2; x < canvas.width; x += SPACING) {
+
+                    points.push({
+                        x, y,
+                        r: 0,
+                        color: "hotpink"
+                    });
+                }
+            }
+        }
+
+        window.addEventListener("resize", resize);
+        resize();
+
+        /*
+        ====================================================
+        POINTER
+        ====================================================
+        */
+
+        let px = null;
+        let py = null;
+
+        window.addEventListener("mousemove", e => {
+            px = e.clientX;
+            py = e.clientY;
+        });
+
+        window.addEventListener("touchmove", e => {
+            const t = e.touches[0];
+            px = t.clientX;
+            py = t.clientY;
+        }, { passive: true });
+
+        window.addEventListener("touchend", () => {
+            px = py = null;
+        });
+
+        /*
+        ====================================================
+        FARBE AUS BILD HOLEN
+        ====================================================
+        */
+
+        function getColorFromImage(x, y) {
+
+            if (!imageLoaded) return "white";
+
+            // Skalierung Bild <-> Bildschirm
+            const ix = Math.floor((x / canvas.width) * imgCanvas.width);
+            const iy = Math.floor((y / canvas.height) * imgCanvas.height);
+
+            const data = imgCtx.getImageData(ix, iy, 1, 1).data;
+
+            return `rgb(${data[0]},${data[1]},${data[2]})`;
+        }
+
+        /*
+        ====================================================
+        ZUFÄLLIGE FARBE
+        ====================================================
+        */
+
+        function getRandomColor(x, y) {
+            const colors = [
+                "#f97080",
+                "#fd5433",
+                "#f8bc4e",
+                "#83a147",
+                "#3e7788",
+                "#102e4a"
+            ];
+
+            const index = Math.floor(Math.random() * colors.length);
+            return colors[index];
+        }
+
+        /*
+        ====================================================
+        UPDATE
+        ====================================================
+        */
+
+        function update() {
+
+            for (const p of points) {
+
+                // Farbe aus Bild
+                //p.color = getColorFromImage(p.x, p.y);
+
+
+                p.color = getRandomColor(p.x, p.y);
+                if (px !== null) {
+
+                    const dx = px - p.x;
+                    const dy = py - p.y;
+                    const d = Math.hypot(dx, dy);
+
+                    if (d < EFFECT_RADIUS) {
+
+                        const influence = 1 - d / EFFECT_RADIUS;
+                        const target = influence * MAX_RADIUS;
+
+                        p.r += (target - p.r) * GROW;
+
+                    } else {
+                        p.r *= SHRINK;
+                    }
+
+                } else {
+                    p.r *= SHRINK;
+                }
+
+                if (p.r < 0.05) p.r = 0;
+            }
+        }
+
+        /*
+        ====================================================
+        DRAW + GLOW
+        ====================================================
+        */
+
+        function draw() {
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            ctx.shadowBlur = 16;        // <<< GLOW
+            ctx.shadowColor = "red";  // wird überschrieben pro Farbe
+
+            for (const p of points) {
+
+                if (p.r <= 0) continue;
+
+                ctx.beginPath();
+                ctx.fillStyle = p.color;
+
+                // Glow passend zur Farbe
+                ctx.shadowColor = p.color;
+
+                ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        /*
+        ====================================================
+        LOOP
+        ====================================================
+        */
+
+        function loop() {
+            update();
+            requestAnimationFrame(loop);
+            draw();
+        }
+
+        loop();
+    </script>
+
+</body>
+
+</html>
