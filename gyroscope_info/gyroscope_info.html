@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gyroscope Reader</title>
+
+    <style>
+        body {
+            margin: 0;
+            background: #111;
+            color: #0f0;
+            font-family: monospace;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        #container {
+            width: min(500px, 95vw);
+            background: #1b1b1b;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px #000;
+        }
+
+        h2 {
+            margin-top: 0;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            font-size: 18px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+
+        .value {
+            font-size: 20px;
+            margin: 8px 0;
+        }
+
+        #status {
+            color: orange;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="container">
+        <h2>Phone Gyroscope</h2>
+
+        <button id="start">Enable Sensors</button>
+
+        <div id="status">Waiting...</div>
+
+        <h3>Rotation Rate (°/s)</h3>
+        <div class="value">X: <span id="gx">-</span></div>
+        <div class="value">Y: <span id="gy">-</span></div>
+        <div class="value">Z: <span id="gz">-</span></div>
+
+        <h3>Orientation (°)</h3>
+        <div class="value">Alpha: <span id="alpha">-</span></div>
+        <div class="value">Beta: <span id="beta">-</span></div>
+        <div class="value">Gamma: <span id="gamma">-</span></div>
+    </div>
+
+    <script>
+        const statusEl = document.getElementById("status");
+
+        function updateOrientation(e) {
+            document.getElementById("alpha").textContent =
+                e.alpha?.toFixed(1) ?? "-";
+
+            document.getElementById("beta").textContent =
+                e.beta?.toFixed(1) ?? "-";
+
+            document.getElementById("gamma").textContent =
+                e.gamma?.toFixed(1) ?? "-";
+        }
+
+        function updateMotion(e) {
+            const r = e.rotationRate;
+
+            if (!r) return;
+
+            document.getElementById("gx").textContent =
+                r.alpha?.toFixed(2) ?? "-";
+
+            document.getElementById("gy").textContent =
+                r.beta?.toFixed(2) ?? "-";
+
+            document.getElementById("gz").textContent =
+                r.gamma?.toFixed(2) ?? "-";
+        }
+
+        async function enableSensors() {
+
+            // iOS permission request
+            if (
+                typeof DeviceMotionEvent !== "undefined" &&
+                typeof DeviceMotionEvent.requestPermission === "function"
+            ) {
+                try {
+                    const response = await DeviceMotionEvent.requestPermission();
+
+                    if (response !== "granted") {
+                        statusEl.textContent = "Permission denied.";
+                        return;
+                    }
+                } catch (err) {
+                    statusEl.textContent = err.message;
+                    return;
+                }
+            }
+
+            if (
+                typeof DeviceOrientationEvent !== "undefined" &&
+                typeof DeviceOrientationEvent.requestPermission === "function"
+            ) {
+                try {
+                    await DeviceOrientationEvent.requestPermission();
+                } catch (e) { }
+            }
+
+            window.addEventListener("deviceorientation", updateOrientation);
+            window.addEventListener("devicemotion", updateMotion);
+
+            statusEl.textContent = "Receiving sensor data...";
+        }
+
+        document.getElementById("start").onclick = enableSensors;
+    </script>
+
+</body>
+
+</html>
