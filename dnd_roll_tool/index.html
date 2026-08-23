@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Rollflow — D&D 2024 Companion</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap');
+
+        :root {
+            --bg: #0a0b10;
+            --panel: #12141d;
+            --panel2: #181b26;
+            --line: #292d3b;
+            --text: #f2f4f8;
+            --muted: #9299aa;
+            --accent: #8b5cf6;
+            --good: #43d19e;
+            --danger: #ff647c;
+            --gold: #f3b84c;
+            --radius: 22px
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        body {
+            margin: 0;
+            background: radial-gradient(circle at 20% -10%, #251d45 0, transparent 32%), var(--bg);
+            color: var(--text);
+            font: 14px Manrope, sans-serif
+        }
+
+        button,
+        input,
+        select {
+            font: inherit
+        }
+
+        button {
+            border: 0;
+            color: inherit;
+            cursor: pointer
+        }
+
+        .app {
+            max-width: 720px;
+            margin: auto;
+            min-height: 100vh;
+            padding-bottom: 92px
+        }
+
+        .top {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            padding: 18px 16px 10px;
+            background: linear-gradient(var(--bg) 75%, transparent);
+            backdrop-filter: blur(10px)
+        }
+
+        .brand {
+            display: flex;
+            justify-content: space-between;
+            align-items: center
+        }
+
+        .brand h1 {
+            margin: 0;
+            font-size: 20px;
+            letter-spacing: -1px
+        }
+
+        .brand b {
+            color: #b9a1ff
+        }
+
+        .roster {
+            display: flex;
+            gap: 8px;
+            overflow: auto;
+            padding-top: 15px
+        }
+
+        .chip,
+        .icon,
+        .tab,
+        .quick,
+        .action,
+        .rollbtn,
+        .choice {
+            background: var(--panel);
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            padding: 10px 13px;
+            white-space: nowrap
+        }
+
+        .chip.active,
+        .tab.active {
+            background: #282041;
+            border-color: #7658c8
+        }
+
+        .icon {
+            padding: 9px 12px
+        }
+
+        .main {
+            padding: 8px 16px
+        }
+
+        .screen {
+            display: none
+        }
+
+        .screen.active {
+            display: block;
+            animation: in .24s ease
+        }
+
+        @keyframes in {
+            from {
+                opacity: 0;
+                transform: translateY(7px)
+            }
+
+            to {
+                opacity: 1;
+                transform: none
+            }
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #1b1730, #111925);
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            padding: 18px;
+            margin-bottom: 14px
+        }
+
+        .heroTop {
+            display: flex;
+            justify-content: space-between
+        }
+
+        .eyebrow {
+            font-size: 10px;
+            letter-spacing: 1.5px;
+            color: var(--muted);
+            font-weight: 800;
+            text-transform: uppercase
+        }
+
+        .name {
+            font-size: 26px;
+            font-weight: 800;
+            letter-spacing: -1.4px;
+            margin: 2px 0 13px
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px
+        }
+
+        .stat {
+            background: #090b11a8;
+            border: 1px solid #2b2f3c;
+            border-radius: 15px;
+            padding: 10px;
+            text-align: center
+        }
+
+        .stat b {
+            display: block;
+            font-size: 17px
+        }
+
+        .stat span {
+            font-size: 9px;
+            color: var(--muted);
+            font-weight: 700
+        }
+
+        .section {
+            margin: 22px 0 10px
+        }
+
+        .sectionhead {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px
+        }
+
+        .section h2 {
+            font-size: 14px;
+            margin: 0
+        }
+
+        .tabs {
+            display: flex;
+            gap: 7px;
+            overflow: auto;
+            margin-bottom: 12px
+        }
+
+        .tab {
+            padding: 8px 12px;
+            font-size: 12px
+        }
+
+        .quickrow {
+            display: flex;
+            gap: 8px;
+            overflow: auto
+        }
+
+        .quick {
+            border-left: 3px solid var(--accent);
+            min-width: 116px;
+            text-align: left
+        }
+
+        .quick small {
+            display: block;
+            color: var(--muted);
+            margin-top: 3px
+        }
+
+        .group {
+            border: 1px solid var(--line);
+            background: var(--panel);
+            border-radius: 20px;
+            margin: 10px 0;
+            overflow: hidden
+        }
+
+        .groupTitle {
+            display: flex;
+            justify-content: space-between;
+            padding: 13px 14px;
+            font-weight: 800
+        }
+
+        .action {
+            margin: 0 9px 9px;
+            width: calc(100% - 18px);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            text-align: left;
+            border-radius: 15px
+        }
+
+        .dot {
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 8px
+        }
+
+        .action small {
+            color: var(--muted)
+        }
+
+        .bonus {
+            font-family: "DM Mono";
+            color: #b9a1ff
+        }
+
+        .abilities {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px
+        }
+
+        .ability {
+            background: var(--panel);
+            border: 1px solid var(--line);
+            border-radius: 18px;
+            padding: 13px;
+            text-align: center
+        }
+
+        .ability b {
+            font-size: 22px
+        }
+
+        .ability small {
+            display: block;
+            color: var(--muted)
+        }
+
+        .row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--line)
+        }
+
+        .row:last-child {
+            border: 0
+        }
+
+        .bottom {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #0d0f16ee;
+            backdrop-filter: blur(16px);
+            border-top: 1px solid var(--line);
+            display: flex;
+            justify-content: center;
+            z-index: 20
+        }
+
+        .nav {
+            width: min(720px, 100%);
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            padding: 9px 7px
+        }
+
+        .nav button {
+            background: transparent;
+            color: var(--muted);
+            padding: 7px 3px;
+            font-size: 10px
+        }
+
+        .nav button.active {
+            color: #c7b5ff
+        }
+
+        .nav i {
+            font-style: normal;
+            font-size: 18px;
+            display: block
+        }
+
+        .fab {
+            position: fixed;
+            right: max(20px, calc((100vw - 720px)/2 + 20px));
+            bottom: 76px;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: var(--accent);
+            font-size: 27px;
+            box-shadow: 0 10px 30px #6d45d888
+        }
+
+        .sheetCard {
+            background: var(--panel);
+            border: 1px solid var(--line);
+            border-radius: 18px;
+            padding: 14px;
+            margin-bottom: 8px
+        }
+
+        .type {
+            font-size: 9px;
+            color: var(--muted);
+            font-weight: 800;
+            letter-spacing: 1px
+        }
+
+        .modal {
+            position: fixed;
+            inset: 0;
+            background: #05060bbb;
+            display: none;
+            align-items: end;
+            justify-content: center;
+            z-index: 50
+        }
+
+        .modal.show {
+            display: flex
+        }
+
+        .sheet {
+            width: min(720px, 100%);
+            max-height: 92vh;
+            overflow: auto;
+            background: #11131c;
+            border: 1px solid var(--line);
+            border-radius: 28px 28px 0 0;
+            padding: 20px;
+            animation: up .25s ease
+        }
+
+        @keyframes up {
+            from {
+                transform: translateY(40px)
+            }
+
+            to {
+                transform: none
+            }
+        }
+
+        .sheet h2 {
+            margin: 0 0 15px
+        }
+
+        .field {
+            margin: 12px 0
+        }
+
+        .field label {
+            font-size: 10px;
+            color: var(--muted);
+            font-weight: 800;
+            display: block;
+            margin-bottom: 6px;
+            text-transform: uppercase
+        }
+
+        .field input,
+        .field select {
+            width: 100%;
+            background: #090b11;
+            border: 1px solid var(--line);
+            color: var(--text);
+            padding: 13px;
+            border-radius: 13px
+        }
+
+        .modifierTokens {
+            display: flex;
+            gap: 7px;
+            flex-wrap: wrap
+        }
+
+        .token {
+            background: #252039;
+            border: 1px solid #443870;
+            border-radius: 20px;
+            padding: 7px 10px;
+            font-size: 12px
+        }
+
+        .primary {
+            width: 100%;
+            background: var(--accent);
+            padding: 14px;
+            border-radius: 15px;
+            font-weight: 800;
+            margin-top: 12px
+        }
+
+        .choices {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px
+        }
+
+        .choice {
+            font-size: 12px;
+            padding: 11px
+        }
+
+        .choice.on {
+            border-color: #9878f5;
+            background: #241e39
+        }
+
+        .result {
+            text-align: center;
+            padding: 16px 0
+        }
+
+        .die {
+            font: 800 62px "DM Mono";
+            letter-spacing: -5px;
+            animation: pop .35s cubic-bezier(.2, 1.6, .3, 1)
+        }
+
+        @keyframes pop {
+            from {
+                transform: scale(.4) rotate(-8deg);
+                opacity: 0
+            }
+
+            to {
+                transform: none;
+                opacity: 1
+            }
+        }
+
+        .breakdown {
+            font-family: "DM Mono";
+            color: var(--muted);
+            font-size: 12px;
+            line-height: 1.8
+        }
+
+        .search {
+            width: 100%;
+            background: var(--panel);
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            padding: 12px;
+            color: var(--text);
+            margin-bottom: 10px
+        }
+
+        .monster {
+            border-left: 3px solid var(--danger)
+        }
+
+        .hidden {
+            display: none
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app">
+        <header class="top">
+            <div class="brand">
+                <h1>ROLL<span>FLOW</span></h1><button class="icon" onclick="openRoster()">☰</button>
+            </div>
+            <div class="roster" id="roster"></div>
+        </header>
+        <main class="main">
+            <section class="screen active" id="play"></section>
+            <section class="screen" id="character"></section>
+            <section class="screen" id="rosterScreen"></section>
+            <section class="screen" id="more"></section>
+        </main>
+    </div>
+    <button class="fab" onclick="openBuilder()">＋</button>
+    <nav class="bottom">
+        <div class="nav"><button class="active" onclick="showScreen('play',this)"><i>◉</i>PLAY</button><button
+                onclick="showScreen('character',this)"><i>◇</i>SHEET</button><button
+                onclick="showScreen('rosterScreen',this)"><i>☷</i>ROSTER</button><button
+                onclick="showScreen('more',this)"><i>⋯</i>MORE</button><button
+                onclick="openBuilder()"><i>＋</i>ROLL</button></div>
+    </nav>
+
+    <div class="modal" id="modal">
+        <div class="sheet" id="modalContent"></div>
+    </div>
+    <script>
+        const base = {
+            name: "Arannis Vale", type: "PC", class: "Level 7 Arcane Knight", hp: 42, maxHp: 56, ac: 17, pb: 3, init: 4, speed: 30, abilities: { STR: 12, DEX: 18, CON: 14, INT: 16, WIS: 10, CHA: 8 }, skills: ["Acrobatics", "Stealth", "Perception", "Investigation"], rolls: [
+                { name: "Magic Javelin", group: "Combat", color: "#ff647c", kind: "Attack", dice: 20, count: 1, mods: ["DEX", "PB", "+1"], linked: { name: "Javelin Damage", dice: 6, count: 1, mods: ["DEX", "+1"] } },
+                { name: "Longsword", group: "Combat", color: "#ff647c", kind: "Attack", dice: 20, count: 1, mods: ["STR", "PB"], linked: { name: "Longsword Damage", dice: 8, count: 1, mods: ["STR"] } },
+                { name: "Fireball", group: "Fire Magic", color: "#f3b84c", kind: "Damage", dice: 6, count: 8, mods: [], linked: null },
+                { name: "Fire Bolt", group: "Fire Magic", color: "#f3b84c", kind: "Attack", dice: 20, count: 1, mods: ["INT", "PB"], linked: { name: "Fire Damage", dice: 10, count: 2, mods: [] } },
+                { name: "Stealth", group: "Exploration", color: "#43d19e", kind: "Skill", dice: 20, count: 1, mods: ["DEX", "PB"], linked: null },
+                { name: "Perception", group: "Exploration", color: "#43d19e", kind: "Skill", dice: 20, count: 1, mods: ["WIS", "PB"], linked: null }
+            ]
+        };
+        const npc = { name: "Captain Voss", type: "NPC", class: "Veteran Guard", hp: 65, maxHp: 65, ac: 18, pb: 3, init: 1, speed: 30, abilities: { STR: 16, DEX: 12, CON: 14, INT: 11, WIS: 13, CHA: 14 }, skills: ["Athletics", "Insight"], rolls: [{ name: "Veteran Blade", group: "Actions", color: "#60a5fa", kind: "Attack", dice: 20, count: 1, mods: ["STR", "PB", "+2"], linked: { name: "Slashing Damage", dice: 8, count: 1, mods: ["STR", "+2"] } }] };
+        const monster = { name: "Ashfang", type: "Monster", class: "Young Ember Drake", hp: 88, maxHp: 88, ac: 16, pb: 3, init: 2, speed: 40, abilities: { STR: 17, DEX: 14, CON: 16, INT: 8, WIS: 12, CHA: 13 }, skills: ["Perception"], rolls: [{ name: "Bite", group: "Actions", color: "#ff647c", kind: "Attack", dice: 20, count: 1, mods: ["STR", "PB"], linked: { name: "Piercing Damage", dice: 10, count: 2, mods: ["STR"] } }, { name: "Fire Breath", group: "Actions", color: "#f3b84c", kind: "Damage", dice: 6, count: 8, mods: ["+3"], linked: null }, { name: "Tail", group: "Actions", color: "#ff647c", kind: "Attack", dice: 20, count: 1, mods: ["STR", "PB"], linked: { name: "Bludgeoning Damage", dice: 8, count: 1, mods: ["STR"] } }] };
+        let sheets = JSON.parse(localStorage.getItem("rollflowSheets") || "null") || [base, npc, monster], active = +localStorage.getItem("rollflowActive") || 0, tempBonus = +localStorage.getItem("rollflowTempBonus") || 0;
+        function save() { localStorage.setItem("rollflowSheets", JSON.stringify(sheets)); localStorage.setItem("rollflowActive", active); localStorage.setItem("rollflowTempBonus", tempBonus) }
+        function mod(v) { return Math.floor((v - 10) / 2) } function signed(n) { return n >= 0 ? `+${n}` : n }
+        function resolve(s, m) { if (["STR", "DEX", "CON", "INT", "WIS", "CHA"].includes(m)) return mod(s.abilities[m]); if (m === "PB") return s.pb; return +m || 0 }
+        function formula(s, r) { return `${r.count}d${r.dice} ${r.mods.map(m => signed(resolve(s, m))).join(" ")}`.trim() }
+        function renderRoster() { roster.innerHTML = sheets.map((s, i) => `<button class="chip ${i === active ? "active" : ""}" onclick="selectSheet(${i})">${s.name}</button>`).join("") + `<button class="chip" onclick="newSheet()">＋</button>` }
+        function selectSheet(i) { active = i; save(); renderAll() } function current() { return sheets[active] }
+        function hero(s) { return `<div class="hero"><div class="heroTop"><div><div class="eyebrow">${s.type} · ${s.class}</div><div class="name">${s.name}</div></div><button class="icon" onclick="editHp()">✎</button></div><div class="stats"><div class="stat"><b>${s.hp}<small>/${s.maxHp}</small></b><span>HP</span></div><div class="stat"><b>${s.ac}</b><span>AC</span></div><div class="stat"><b>${signed(s.init)}</b><span>INIT</span></div><div class="stat"><b>+${s.pb}</b><span>PB</span></div></div></div>` }
+        function renderPlay() { let s = current(), groups = {}; s.rolls.forEach(r => (groups[r.group] ??= []).push(r)); play.innerHTML = hero(s) + `<div class="sectionhead"><h2>Quick rolls</h2><button class="icon" onclick="openRollPicker()">⌕</button></div><div class="quickrow">${s.rolls.slice(0, 4).map((r, i) => `<button class="quick" style="border-left-color:${r.color}" onclick="roll(${i})">${r.name}<small>${formula(s, r)}</small></button>`).join("")}</div><div class="section"><div class="sectionhead"><h2>Action groups</h2><button class="icon" onclick="openBuilder()">＋</button></div>${Object.entries(groups).map(([g, rs]) => `<div class="group"><div class="groupTitle">${g}<span>${rs.length}</span></div>${rs.map(r => `<div style="display:flex;gap:7px;margin:0 9px 9px"><button class="action" style="margin:0;width:auto;flex:1" onclick="roll(${s.rolls.indexOf(r)})"><span><i class="dot" style="background:${r.color}"></i><b>${r.name}</b><br><small>${r.kind} · ${formula(s, r)}</small></span><span>›</span></button><button class="icon" onclick="editRoll(${s.rolls.indexOf(r)})">✎</button></div>`).join("")}</div>`).join("")}</div>` }
+        function renderCharacter() { let s = current(); character.innerHTML = hero(s) + `<div class="section"><h2>Abilities</h2><div class="abilities">${Object.entries(s.abilities).map(([k, v]) => `<button class="ability" onclick="quickAbility('${k}')"><small>${k}</small><b>${v}</b><span class="bonus">${signed(mod(v))}</span></button>`).join("")}</div></div><div class="section"><h2>Core details</h2><div class="sheetCard"><div class="row"><span>Speed</span><b>${s.speed} ft.</b></div><div class="row"><span>Proficiency Bonus</span><b>+${s.pb}</b></div><div class="row"><span>Skills</span><b>${s.skills.join(" · ")}</b></div></div></div><div class="section"><h2>Standard rolls</h2><div class="sheetCard">${["Saving Throws", "Skills", "Initiative", "Death Save"].map(x => `<div class="row"><span>${x}</span><button class="icon" onclick="openStandard('${x}')">ROLL</button></div>`).join("")}</div></div>` }
+        function renderRosterScreen() { rosterScreen.innerHTML = `<div class="sectionhead"><h2>Session roster</h2><button class="icon" onclick="newSheet()">＋</button></div>${sheets.map((s, i) => `<button class="sheetCard ${s.type === "Monster" ? "monster" : ""}" style="width:100%;text-align:left" onclick="selectSheet(${i});showScreen('play',document.querySelector('.nav button'))"><span class="type">${s.type}</span><div class="name" style="font-size:19px;margin:3px 0">${s.name}</div><span style="color:var(--muted)">${s.class} · HP ${s.hp}/${s.maxHp} · AC ${s.ac}</span></button>`).join("")}` }
+        function renderMore() { more.innerHTML = `<div class="section"><h2>Session tools</h2><div class="sheetCard"><div class="row"><span>Roll history</span><b id="historyCount">0</b></div><div class="row"><span>Temporary bonus</span><button class="icon" onclick="setTemp()">+${tempBonus}</button></div><div class="row"><span>Hide/show sections</span><button class="icon">◉</button></div></div></div><div class="section"><h2>About this prototype</h2><p style="color:var(--muted);line-height:1.7">D&D 2024-oriented, local-first sheets for PCs, NPCs and monsters. Custom linked rolls reference live ability modifiers and proficiency bonus.</p></div>` }
+        function renderAll() { renderRoster(); renderPlay(); renderCharacter(); renderRosterScreen(); renderMore() }
+        function showScreen(id, btn) { document.querySelectorAll(".screen").forEach(x => x.classList.remove("active")); document.getElementById(id).classList.add("active"); document.querySelectorAll(".nav button").forEach(x => x.classList.remove("active")); btn?.classList.add("active") }
+        function modal(html) { modalContent.innerHTML = html; document.getElementById("modal").classList.add("show") } function closeModal() { document.getElementById("modal").classList.remove("show") }
+        function roll(i, linked = false, mode = "normal") { let s = current(), r = linked ? s.rolls[i].linked : s.rolls[i]; if (!r) return; let dice = [], n = r.count; for (let k = 0; k < n; k++)dice.push(1 + Math.floor(Math.random() * r.dice)); if (mode === "adv" || mode === "dis") { let b = 1 + Math.floor(Math.random() * r.dice); dice = [mode === "adv" ? Math.max(dice[0], b) : Math.min(dice[0], b)]; } let mods = r.mods.reduce((a, m) => a + resolve(s, m), 0) + tempBonus, total = dice.reduce((a, b) => a + b, 0) + mods; modal(`<button class="icon" onclick="closeModal()">×</button><div class="result"><div class="eyebrow">${r.kind}${mode !== "normal" ? " · " + mode : ""}</div><h2>${r.name}</h2><div class="die">${total}</div><div class="breakdown">${dice.join(" + ")} + modifiers (${signed(mods)})<br>${r.mods.length ? r.mods.map(m => `${m} ${signed(resolve(s, m))}`).join(" · ") : "No base modifiers"}${tempBonus ? ` · TEMP +${tempBonus}` : ""}</div></div><div class="choices"><button class="choice on" onclick="roll(${i},${linked},'normal')">NORMAL</button><button class="choice" onclick="roll(${i},${linked},'adv')">ADVANTAGE</button><button class="choice" onclick="roll(${i},${linked},'dis')">DISADV.</button></div>${!linked && s.rolls[i].linked ? `<button class="primary" onclick="roll(${i},true)">ROLL ${s.rolls[i].linked.name.toUpperCase()}</button>` : ""}`) }
+        function openBuilder(index = null) { let s = current(), r = index === null ? { name: "", group: "Custom", color: "#8b5cf6", kind: "Custom", dice: 20, count: 1, mods: [], linked: null } : s.rolls[index]; modal(`<button class="icon" onclick="closeModal()">×</button><h2>${index === null ? "Build a roll" : "Edit roll"}</h2><div class="field"><label>Roll name</label><input id="rname" value="${r.name}"></div><div class="field"><label>Group</label><input id="rgroup" value="${r.group}"></div><div class="field"><label>Roll type</label><input id="rkind" value="${r.kind}"></div><div class="field"><label>Color</label><select id="rcolor">${[["#8b5cf6", "Arcane"], ["#ff647c", "Crimson"], ["#f3b84c", "Gold"], ["#43d19e", "Verdant"], ["#60a5fa", "Azure"]].map(x => `<option value="${x[0]}" ${r.color === x[0] ? "selected" : ""}>${x[1]}</option>`).join("")}</select></div><div class="field"><label>Dice</label><div style="display:flex;gap:8px"><input id="rcount" type="number" value="${r.count}" min="1"><select id="rdie">${[4, 6, 8, 10, 12, 20, 100].map(x => `<option ${r.dice === x ? "selected" : ""}>${x}</option>`).join("")}</select></div></div><div class="field"><label>Modifiers — tap to add/remove</label><div class="modifierTokens">${["STR", "DEX", "CON", "INT", "WIS", "CHA", "PB", "+1", "+2", "+3"].map(m => `<button class="token ${r.mods.includes(m) ? "on" : ""}" data-m="${m}" onclick="this.classList.toggle('on')">${m}</button>`).join("")}</div></div><div class="field"><label>Linked damage/action</label><input id="lname" value="${r.linked?.name || ""}" placeholder="Optional linked roll name"><div style="display:flex;gap:8px;margin-top:8px"><input id="lcount" type="number" value="${r.linked?.count || 1}" min="1"><select id="ldie">${[4, 6, 8, 10, 12, 20].map(x => `<option ${r.linked?.dice === x ? "selected" : ""}>${x}</option>`).join("")}</select></div></div><button class="primary" onclick="saveRoll(${index === null ? "null" : index})">SAVE CHANGES</button>${index !== null ? `<button class="choice" style="width:100%;margin-top:9px;border-color:#70303d;color:#ff9aaa" onclick="deleteRoll(${index})">DELETE ROLL</button>` : ""}`) }
+        function editRoll(i) { openBuilder(i) }
+        function saveRoll(index = null) { let mods = [...document.querySelectorAll(".token.on")].map(x => x.dataset.m), lname = document.getElementById("lname").value.trim(), linked = lname ? { name: lname, dice: +ldie.value, count: +lcount.value, mods: [] } : null, r = { name: rname.value || "Untitled Roll", group: rgroup.value || "Custom", color: rcolor.value, kind: rkind.value || "Custom", dice: +rdie.value, count: +rcount.value, mods, linked }; if (index === null) current().rolls.push(r); else current().rolls[index] = r; save(); closeModal(); renderAll() }
+        function deleteRoll(i) { if (confirm("Delete this saved roll?")) { current().rolls.splice(i, 1); save(); closeModal(); renderAll() } }
+        function openRollPicker() { let s = current(); modal(`<button class="icon" onclick="closeModal()">×</button><h2>Find a roll</h2><input class="search" id="search" placeholder="Search attacks, skills, spells…" oninput="filterRolls()"><div id="searchResults">${s.rolls.map((r, i) => `<button class="action" onclick="roll(${i})"><span><b>${r.name}</b><br><small>${r.group} · ${formula(s, r)}</small></span>›</button>`).join("")}</div>`) }
+        function filterRolls() { let q = search.value.toLowerCase(), s = current(); searchResults.innerHTML = s.rolls.map((r, i) => ({ r, i })).filter(x => x.r.name.toLowerCase().includes(q) || x.r.group.toLowerCase().includes(q)).map(x => `<button class="action" onclick="roll(${x.i})"><b>${x.r.name}</b><span>›</span></button>`).join("") }
+        function quickAbility(k) { let s = current(), r = { name: k + " Check", kind: "Ability", dice: 20, count: 1, mods: [k] }; let old = s.rolls.push(r) - 1; roll(old); s.rolls.pop() }
+        function openStandard(x) { let s = current(), k = x === "Initiative" ? "DEX" : x === "Death Save" ? null : "WIS", r = { name: x, kind: "Standard", dice: 20, count: 1, mods: k ? [k, "PB"] : [] }; modal(`<button class="icon" onclick="closeModal()">×</button><div class="result"><h2>${x}</h2><div class="die">${1 + Math.floor(Math.random() * 20) + (k ? resolve(s, k) : 0)}</div><div class="breakdown">Tap roll again for another check</div></div><button class="primary" onclick="openStandard('${x}')">ROLL AGAIN</button>`) }
+        function editHp() { let s = current(); modal(`<button class="icon" onclick="closeModal()">×</button><h2>Hit points</h2><div class="field"><label>Current HP</label><input id="ehp" type="number" value="${s.hp}"></div><div class="field"><label>Maximum HP</label><input id="emax" type="number" value="${s.maxHp}"></div><button class="primary" onclick="current().hp=+ehp.value;current().maxHp=+emax.value;save();closeModal();renderAll()">SAVE</button>`) }
+        function newSheet() { modal(`<button class="icon" onclick="closeModal()">×</button><h2>New sheet</h2><div class="field"><label>Name</label><input id="nname" placeholder="New adventurer"></div><div class="field"><label>Type</label><select id="ntype"><option>PC</option><option>NPC</option><option>Monster</option><option>Custom</option></select></div><button class="primary" onclick="createSheet()">CREATE SHEET</button>`) }
+        function createSheet() { let n = { ...JSON.parse(JSON.stringify(base)), name: nname.value || "Unnamed", type: ntype.value, class: ntype.value === "Monster" ? "Custom Creature" : "Custom Sheet", rolls: [] }; sheets.push(n); active = sheets.length - 1; save(); closeModal(); renderAll(); showScreen("play", document.querySelector(".nav button")) }
+        function openRoster() { showScreen("rosterScreen", document.querySelectorAll(".nav button")[2]) } function setTemp() { let v = prompt("Temporary bonus", tempBonus); if (v !== null) { tempBonus = +v || 0; save(); renderMore() } }
+        renderAll();
+    </script>
+</body>
+
+</html>
