@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Taletunes</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="brand"><span class="brand-mark">◈</span><span>T A L E T U N E S</span></div>
+      <div class="toolbar">
+        <button class="btn btn-secondary" id="importBtn">Import</button>
+        <button class="btn btn-secondary" id="exportBtn">Export</button>
+        <button class="btn btn-secondary" id="fullscreenBtn" title="Toggle fullscreen">⛶</button>
+        <button class="btn btn-secondary" id="addGroupBtn">+ Group</button>
+        <button class="btn btn-primary" id="addSoundBtn">+ Sound</button>
+      </div>
+    </header>
+
+    <main id="groups" class="groups" aria-live="polite"></main>
+    <div id="emptyState" class="empty-state hidden">
+      <h2>No groups yet</h2>
+      <p>Create a group, then add YouTube ambience to it.</p>
+      <button class="btn btn-primary" id="emptyAddGroup">Create Group</button>
+    </div>
+  </div>
+
+  <input id="importFile" type="file" accept=".json,application/json" class="hidden" />
+
+  <div id="modalBackdrop" class="modal-backdrop hidden">
+    <section class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="modal-header">
+        <h2 id="modalTitle">Add sound</h2>
+        <button class="icon-btn" id="closeModal" aria-label="Close">×</button>
+      </div>
+      <form id="entityForm">
+        <div class="field" id="nameField">
+          <label for="entityName">Name</label>
+          <input id="entityName" required maxlength="120" autocomplete="off" />
+        </div>
+        <div class="field" id="urlField">
+          <label for="entityUrl">YouTube URL</label>
+          <input id="entityUrl" type="url" placeholder="https://www.youtube.com/watch?v=..." autocomplete="off" />
+          <small id="urlHint">YouTube watch, youtu.be, shorts, and embed URLs are supported.</small>
+        </div>
+        <div class="field" id="groupField">
+          <label for="entityGroup">Group</label>
+          <select id="entityGroup"></select>
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-secondary" id="cancelModal">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save</button>
+        </div>
+      </form>
+    </section>
+  </div>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <div id="playerHost" class="player-host" aria-hidden="true"></div>
+
+  <script src="https://www.youtube.com/iframe_api"></script>
+  <script src="main.js"></script>
+</body>
+
+</html>
