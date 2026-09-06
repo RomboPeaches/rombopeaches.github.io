@@ -16,9 +16,7 @@ Then open `http://localhost:8080`.
 
 - **Y axis:** target volume (top = 100%, bottom = 0%).
 - **X axis:** fade speed (left = fast, right = slow).
-- **Left 10%:** immediate stop, volume 0, and playback reset.
-- **Right 10%:** guarantees a 100% target volume.
-- Maximum fade is 20 seconds for a full 0→100 transition.
+- Maximum fade is 30 seconds for a full 0→100 transition.
 - Closing a group cancels fades, stops/resets sounds, and destroys active YouTube players.
 
 ## Persistence
