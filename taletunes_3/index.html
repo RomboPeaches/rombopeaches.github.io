@@ -11,8 +11,10 @@
 <body>
   <div class="app-shell">
     <header class="topbar">
-      <div class="brand"><!--span class="brand-mark">◈</span><span-->T A L E T U N E S</span></div>
+      <div class="brand"><span class="brand-letter-hotpink">tale</span>tunes</span>
+      </div>
       <div class="toolbar">
+        <div class="ui-tools"></div>
         <button class="btn btn-secondary" id="importBtn">Import</button>
         <button class="btn btn-secondary" id="exportBtn">Export</button>
         <button class="btn btn-secondary" id="fullscreenBtn" title="Toggle fullscreen">⛶</button>
@@ -59,6 +61,7 @@
     </section>
   </div>
 
+  <div class="desktop-only-message" aria-live="polite">Taletunes is available on desktop only.</div>
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
   <div id="playerHost" class="player-host" aria-hidden="true"></div>
 

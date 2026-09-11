@@ -10,6 +10,7 @@ let modalMode = null;
 let toastTimer = null;
 let ytReady = false;
 let ytWaiters = [];
+let lastOpenedGroupId = null;
 
 window.onYouTubeIframeAPIReady = () => {
   ytReady = true;
@@ -73,10 +74,23 @@ function findSound(soundId) {
   return null;
 }
 
+function scrollGroupIntoView(groupId) {
+  if (!groupId) return;
+  const section = document.querySelector(`.group[data-group-id="${CSS.escape(groupId)}"]`);
+  if (!section) return;
+  const top = Math.max(0, section.getBoundingClientRect().top + window.scrollY - 12 - 70);
+  requestAnimationFrame(() => {
+    window.scrollTo({ top, behavior: 'smooth' });
+  });
+}
+
 function render() {
   groupsEl.innerHTML = '';
   emptyState.classList.toggle('hidden', model.groups.length > 0);
   for (const group of model.groups) renderGroup(group);
+  if (lastOpenedGroupId) {
+    scrollGroupIntoView(lastOpenedGroupId);
+  }
 }
 
 function renderGroup(group) {
@@ -139,7 +153,8 @@ function renderSound(sound) {
   controls.innerHTML = `
     <button class="icon-btn" data-action="edit-sound" title="Edit sound">⋯</button>
     <button class="icon-btn" data-action="delete-sound" title="Delete sound">×</button>
-    <button class="icon-btn" data-action="stop-sound" title="Stop / Reset">⏹</button>`;
+    <button class="icon-btn" data-action="stop-sound" title="Stop / Reset">⏹</button>
+    <button class="icon-btn" data-action="copy-sound-url" title="Copy sound URL">⧉</button>`;
 
   container.appendChild(card);
   container.appendChild(controls);
@@ -400,7 +415,13 @@ function destroyPlayer(soundId) {
 }
 
 function closeGroup(group) {
-  for (const sound of group.sounds) destroyPlayer(sound.id);
+  for (const sound of group.sounds) {
+    const rt = runtimePlayers.get(sound.id);
+    if (!rt || !rt.player) continue;
+    if (rt.playing || Number(rt.volume || 0) > 0 || rt.fading || rt.pendingFade) {
+      fadeTo(sound.id, 0, 0.4);
+    }
+  }
   group.open = false;
   persist(); render();
 }
@@ -446,10 +467,16 @@ function openModal(mode, payload = {}) {
   $('entityUrl').value = payload.sound?.url || '';
   const select = $('entityGroup');
   select.innerHTML = model.groups.map(g => `<option value="${escapeHtml(g.id)}">${escapeHtml(g.name)}</option>`).join('');
-  if (payload.sound) select.value = payload.group.id;
+  if (payload.group) select.value = payload.group.id;
+  else if (payload.sound) select.value = payload.group.id;
   if (mode === 'sound' && !model.groups.length) { closeModal(); showToast('Create a group before adding a sound.', true); return; }
   modalBackdrop.classList.remove('hidden');
-  $('entityName').focus();
+  if (mode === 'sound') {
+    $('entityUrl').focus();
+    $('entityUrl').select();
+  } else {
+    $('entityName').focus();
+  }
 }
 function closeModal() { modalBackdrop.classList.add('hidden'); modalMode = null; form.reset(); }
 
@@ -510,7 +537,11 @@ groupsEl.addEventListener('click', e => {
   if (!group) return;
   const action = actionEl.dataset.action;
   if (action === 'toggle-group') {
-    if (group.open) closeGroup(group); else { group.open = true; persist(); render(); }
+    if (group.open) closeGroup(group); else {
+      group.open = true;
+      lastOpenedGroupId = group.id;
+      persist(); render();
+    }
   } else if (action === 'add-sound') openModal('sound', { group });
   else if (action === 'edit-group') openModal('group', { group });
   else if (action === 'delete-group') {
@@ -530,6 +561,35 @@ groupsEl.addEventListener('click', e => {
     const soundItem = actionEl.closest('.sound-item');
     const soundId = soundItem?.dataset.soundId;
     if (soundId) stopAndReset(soundId);
+  } else if (action === 'copy-sound-url') {
+    const soundItem = actionEl.closest('.sound-item');
+    const soundId = soundItem?.dataset.soundId;
+    const sound = soundId ? findSound(soundId)?.sound : null;
+    if (!sound?.url) return;
+    const url = sound.url;
+    (async () => {
+      try {
+        if (navigator.clipboard?.writeText) {
+          await navigator.clipboard.writeText(url);
+          showToast('Sound URL copied.');
+          return;
+        }
+        throw new Error('Clipboard API unavailable');
+      } catch {
+        const tempInput = document.createElement('input');
+        tempInput.value = url;
+        document.body.appendChild(tempInput);
+        tempInput.select();
+        try {
+          const ok = document.execCommand('copy');
+          showToast(ok ? 'Sound URL copied.' : 'Could not copy URL.', !ok);
+        } catch {
+          showToast('Could not copy URL.', true);
+        } finally {
+          tempInput.remove();
+        }
+      }
+    })();
   }
 });
 
@@ -709,3 +769,5 @@ async function importModelFromFile(file) {
 }
 
 window.importModelFromFile = importModelFromFile;
+
+// Theme is now hardcoded to dark mode (default)
