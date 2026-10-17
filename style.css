@@ -13,7 +13,7 @@ body {
     margin: 100px;
     height: 100%;
     font-family: 'Ostrich-Sans', sans-serif;
-    background: linear-gradient(0deg, rgba(13, 79, 75, 1) 0%, rgb(6, 20, 49) 100%);
+    background: linear-gradient(0deg, rgb(77, 13, 79) 0%, rgb(6, 20, 49) 100%);
     background-repeat: no-repeat;
     background-attachment: fixed;
 }
@@ -43,12 +43,12 @@ body {
     align-items: center;
     justify-content: left;
     padding: 20px;
-    color: #6abcff;
+    color: #b3b08c;
     font-size: 1rem;
     font-weight: 400;
     box-shadow: 1px 1px 10px rgba(48, 45, 40, 0.4);
     background-color: rgba(255, 255, 255, 0.062);
-    border: solid 1px #6abcff;
+    border: solid 1px #b3b08c;
     overflow: visible;
 }
 
