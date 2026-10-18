@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>D&D – Linkübersicht</title>
+
+<style>
+:root {
+    --bg: #151923;
+    --card: #222938;
+    --hover: #303b50;
+    --text: #f5f5f5;
+    --muted: #b8c0cf;
+    --accent: #e4c184;
+    --border: #3b4559;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 18px;
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1000px;
+    margin: auto;
+    padding: 30px 20px 60px;
+}
+
+h1 {
+    font-size: 38px;
+    margin-bottom: 10px;
+}
+
+h2 {
+    font-size: 27px;
+    color: var(--accent);
+    margin-top: 40px;
+    border-bottom: 2px solid var(--border);
+    padding-bottom: 8px;
+}
+
+h3 {
+    font-size: 22px;
+    margin-bottom: 12px;
+}
+
+p {
+    color: var(--muted);
+}
+
+.search {
+    width: 100%;
+    padding: 16px;
+    margin: 20px 0;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: var(--card);
+    color: white;
+    font-size: 18px;
+}
+
+.link-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 0;
+    list-style: none;
+}
+
+.link-list a {
+    display: block;
+    padding: 15px 18px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    color: var(--text);
+    text-decoration: none;
+    font-size: 19px;
+    overflow-wrap: anywhere;
+    transition: background 0.2s, border-color 0.2s;
+}
+
+.link-list a:hover {
+    background: var(--hover);
+    border-color: var(--accent);
+}
+
+.link-list a::before {
+    content: "↗";
+    color: var(--accent);
+    margin-right: 12px;
+    font-weight: bold;
+}
+
+.character {
+    background: #1b202c;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 22px;
+    margin-top: 25px;
+}
+
+.category {
+    margin-top: 25px;
+}
+
+.empty {
+    display: none;
+    padding: 20px;
+    color: var(--muted);
+}
+
+footer {
+    margin-top: 45px;
+    text-align: center;
+    color: var(--muted);
+    font-size: 14px;
+}
+
+@media (max-width: 600px) {
+    .container {
+        padding: 20px 12px 40px;
+    }
+
+    h1 {
+        font-size: 30px;
+    }
+
+    h2 {
+        font-size: 24px;
+    }
+
+    .link-list a {
+        font-size: 17px;
+        padding: 13px;
+    }
+
+    .character {
+        padding: 14px;
+    }
+}
+</style>
+</head>
+
+<body>
+<div class="container">
+
+<header>
+    <h1>D&D – Linkübersicht</h1>
+    <p>Charaktere, Zauber, Regeln, Musik und Spielhilfen.</p>
+</header>
+
+<input
+    type="search"
+    class="search"
+    id="search"
+    placeholder="Links suchen …"
+    aria-label="Links durchsuchen"
+>
+
+<!-- ELARIA -->
+
+<section class="character">
+    <h2>Elaria „Cinnamon“ Curnow (Veyn)</h2>
+
+    <div class="category">
+        <h3>Charakter &amp; Regeln</h3>
+        <ul class="link-list">
+            <li>
+                <a href="https://chicken-dinner.com/5e/5e-point-buy.html#customrace&amp;NA&amp;8&amp;15&amp;8&amp;8&amp;8&amp;15&amp;0&amp;0&amp;27&amp;15&amp;8&amp;19&amp;15&amp;12&amp;9&amp;7&amp;5&amp;4&amp;3&amp;2&amp;1&amp;0&amp;1&amp;2&amp;4&amp;6&amp;9&amp;4&amp;7&amp;4&amp;4&amp;4&amp;5" target="_blank" rel="noopener noreferrer">
+                    D&amp;D 5e Point Buy Calculator
+                </a>
+            </li>
+            <li>
+                <a href="https://dnd2024.wikidot.com/background:all" target="_blank" rel="noopener noreferrer">
+                    Backgrounds – D&amp;D 5e (2024)
+                </a>
+            </li>
+            <li>
+                <a href="https://dnd2024.wikidot.com/species:elf" target="_blank" rel="noopener noreferrer">
+                    Elf – D&amp;D 5e (2024)
+                </a>
+            </li>
+            <li>
+                <a href="https://dnd2024.wikidot.com/background:charlatan" target="_blank" rel="noopener noreferrer">
+                    Charlatan – D&amp;D 5e (2024)
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="category">
+        <h3>Klasse &amp; Zauberlisten</h3>
+        <ul class="link-list">
+            <li>
+                <a href="https://dnd2024.wikidot.com/bard:main#Spellcasting" target="_blank" rel="noopener noreferrer">
+                    Bard – D&amp;D 5e (2024)
+                </a>
+            </li>
+            <li>
+                <a href="https://dnd2024.wikidot.com/bard:spell-list" target="_blank" rel="noopener noreferrer">
+                    Bard Spell List – D&amp;D 5e (2024)
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="category">
+        <h3>Zauber</h3>
+        <ul class="link-list">
+            <li>
+                <a href="https://dnd2024.wikidot.com/spell:druidcraft" target="_blank" rel="noopener noreferrer">
+                    Druidcraft
+                </a>
+            </li>
+            <li>
+                <a href="https://dnd2024.wikidot.com/spell:vicious-mockery" target="_blank" rel="noopener noreferrer">
+                    Vicious Mockery
+                </a>
+            </li>
+            <li>
+                <a href="https://dnd2024.wikidot.com/spell:dancing-lights" target="_blank" rel="noopener noreferrer">
+                    Dancing Lights
+                </a>
+            </li>
+            <li>
+                <a href="https://dnd2024.wikidot.com/spell:command" target="_blank" rel="noopener noreferrer">
+                    Command
+                </a>
+            </li>
+            <li>
+                <a href="https://dnd2024.wikidot.com/spell:feather-fall" target="_blank" rel="noopener noreferrer">
+                    Feather Fall
+                </a>
+            </li>
+        </ul>
+    </div>
+</section>
+
+<!-- BATO -->
+
+<section class="character">
+    <h2>Bato Phryn</h2>
+
+    <div class="category">
+        <h3>Spezies, Hintergrund &amp; Talente</h3>
+        <ul class="link-list">
+            <li>
+                <a href="https://dnd5e.wikidot.com/lineage:triton" target="_blank" rel="noopener noreferrer">
+                    Triton – DND 5th Edition
+                </a>
+            </li>
+            <li>
+                <a href="https://dnd2024.wikidot.com/background:all" target="_blank" rel="noopener noreferrer">
+                    Backgrounds – D&amp;D 5e (2024)
+                </a>
+            </li>
+            <li>
+                <a href="https://dnd2024.wikidot.com/background:genie-touched" target="_blank" rel="noopener noreferrer">
+                    Genie Touched – D&amp;D 5e (2024)
+                </a>
+            </li>
+            <li>
+                <a href="https://dnd2024.wikidot.com/feat:magic-initiate" target="_blank" rel="noopener noreferrer">
+                    Magic Initiate – D&amp;D 5e (2024)
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="category">
+        <h3>Klassen &amp; Zauberlisten</h3>
+        <ul class="link-list">
+            <li>
+                <a href="https://dnd2024.wikidot.com/druid:main" target="_blank" rel="noopener noreferrer">
+                    Druid – D&amp;D 5e (2024)
+                </a>
+            </li>
+            <li>
+                <a href="https://dnd2024.wikidot.com/druid:circle-of-the-sea" target="_blank" rel="noopener noreferrer">
+                    Circle of the Sea – D&amp;D 5e (2024)
+                </a>
+            </li>
+            <li>
+                <a href="https://dnd2024.wikidot.com/wizard:spell-list" target="_blank" rel="noopener noreferrer">
+                    Wizard Spell List – D&amp;D 5e (2024)
+                </a>
+            </li>
+            <li>
+                <a href="https://dnd2024.wikidot.com/druid:spell-list" target="_blank" rel="noopener noreferrer">
+                    Druid Spell List – D&amp;D 5e (2024)
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="category">
+        <h3>Zauber</h3>
+        <ul class="link-list">
+            <li>
+                <a href="https://dnd2024.wikidot.com/spell:wardaway" target="_blank" rel="noopener noreferrer">
+                    Wardaway
+                </a>
+            </li>
+            <li>
+                <a href="https://dnd2024.wikidot.com/spell:light" target="_blank" rel="noopener noreferrer">
+                    Light
+                </a>
+            </li>
+            <li>
+                <a href="https://dnd2024.wikidot.com/spell:mind-sliver" target="_blank" rel="noopener noreferrer">
+                    Mind Sliver
+                </a>
+            </li>
+            <li>
+                <a href="https://dnd2024.wikidot.com/spell:ray-of-frost" target="_blank" rel="noopener noreferrer">
+                    Ray of Frost
+                </a>
+            </li>
+            <li>
+                <a href="https://dnd2024.wikidot.com/spell:beast-sense" target="_blank" rel="noopener noreferrer">
+                    Beast Sense
+                </a>
+            </li>
+            <li>
+                <a href="https://dnd2024.wikidot.com/spell:thorn-whip" target="_blank" rel="noopener noreferrer">
+                    Thorn Whip
+                </a>
+            </li>
+            <li>
+                <a href="https://dnd2024.wikidot.com/spell:gust-of-wind" target="_blank" rel="noopener noreferrer">
+                    Gust of Wind
+                </a>
+            </li>
+            <li>
+                <a href="https://dnd2024.wikidot.com/spell:fog-cloud" target="_blank" rel="noopener noreferrer">
+                    Fog Cloud
+                </a>
+            </li>
+            <li>
+                <a href="https://dnd2024.wikidot.com/spell:hold-person" target="_blank" rel="noopener noreferrer">
+                    Hold Person
+                </a>
+            </li>
+            <li>
+                <a href="https://dnd2024.wikidot.com/spell:spike-growth" target="_blank" rel="noopener noreferrer">
+                    Spike Growth
+                </a>
+            </li>
+        </ul>
+    </div>
+</section>
+
+<!-- SPIELHILFEN -->
+
+<section class="character">
+    <h2>Musik &amp; Spielhilfen</h2>
+
+    <div class="category">
+        <h3>Musik und Atmosphäre</h3>
+        <ul class="link-list">
+            <li>
+                <a href="https://rombopeaches.github.io/taletunes_3/" target="_blank" rel="noopener noreferrer">
+                    TaleTunes
+                </a>
+            </li>
+            <li>
+                <a href="https://tabletopaudio.com/future_city_sp.html" target="_blank" rel="noopener noreferrer">
+                    Tabletop Audio – Future City
+                </a>
+            </li>
+            <li>
+                <a href="https://tabletopaudio.com/alien_starship_sp.html" target="_blank" rel="noopener noreferrer">
+                    Tabletop Audio – Alien Starship
+                </a>
+            </li>
+            <li>
+                <a href="https://tabletopaudio.com/film_noir_sp.html" target="_blank" rel="noopener noreferrer">
+                    Tabletop Audio – Film Noir
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="category">
+        <h3>Würfel</h3>
+        <ul class="link-list">
+            <li>
+                <a href="https://rombopeaches.github.io/dice_roller/" target="_blank" rel="noopener noreferrer">
+                    Dice Roller
+                </a>
+            </li>
+        </ul>
+    </div>
+</section>
+
+<div id="empty" class="empty">
+    Keine passenden Links gefunden.
+</div>
+
+<footer>
+    D&amp;D – Persönliche Linkübersicht
+</footer>
+
+</div>
+
+<script>
+const search = document.getElementById("search");
+const links = [...document.querySelectorAll(".link-list li")];
+const categories = [...document.querySelectorAll(".category")];
+const sections = [...document.querySelectorAll(".character")];
+const empty = document.getElementById("empty");
+
+search.addEventListener("input", () => {
+    const query = search.value.trim().toLocaleLowerCase("de");
+    let visibleLinks = 0;
+
+    links.forEach(item => {
+        const match = item.textContent.toLocaleLowerCase("de").includes(query);
+        item.hidden = !match;
+        if (match) visibleLinks++;
+    });
+
+    categories.forEach(category => {
+        const hasVisibleLinks = [...category.querySelectorAll("li")]
+            .some(item => !item.hidden);
+        category.hidden = !hasVisibleLinks;
+    });
+
+    sections.forEach(section => {
+        section.hidden = ![...section.querySelectorAll(".category")]
+            .some(category => !category.hidden);
+    });
+
+    empty.style.display = visibleLinks === 0 ? "block" : "none";
+});
+</script>
+
+</body>
+</html>
